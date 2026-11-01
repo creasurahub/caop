@@ -1,0 +1,5 @@
+{
+  "transaction_id": "txn_123",
+  "state_version": 43,
+  "status": "committed"
+}

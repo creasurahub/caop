@@ -1,0 +1,7 @@
+{
+  "plan_id": "plan_123",
+  "idempotency_key": "execute-plan-123-v1",
+  "authorization_context": {
+    "principal_id": "user_123"
+  }
+}

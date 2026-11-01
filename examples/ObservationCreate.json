@@ -1,0 +1,10 @@
+{
+  "source": {
+    "provider": "gmail",
+    "resource_id": "message_123"
+  },
+  "type": "message.received",
+  "occurred_at": "2026-11-01T14:00:00Z",
+  "payload_ref": "artifact_456",
+  "idempotency_key": "gmail-message-123"
+}

@@ -1,0 +1,8 @@
+{
+  "id": "policy_client_email_approval",
+  "scope": "capability:email.send",
+  "condition": "recipient.type == 'client'",
+  "effect": "require_approval",
+  "version": "3",
+  "enforcement": "enforced"
+}

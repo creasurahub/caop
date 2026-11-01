@@ -1,0 +1,5 @@
+{
+  "expected_state": "VERIFYING",
+  "target_state": "COMPLETED",
+  "verification_id": "verify_123"
+}

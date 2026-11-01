@@ -1,0 +1,12 @@
+{
+  "execution_id": "exec_123",
+  "verification_id": "verify_123",
+  "expected_state_version": 42,
+  "changes": [
+    {
+      "entity_id": "com_123",
+      "operation": "set_status",
+      "value": "completed"
+    }
+  ]
+}

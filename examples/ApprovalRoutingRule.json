@@ -1,0 +1,10 @@
+{
+  "policyId": "doa_marketing_spend",
+  "requiredRoles": [
+    "finance_lead",
+    "operations_lead"
+  ],
+  "minQuorum": 2,
+  "expirationSeconds": 86400,
+  "escalateToRoleOnTimeout": "ceo"
+}

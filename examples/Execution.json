@@ -1,0 +1,8 @@
+{
+  "execution_id": "exec_123",
+  "plan_id": "plan_123",
+  "state": "RUNNING",
+  "state_version": 3,
+  "correlation_id": "goal_refinance",
+  "updated_at": "2026-11-01T14:05:00Z"
+}

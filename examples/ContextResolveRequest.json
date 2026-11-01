@@ -1,0 +1,17 @@
+{
+  "observation_ids": [
+    "obs_123"
+  ],
+  "scope": {
+    "workspace_id": "personal",
+    "project_ids": [
+      "mortgage-refinance"
+    ]
+  },
+  "include": [
+    "related_goals",
+    "open_commitments",
+    "relevant_policies",
+    "prior_decisions"
+  ]
+}

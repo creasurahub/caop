@@ -1,0 +1,24 @@
+{
+  "plan_id": "plan_123",
+  "steps": [
+    {
+      "id": "step_1",
+      "capability": "document_analysis",
+      "depends_on": []
+    },
+    {
+      "id": "step_2",
+      "capability": "calculator",
+      "depends_on": [
+        "step_1"
+      ]
+    },
+    {
+      "id": "step_3",
+      "capability": "report_generation",
+      "depends_on": [
+        "step_2"
+      ]
+    }
+  ]
+}

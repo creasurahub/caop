@@ -1,0 +1,14 @@
+{
+  "context_id": "ctx_123",
+  "state_version": 42,
+  "related_goals": [
+    "goal_refinance"
+  ],
+  "open_commitments": [
+    "commitment_12"
+  ],
+  "applicable_policies": [
+    "policy_financial_approval"
+  ],
+  "unresolved_questions": []
+}

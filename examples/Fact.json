@@ -1,0 +1,9 @@
+{
+  "id": "fact_88",
+  "subject": "property/14-oak-lane",
+  "predicate": "appraised_value",
+  "object": 641000,
+  "source": "evidence/appraisal-report",
+  "observedAt": "2026-11-24T15:10:00Z",
+  "confidence": 1.0
+}

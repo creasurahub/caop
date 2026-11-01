@@ -1,0 +1,13 @@
+{
+  "event_id": "evt_123",
+  "event_type": "commitment.deadline_approaching",
+  "schema_version": "1.0",
+  "occurred_at": "2026-11-01T14:00:00Z",
+  "workspace_id": "personal",
+  "subject_id": "com_123",
+  "correlation_id": "goal_refinance",
+  "causation_id": "evt_100",
+  "payload": {
+    "hours_remaining": 24
+  }
+}

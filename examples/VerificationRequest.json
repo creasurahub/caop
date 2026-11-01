@@ -1,0 +1,8 @@
+{
+  "execution_id": "exec_123",
+  "criteria": [
+    "all_required_steps_completed",
+    "result_has_supporting_evidence",
+    "no_policy_violations"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "metric.net_contribution_margin",
+  "name": "Net contribution margin",
+  "formula": "revenue - cogs - ad_spend",
+  "childMetricIds": [
+    "metric.revenue",
+    "metric.cogs",
+    "metric.ad_spend"
+  ],
+  "owner": {
+    "type": "role",
+    "id": "cfo"
+  },
+  "baselineCadence": "weekly",
+  "varianceThresholds": {
+    "warningDeltaPct": -3.0,
+    "criticalDeltaPct": -7.5
+  }
+}

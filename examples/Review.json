@@ -1,0 +1,10 @@
+{
+  "review_id": "review_123",
+  "goal_status": "active",
+  "recommended_actions": [
+    {
+      "action": "request_final_offer",
+      "requires_approval": true
+    }
+  ]
+}

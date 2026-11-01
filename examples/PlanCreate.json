@@ -1,0 +1,11 @@
+{
+  "commitment_id": "com_123",
+  "constraints": {
+    "require_approval_for_external_actions": true
+  },
+  "preferred_capabilities": [
+    "document_analysis",
+    "calculator",
+    "research"
+  ]
+}

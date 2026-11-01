@@ -1,0 +1,5 @@
+{
+  "execution_id": "exec_123",
+  "status": "queued",
+  "next_action": "await_execution"
+}

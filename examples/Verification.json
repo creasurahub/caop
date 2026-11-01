@@ -1,0 +1,24 @@
+{
+  "verification_id": "verify_123",
+  "verdict": "passed",
+  "evidence_refs": [
+    "artifact_789"
+  ],
+  "checks": [
+    {
+      "name": "all_required_steps_completed",
+      "kind": "deterministic",
+      "result": "pass"
+    },
+    {
+      "name": "result_has_supporting_evidence",
+      "kind": "model_rubric",
+      "result": "pass"
+    },
+    {
+      "name": "no_policy_violations",
+      "kind": "deterministic",
+      "result": "pass"
+    }
+  ]
+}

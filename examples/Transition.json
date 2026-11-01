@@ -1,0 +1,14 @@
+{
+  "transition_id": "tr_9",
+  "execution_id": "exec_123",
+  "from_state": "VERIFYING",
+  "to_state": "COMPLETED",
+  "state_version": 5,
+  "actor": {
+    "type": "service",
+    "id": "caop-runtime"
+  },
+  "reason": "verification passed",
+  "correlation_id": "goal_refinance",
+  "occurred_at": "2026-11-01T15:00:00Z"
+}

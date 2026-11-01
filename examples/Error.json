@@ -1,0 +1,11 @@
+{
+  "error": {
+    "code": "POLICY_APPROVAL_REQUIRED",
+    "message": "External action requires approval",
+    "retryable": false,
+    "details": {
+      "approval_request_id": "approval_123"
+    }
+  },
+  "trace_id": "trace_456"
+}

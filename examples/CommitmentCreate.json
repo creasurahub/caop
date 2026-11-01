@@ -1,0 +1,11 @@
+{
+  "goal_id": "goal_refinance",
+  "objective": "Evaluate updated refinancing offer",
+  "success_criteria": [
+    {
+      "type": "artifact_exists",
+      "artifact_type": "refinancing_comparison"
+    }
+  ],
+  "deadline": "2026-11-05T23:59:00Z"
+}

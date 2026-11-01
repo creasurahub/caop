@@ -1,0 +1,1481 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://creasura.com/spec/caop-v0.1.schema.json",
+  "title": "Creasura Agentic OS Protocol (CAOP) v0.1",
+  "description": "JSON Schema definitions for CAOP v0.1.",
+  "$defs": {
+    "PrincipalRef": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "user",
+            "role",
+            "agent",
+            "service"
+          ]
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id"
+      ],
+      "description": "An authenticated principal: a person, a role, an agent, or a service account."
+    },
+    "EntityRef": {
+      "type": "string",
+      "description": "Identifier of any entity known to the OS, e.g. \"property/14-oak-lane\"."
+    },
+    "EvidenceRef": {
+      "type": "string",
+      "description": "Identifier of a piece of evidence (an artifact, observation, or record) that supports a fact or outcome."
+    },
+    "ArtifactRef": {
+      "type": "string",
+      "description": "Identifier of a stored artifact such as a document or report."
+    },
+    "Expression": {
+      "type": "string",
+      "description": "A condition evaluated by the policy engine, e.g. \"recipient.type == 'client'\"."
+    },
+    "Criterion": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "required": [
+        "type"
+      ],
+      "description": "A success criterion. \"type\" selects the evaluator; other members are evaluator-specific."
+    },
+    "Constraint": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "required": [
+        "type"
+      ],
+      "description": "A constraint on how a goal may be pursued."
+    },
+    "AuthorizationPolicy": {
+      "type": "object",
+      "properties": {
+        "requiredScopes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "policyIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "description": "What a caller must hold to invoke a capability."
+    },
+    "Goal": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "objective": {
+          "type": "string"
+        },
+        "owner": {
+          "$ref": "#/$defs/PrincipalRef"
+        },
+        "successCriteria": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Criterion"
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Constraint"
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "paused",
+            "achieved",
+            "abandoned"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "objective",
+        "owner",
+        "successCriteria",
+        "constraints",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ],
+      "description": "A desired outcome that persists beyond a single conversation."
+    },
+    "WorkItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "goalId": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "ready",
+            "running",
+            "blocked",
+            "completed",
+            "failed",
+            "cancelled"
+          ]
+        },
+        "assignedCapability": {
+          "type": "string"
+        },
+        "result": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "goalId",
+        "description",
+        "dependencies",
+        "status"
+      ],
+      "description": "A bounded unit of execution that advances a goal."
+    },
+    "Fact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "subject": {
+          "$ref": "#/$defs/EntityRef"
+        },
+        "predicate": {
+          "type": "string"
+        },
+        "object": {},
+        "source": {
+          "$ref": "#/$defs/EvidenceRef"
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "validFrom": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "validTo": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "subject",
+        "predicate",
+        "object",
+        "source",
+        "observedAt"
+      ],
+      "description": "A durable, provenance-bearing statement in the OS state. Every material fact has a traceable source."
+    },
+    "Capability": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "operations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "inputSchema": {
+          "type": "object"
+        },
+        "outputSchema": {
+          "type": "object"
+        },
+        "authorization": {
+          "$ref": "#/$defs/AuthorizationPolicy"
+        },
+        "executionMode": {
+          "type": "string",
+          "enum": [
+            "interactive",
+            "background",
+            "scheduled"
+          ]
+        },
+        "provider": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "operations",
+        "inputSchema",
+        "outputSchema",
+        "authorization",
+        "executionMode",
+        "provider"
+      ],
+      "description": "Something the OS can invoke to perform work."
+    },
+    "Policy": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "condition": {
+          "$ref": "#/$defs/Expression"
+        },
+        "effect": {
+          "type": "string",
+          "enum": [
+            "allow",
+            "deny",
+            "require_approval"
+          ]
+        },
+        "version": {
+          "type": "string"
+        },
+        "enforcement": {
+          "type": "string",
+          "enum": [
+            "advisory",
+            "enforced"
+          ],
+          "description": "Advisory policies are instructions to a model. Enforced policies are checked by the runtime before an action executes."
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "scope",
+        "condition",
+        "effect",
+        "version",
+        "enforcement"
+      ],
+      "description": "A constraint governing execution."
+    },
+    "CapabilityDescriptor": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "operations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "inputSchema": {
+          "type": "object"
+        },
+        "outputSchema": {
+          "type": "object"
+        },
+        "supportsAsync": {
+          "type": "boolean"
+        },
+        "supportsResume": {
+          "type": "boolean"
+        },
+        "supportsCancellation": {
+          "type": "boolean"
+        },
+        "authorizationRequired": {
+          "type": "boolean"
+        },
+        "sideEffectLevel": {
+          "type": "string",
+          "enum": [
+            "none",
+            "reversible",
+            "irreversible"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "provider",
+        "operations",
+        "inputSchema",
+        "outputSchema",
+        "supportsAsync",
+        "supportsResume",
+        "supportsCancellation",
+        "authorizationRequired",
+        "sideEffectLevel"
+      ],
+      "description": "What an execution provider can do, independent of any one AI vendor."
+    },
+    "CapabilityInvocation": {
+      "type": "object",
+      "properties": {
+        "invocationId": {
+          "type": "string"
+        },
+        "capabilityId": {
+          "type": "string"
+        },
+        "input": {},
+        "contextRefs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "authorizationRef": {
+          "type": "string"
+        },
+        "idempotencyKey": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "invocationId",
+        "capabilityId",
+        "input",
+        "contextRefs",
+        "idempotencyKey"
+      ],
+      "description": "A request to a capability."
+    },
+    "CapabilityResult": {
+      "type": "object",
+      "properties": {
+        "invocationId": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "completed",
+            "failed",
+            "pending",
+            "requires_approval"
+          ]
+        },
+        "output": {},
+        "evidenceRefs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "retryable": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "message",
+            "retryable"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "invocationId",
+        "status",
+        "evidenceRefs"
+      ],
+      "description": "The outcome of a capability invocation."
+    },
+    "ExecutionState": {
+      "type": "string",
+      "enum": [
+        "CREATED",
+        "READY",
+        "RUNNING",
+        "WAITING_APPROVAL",
+        "BLOCKED",
+        "VERIFYING",
+        "FAILED",
+        "COMPLETED",
+        "CANCELLED",
+        "EXPIRED"
+      ],
+      "description": "Execution states. COMPLETED, CANCELLED, and EXPIRED are terminal. Invalid transitions are rejected."
+    },
+    "ObservationCreate": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string"
+            },
+            "resource_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "provider",
+            "resource_id"
+          ]
+        },
+        "type": {
+          "type": "string"
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "idempotency_key": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "type",
+        "occurred_at",
+        "idempotency_key"
+      ],
+      "description": "Something the OS learned from an external source. Replaying the same source event must not create a duplicate."
+    },
+    "ObservationAccepted": {
+      "type": "object",
+      "properties": {
+        "observation_id": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "accepted"
+          ]
+        },
+        "duplicate": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "observation_id",
+        "status",
+        "duplicate"
+      ]
+    },
+    "ContextResolveRequest": {
+      "type": "object",
+      "properties": {
+        "observation_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "goal_id": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "object",
+          "properties": {
+            "workspace_id": {
+              "type": "string"
+            },
+            "project_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "workspace_id"
+          ]
+        },
+        "include": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "related_goals",
+              "open_commitments",
+              "relevant_policies",
+              "prior_decisions"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "include"
+      ]
+    },
+    "ContextBundle": {
+      "type": "object",
+      "properties": {
+        "context_id": {
+          "type": "string"
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "related_goals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "open_commitments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "applicable_policies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unresolved_questions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "retrieved_facts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Fact"
+          }
+        },
+        "inferences": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "statement": {
+                "type": "string"
+              },
+              "based_on": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "statement",
+              "based_on"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "context_id",
+        "state_version",
+        "related_goals",
+        "open_commitments",
+        "applicable_policies",
+        "unresolved_questions"
+      ],
+      "description": "Resolved context. Retrieved facts and inferred interpretations are kept separate."
+    },
+    "CommitmentCreate": {
+      "type": "object",
+      "properties": {
+        "goal_id": {
+          "type": "string"
+        },
+        "objective": {
+          "type": "string"
+        },
+        "success_criteria": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Criterion"
+          }
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "goal_id",
+        "objective",
+        "success_criteria"
+      ]
+    },
+    "Commitment": {
+      "type": "object",
+      "properties": {
+        "commitment_id": {
+          "type": "string"
+        },
+        "goal_id": {
+          "type": "string"
+        },
+        "objective": {
+          "type": "string"
+        },
+        "success_criteria": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Criterion"
+          }
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "completed",
+            "failed",
+            "cancelled",
+            "expired"
+          ]
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "commitment_id",
+        "status",
+        "version"
+      ],
+      "description": "A durable obligation. It cannot be marked completed solely because an agent claims it is complete."
+    },
+    "CommitmentList": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Commitment"
+          }
+        },
+        "next_cursor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "data"
+      ]
+    },
+    "PlanCreate": {
+      "type": "object",
+      "properties": {
+        "commitment_id": {
+          "type": "string"
+        },
+        "constraints": {
+          "type": "object",
+          "properties": {
+            "require_approval_for_external_actions": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": true
+        },
+        "preferred_capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "commitment_id"
+      ]
+    },
+    "Plan": {
+      "type": "object",
+      "properties": {
+        "plan_id": {
+          "type": "string"
+        },
+        "commitment_id": {
+          "type": "string"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "capability": {
+                "type": "string"
+              },
+              "depends_on": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "capability",
+              "depends_on"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "plan_id",
+        "steps"
+      ],
+      "description": "A validated proposal. The runtime checks it against schemas, dependencies, and policy before execution."
+    },
+    "ExecutionCreate": {
+      "type": "object",
+      "properties": {
+        "plan_id": {
+          "type": "string"
+        },
+        "idempotency_key": {
+          "type": "string"
+        },
+        "authorization_context": {
+          "type": "object",
+          "properties": {
+            "principal_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "principal_id"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "plan_id",
+        "idempotency_key",
+        "authorization_context"
+      ]
+    },
+    "ExecutionAccepted": {
+      "type": "object",
+      "properties": {
+        "execution_id": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "queued"
+          ]
+        },
+        "next_action": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "execution_id",
+        "status"
+      ],
+      "description": "Execution is asynchronous. Acceptance does not mean the work is complete."
+    },
+    "Execution": {
+      "type": "object",
+      "properties": {
+        "execution_id": {
+          "type": "string"
+        },
+        "plan_id": {
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/$defs/ExecutionState"
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "correlation_id": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "execution_id",
+        "state",
+        "state_version"
+      ]
+    },
+    "TransitionRequest": {
+      "type": "object",
+      "properties": {
+        "expected_state": {
+          "$ref": "#/$defs/ExecutionState"
+        },
+        "target_state": {
+          "$ref": "#/$defs/ExecutionState"
+        },
+        "verification_id": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "expected_state",
+        "target_state"
+      ]
+    },
+    "Transition": {
+      "type": "object",
+      "properties": {
+        "transition_id": {
+          "type": "string"
+        },
+        "execution_id": {
+          "type": "string"
+        },
+        "from_state": {
+          "$ref": "#/$defs/ExecutionState"
+        },
+        "to_state": {
+          "$ref": "#/$defs/ExecutionState"
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "actor": {
+          "$ref": "#/$defs/PrincipalRef"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "correlation_id": {
+          "type": "string"
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "transition_id",
+        "execution_id",
+        "from_state",
+        "to_state",
+        "state_version",
+        "actor",
+        "correlation_id",
+        "occurred_at"
+      ],
+      "description": "Every accepted transition is persisted with an actor, timestamp, reason, and correlation ID."
+    },
+    "ResultSubmission": {
+      "type": "object",
+      "properties": {
+        "output": {},
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "idempotency_key": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "evidence_refs",
+        "idempotency_key"
+      ]
+    },
+    "VerificationRequest": {
+      "type": "object",
+      "properties": {
+        "execution_id": {
+          "type": "string"
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "execution_id",
+        "criteria"
+      ]
+    },
+    "Verification": {
+      "type": "object",
+      "properties": {
+        "verification_id": {
+          "type": "string"
+        },
+        "verdict": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "deterministic",
+                  "model_rubric",
+                  "human"
+                ]
+              },
+              "result": {
+                "type": "string",
+                "enum": [
+                  "pass",
+                  "fail"
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "kind",
+              "result"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "verification_id",
+        "verdict",
+        "evidence_refs",
+        "checks"
+      ],
+      "description": "A verdict must identify which checks were performed."
+    },
+    "RecordCommit": {
+      "type": "object",
+      "properties": {
+        "execution_id": {
+          "type": "string"
+        },
+        "verification_id": {
+          "type": "string"
+        },
+        "expected_state_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "entity_id": {
+                "type": "string"
+              },
+              "operation": {
+                "type": "string"
+              },
+              "value": {}
+            },
+            "additionalProperties": false,
+            "required": [
+              "entity_id",
+              "operation"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "expected_state_version",
+        "changes"
+      ],
+      "description": "A state mutation. A conflicting state version rejects the transaction or invokes a declared conflict policy."
+    },
+    "RecordCommitted": {
+      "type": "object",
+      "properties": {
+        "transaction_id": {
+          "type": "string"
+        },
+        "state_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "committed"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "transaction_id",
+        "state_version",
+        "status"
+      ]
+    },
+    "ReviewRequest": {
+      "type": "object",
+      "properties": {
+        "goal_id": {
+          "type": "string"
+        },
+        "review_type": {
+          "type": "string",
+          "enum": [
+            "progress",
+            "outcome",
+            "risk"
+          ]
+        },
+        "include": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "outcomes",
+              "unresolved_commitments",
+              "failures",
+              "next_actions"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "goal_id",
+        "review_type"
+      ]
+    },
+    "Review": {
+      "type": "object",
+      "properties": {
+        "review_id": {
+          "type": "string"
+        },
+        "goal_status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "paused",
+            "achieved",
+            "abandoned"
+          ]
+        },
+        "recommended_actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "requires_approval": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "action",
+              "requires_approval"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "review_id",
+        "goal_status",
+        "recommended_actions"
+      ],
+      "description": "Recommendations are proposals, not authorized actions."
+    },
+    "ApprovalDecision": {
+      "type": "object",
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": [
+            "approve",
+            "deny"
+          ]
+        },
+        "scope": {
+          "type": "object",
+          "description": "What exactly is authorized, e.g. a document, amount, or recipient."
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "decision",
+        "expires_at"
+      ]
+    },
+    "Approval": {
+      "type": "object",
+      "properties": {
+        "approval_id": {
+          "type": "string"
+        },
+        "approval_request_id": {
+          "type": "string"
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "approve",
+            "deny"
+          ]
+        },
+        "scope": {
+          "type": "object"
+        },
+        "approved_by": {
+          "$ref": "#/$defs/PrincipalRef"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "approval_id",
+        "approval_request_id",
+        "decision",
+        "approved_by",
+        "expires_at"
+      ],
+      "description": "A scoped, expiring authorization for a consequential action."
+    },
+    "EventEnvelope": {
+      "type": "object",
+      "properties": {
+        "event_id": {
+          "type": "string"
+        },
+        "event_type": {
+          "type": "string",
+          "description": "e.g. observation.received, commitment.created, plan.approved, execution.started, execution.blocked, approval.requested, approval.granted, execution.completed, verification.failed, record.committed, goal.achieved"
+        },
+        "schema_version": {
+          "type": "string"
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "workspace_id": {
+          "type": "string"
+        },
+        "subject_id": {
+          "type": "string"
+        },
+        "correlation_id": {
+          "type": "string"
+        },
+        "causation_id": {
+          "type": "string"
+        },
+        "payload": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "event_type",
+        "schema_version",
+        "occurred_at",
+        "workspace_id",
+        "subject_id",
+        "correlation_id",
+        "payload"
+      ]
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "enum": [
+                "INVALID_REQUEST",
+                "UNAUTHENTICATED",
+                "FORBIDDEN",
+                "NOT_FOUND",
+                "POLICY_APPROVAL_REQUIRED",
+                "POLICY_DENIED",
+                "INVALID_TRANSITION",
+                "STATE_VERSION_CONFLICT",
+                "VERIFICATION_FAILED",
+                "RATE_LIMITED",
+                "INTERNAL"
+              ]
+            },
+            "message": {
+              "type": "string"
+            },
+            "retryable": {
+              "type": "boolean"
+            },
+            "details": {
+              "type": "object"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "message",
+            "retryable"
+          ]
+        },
+        "trace_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "error",
+        "trace_id"
+      ]
+    },
+    "MetricNode": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "formula": {
+          "type": "string"
+        },
+        "parentMetricId": {
+          "type": "string"
+        },
+        "childMetricIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "owner": {
+          "$ref": "#/$defs/PrincipalRef"
+        },
+        "baselineCadence": {
+          "type": "string",
+          "enum": [
+            "hourly",
+            "daily",
+            "weekly",
+            "monthly"
+          ]
+        },
+        "varianceThresholds": {
+          "type": "object",
+          "properties": {
+            "warningDeltaPct": {
+              "type": "number"
+            },
+            "criticalDeltaPct": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "warningDeltaPct",
+            "criticalDeltaPct"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "childMetricIds",
+        "owner",
+        "baselineCadence",
+        "varianceThresholds"
+      ],
+      "description": "A node in a hierarchical KPI tree. Variance beyond thresholds triggers Understand or a Commitment."
+    },
+    "ApprovalRoutingRule": {
+      "type": "object",
+      "properties": {
+        "policyId": {
+          "type": "string"
+        },
+        "requiredRoles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "minQuorum": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expirationSeconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "escalateToRoleOnTimeout": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "policyId",
+        "requiredRoles",
+        "minQuorum",
+        "expirationSeconds"
+      ],
+      "description": "Delegation of Authority routing for a policy."
+    }
+  }
+}

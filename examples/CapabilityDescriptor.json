@@ -1,0 +1,14 @@
+{
+  "id": "esign.send",
+  "provider": "docusign",
+  "operations": [
+    "send_envelope"
+  ],
+  "inputSchema": {},
+  "outputSchema": {},
+  "supportsAsync": true,
+  "supportsResume": false,
+  "supportsCancellation": true,
+  "authorizationRequired": true,
+  "sideEffectLevel": "irreversible"
+}

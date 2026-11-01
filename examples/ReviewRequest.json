@@ -1,0 +1,10 @@
+{
+  "goal_id": "goal_refinance",
+  "review_type": "progress",
+  "include": [
+    "outcomes",
+    "unresolved_commitments",
+    "failures",
+    "next_actions"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "approval_id": "appr_301",
+  "approval_request_id": "approval_123",
+  "decision": "approve",
+  "scope": {
+    "document": "offer-v2"
+  },
+  "approved_by": {
+    "type": "user",
+    "id": "user_123"
+  },
+  "expires_at": "2026-11-02T22:00:00Z"
+}

@@ -1,0 +1,9 @@
+{
+  "output": {
+    "report": "artifact_789"
+  },
+  "evidence_refs": [
+    "artifact_789"
+  ],
+  "idempotency_key": "submit-exec-123-v1"
+}
