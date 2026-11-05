@@ -1,0 +1,19 @@
+{
+  "work_id": "wrk_sub_market_scan",
+  "parent_work_id": "wrk_q4_strategy_master",
+  "isolation_policy": {
+    "execution_scope": "ISOLATED_SUBAGENT_CONTEXT",
+    "return_contract": "DISTILLED_FACTS_AND_ARTIFACT_REF_ONLY",
+    "max_token_budget": 16000,
+    "prune_raw_traces_on_record": true
+  },
+  "distilled_return_payload": {
+    "artifact_ref": "art_market_benchmark_matrix_v1",
+    "promoted_fact_ids": [
+      "fct_competitor_latency_p99",
+      "fct_pricing_tier_delta"
+    ],
+    "compacted_summary": "Audited 18 vendor specs; isolated 2 verified latency bottlenecks linked to parent RFC.",
+    "trace_hash": "sha256:9f2c4e7a1b03d58e6c2f9a4b7d1e0c35a8b6f2d4e9c17a0b3d5f8e2c6a4b19d7"
+  }
+}

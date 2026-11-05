@@ -1,0 +1,9 @@
+{
+  "work_id": "wrk_rfc_sharding_10",
+  "invocation_id": "inv_99512C",
+  "sub_state": "VERIFY_PHASE_2_DEFERRED",
+  "verification_capability_id": "metrics.query",
+  "success_predicate": "ledger.p99_latency_ms < 20 AND ledger.tps >= 15000",
+  "check_due_at": "2026-11-06T13:40:00Z",
+  "status": "PENDING"
+}

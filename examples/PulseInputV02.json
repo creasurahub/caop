@@ -1,0 +1,9 @@
+{
+  "scope_goal_ids": [
+    "goal_payment_ledger_v2"
+  ],
+  "compaction_mode": "FACT_POINTERS_ONLY",
+  "hydrate_capability_ids": [
+    "github.pulls.create"
+  ]
+}

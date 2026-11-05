@@ -1,0 +1,17 @@
+{
+  "patched_step_arguments": [
+    {
+      "step_index": 1,
+      "argument_overrides": {
+        "reviewers": [
+          "principal_eng"
+        ],
+        "draft": true
+      }
+    }
+  ],
+  "added_policy_constraints": [
+    "NO_PRODUCTION_DEPLOY_BEFORE_SHADOW_REPLAY"
+  ],
+  "rationale": "Open the RFC as a draft and add the principal engineer as reviewer; no deploy until the shadow replay passes."
+}

@@ -1,14 +1,32 @@
-# Creasura Agentic OS Protocol (CAOP) v0.1.2
+# Creasura Agentic OS Protocol (CAOP) v0.2
 
 Definition, lifecycle, and API contracts for an open, portable agentic operating system.
 
-**Version:** 0.1.2 · **Project:** Creasura One OSS · **Date:** November 5, 2026  
-Machine-readable contracts: [OpenAPI 3.1](openapi/caop-v0.1.2.openapi.yaml) · [JSON Schema 2020-12](schema/caop-v0.1.2.schema.json)  
-Previous version: [v0.1 contracts](openapi/caop-v0.1.openapi.yaml)
+**Version:** 0.2 · **Project:** Creasura One OSS · **Date:** November 5, 2026  
+Machine-readable contracts: [OpenAPI 3.1](openapi/caop-v0.2.openapi.yaml) · [JSON Schema 2020-12](schema/caop-v0.2.schema.json)
 
-> **What’s new in v0.1.2**
+> **What’s new in v0.2**
 >
-> Three runtime conformance profiles (CAOP-STAGE-1/2/3); epistemic status and a causal dependency graph on bitemporal facts, with synchronous invalidation of stale premises; deterministic Policy pre-commit hooks; execution locus, credential custody and receipt rules on every capability; EXECUTE sub-states, an anti-termination dispatch envelope, lease locks and a pulse dead-man’s switch; and a compact four-tool MCP / OpenAPI binding with a zero-upload resume brief. v0.1 (sections 1–13) remains the base; v0.1.2 is additive. [Read section 14 ›](#14-v012-conformance-stages-causal-state-and-host-enforcement)
+> v0.2 adds five mechanisms: **two-phase verification** (VERIFY_PHASE_1_IMMEDIATE and VERIFY_PHASE_2_DEFERRED, with RECORDED_AWAITING_OUTCOME_VERIFY); **mid-flight steering** (`APPROVE_WITH_STEERING_DELTA` with `steering_delta`); **hierarchical sub-agent isolation** (`parent_work_id`, `isolation_policy`, `distilled_return_payload`); **inner-loop context compaction** (`compaction_mode`); and **lazy capability discovery** (`hydrate_capability_ids` and capability stubs). v0.1 (sections 1–13) and v0.1.2 (section 14) remain the base; v0.2 is additive. [Read section 15 ›](#15-v02-outcome-verification-approval-steering-and-long-horizon-context)
+>
+> Previous versions: [v0.1.2](https://creasura.com/spec/v0.1.2/) ([OpenAPI YAML](openapi/caop-v0.1.2.openapi.yaml), [OpenAPI JSON](openapi/caop-v0.1.2.openapi.json), [JSON Schema](schema/caop-v0.1.2.schema.json)) · [v0.1](https://creasura.com/spec/v0.1/) ([OpenAPI YAML](openapi/caop-v0.1.openapi.yaml), [OpenAPI JSON](openapi/caop-v0.1.openapi.json), [JSON Schema](schema/caop-v0.1.schema.json))
+
+> **Implementation status**
+>
+> As of November 5, 2026, Creasura’s reference kernel conforms to CAOP v0.1.2 at CAOP-STAGE-1 (host-delegated execution). Of the five v0.2 mechanisms it implements two, at CAOP-STAGE-1. The other three are specified but not yet implemented, so the reference kernel does not yet conform to v0.2 as a whole.
+>
+> | v0.2 mechanism | Section | Reference kernel |
+> |---|---|---|
+> | Two-phase outcome verification | [§15.1](#151-outcome-verification-and-approval-steering-a) | Implemented |
+> | Mid-flight approval steering | [§15.1](#151-outcome-verification-and-approval-steering-a) | Implemented |
+> | Hierarchical sub-agent isolation | [§15.2](#152-long-horizon-context-sub-agents-compaction-and-lazy-schemas-a) | Specified, not yet implemented |
+> | Inner-loop context compaction | [§15.2](#152-long-horizon-context-sub-agents-compaction-and-lazy-schemas-a) | Specified, not yet implemented |
+> | Lazy capability discovery | [§15.2](#152-long-horizon-context-sub-agents-compaction-and-lazy-schemas-a) | Specified, not yet implemented |
+>
+> Notes for implementers:
+>
+> - In the reference kernel, a verification capability (`verification_capability_id`) must be side-effect-free: it may only read external state. Dispatch refuses a deferred check whose capability is not registered as side-effect-free.
+> - On `APPROVE_WITH_STEERING_DELTA`, the reference kernel re-runs every policy check on the patched plan (every Policy pre-commit hook and the `minimum_attestation` check) before it dispatches.
 
 ## 1. Overview
 
@@ -371,6 +389,8 @@ A transition from CREATED directly to COMPLETED should be rejected unless the wo
 
 > **v0.1.2:** EXECUTE is refined into sub-states that map onto these execution states. See [§14.5.1](#1451-the-execute-stage-a-sub-states) and [§14.8](#148-compatibility-with-v01).
 
+> **v0.2:** Two-phase outcome verification keeps an execution in VERIFYING until a deferred outcome check passes; only then does it reach COMPLETED. See [§15.1](#151-outcome-verification-and-approval-steering-a).
+
 ## 6. Capability API
 
 The boundary between the OS and the assistants and services that do the work. The OS must not assume every provider supports the same features.
@@ -446,6 +466,8 @@ These matter more than adding dozens of specialized endpoints.
 | Audit | State transitions and external actions produce durable records |
 | Data isolation | Personal, business, and employer work respect access boundaries |
 | Versioning | Policies, skills, schemas, and plans carry versions |
+
+> **v0.2:** An approval can steer the work it approves: APPROVE_WITH_STEERING_DELTA binds the approval to a patched plan, which must pass every policy check again. See [§15.1](#151-outcome-verification-and-approval-steering-a).
 
 ### 7.1 Error format
 
@@ -665,6 +687,8 @@ CAOP v0.1 is published in two machine-readable forms generated from the same def
 - [**JSON Schema 2020-12**](https://creasura.com/spec/schema/): every object in this specification, in one bundle. [caop-v0.1.schema.json](schema/caop-v0.1.schema.json)
 
 - CAOP v0.1.2 extends both forms additively (conformance profiles, causal state, pre-commit hooks, host execution enforcement, and the compact four-tool binding): [OpenAPI YAML](openapi/caop-v0.1.2.openapi.yaml) · [OpenAPI JSON](openapi/caop-v0.1.2.openapi.json) · [caop-v0.1.2.schema.json](schema/caop-v0.1.2.schema.json). The v0.1 files above stay published at their versioned URLs.
+
+> **v0.2:** CAOP v0.2 extends both forms additively again; the v0.1 and v0.1.2 files stay published at their versioned URLs. See [§15](#machine-readable-contracts).
 
 ## 14. v0.1.2: conformance stages, causal state and host enforcement
 
@@ -1250,3 +1274,215 @@ Changes made to the submitted v0.1.2 text when it was integrated into this page.
   - Footnote under the §14.7 prompt flagging the two prompt changes.
 
 *Presentation only: the submitted sections 1–7 are numbered 14.1–14.7 on this page, so cross-references in added text use §14.x to avoid confusion with sections 1–13 of v0.1.*
+
+## 15. v0.2: outcome verification, approval steering and long-horizon context
+
+CAOP v0.1.2 covers roughly half of the architecture that five production failure modes call for [a]—specifically the causal dependency graph, epistemic gating, and host lease locks—while the remaining mechanics represent the exact transition from CAOP v0.1.2 to CAOP v0.2. These are the five [a] production failure modes that require explicit protocol support: the "Looks Done" verification fallacy, rigid binary approvals, sub-agent context pollution, long-horizon token blowout, and tool-schema bloat.
+
+### Coverage Comparison Across Five Production Failure Modes [a]
+
+| Architectural Requirement | CAOP v0.1.2 Status | CAOP v0.2 Spec Addition |
+|---|---|---|
+| Epistemic Gating & Causal DAG | Covered | Upstream invalidation cascade |
+| Two-Phase Outcome Verification | Partial | Deferred outcome verification SLA |
+| Mid-Flight Approval Steering | Missing | Non-destructive parameter delta |
+| Hierarchical Sub-Agent Isolation | Missing | Scoped child work sandboxes |
+| Context Compaction & Lazy Schemas | Missing | Stage compaction and schema stubs |
+
+*One column, which attributed each row to a blog post, was removed.* [a]
+
+The table above highlights where CAOP v0.1.2 stops (verifying immediate tool receipts and locking flat threads) versus what CAOP v0.2 adds to handle multi-step engineering and executive workflows without blowing up the context window or prematurely declaring victory.
+
+### 15.1 Outcome verification and approval steering [a]
+
+Standard agents [a] conflate tool execution with engineering or business outcomes, and force principals into brittle approve-or-abort loops.
+
+- **Defeating the "Looks Done" Fallacy (Two-Phase Verification):** An HTTP 200 receipt from GitHub, Jira, or an ERP only proves an action was dispatched, not that the deployment succeeded or the metric moved. CAOP v0.2 splits VERIFY [b] into VERIFY_PHASE_1_IMMEDIATE (validating the execution receipt) and VERIFY_PHASE_2_DEFERRED (scheduling an asynchronous outcome check against real system state before closing the commitment).
+- **Mid-Flight Approval Steering:** Standard policy gates only allow binary APPROVE or REJECT choices, forcing the agent to replan from scratch if a CTO tweaks one constraint. CAOP v0.2 adds APPROVE_WITH_STEERING_DELTA so a human supervisor can patch arguments or inject constraints inline during dispatch.
+
+#### Normative Schema: Two-Phase Verification & Mid-Flight Steering
+
+```json
+{
+  "name": "caop_dispatch_work",
+  "description": "COMMIT RESOLUTION & EXECUTE (CAOP v0.2): Approve, reject, or steer a staged work plan mid-flight and configure Two-Phase Verification.",
+  "inputSchema": {
+    "type": "object",
+    "required": ["work_id", "decision"],
+    "properties": {
+      "work_id": { "type": "string" },
+      "decision": {
+        "type": "string",
+        "enum": [
+          "APPROVE_AND_DISPATCH",
+          "APPROVE_WITH_STEERING_DELTA",
+          "REJECT_WORK"
+        ]
+      },
+      "steering_delta": {
+        "type": "object",
+        "description": "Non-destructive mid-flight overrides applied before EXECUTE without aborting the work lifecycle.",
+        "properties": {
+          "patched_step_arguments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["step_index", "argument_overrides"],
+              "properties": {
+                "step_index": { "type": "integer" },
+                "argument_overrides": { "type": "object" }
+              }
+            }
+          },
+          "added_policy_constraints": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "rationale": { "type": "string" }
+        }
+      },
+      "two_phase_verification": {
+        "type": "object",
+        "properties": {
+          "phase_1_immediate": {
+            "type": "string",
+            "enum": ["REQUIRE_NONCE_AND_ARTIFACT"]
+          },
+          "phase_2_deferred": {
+            "type": "object",
+            "required": ["check_after_seconds", "verification_capability_id", "success_predicate"],
+            "properties": {
+              "check_after_seconds": { "type": "integer" },
+              "verification_capability_id": { "type": "string" },
+              "success_predicate": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+An APPROVE_WITH_STEERING_DELTA decision binds the approval to the patched plan, not the staged one. The kernel MUST apply the delta, re-run every Policy pre-commit hook and minimum_attestation check on the patched plan, and dispatch only if all pass; otherwise the work item returns to CANDIDATE_PROPOSAL with CAOP_422_PRECOMMIT_HOOK_FAILED. A delta can only narrow authority: added_policy_constraints may add restrictions but never remove existing ones. [c]
+
+When phase_2_deferred is present, caop_settle_receipt transitions the work item to RECORDED_AWAITING_OUTCOME_VERIFY rather than closing the REVIEW stage immediately. Once check_after_seconds elapses, the kernel schedules a follow-up check (via the next caop_pulse in Stage 1, or a background worker in Stage 3) to evaluate success_predicate before marking the goal satisfied.
+
+> **Compatibility with v0.1.** RECORDED_AWAITING_OUTCOME_VERIFY maps to the v0.1 VERIFYING state: the execution reaches COMPLETED only after the deferred Phase-2 check passes; receipts recorded in Phase 1 are written as facts with their attestation tier, and the commitment stays open. [g]
+
+> **Informative.** In CAOP-STAGE-1 the deferred check runs on the next caop_pulse after `check_after_seconds`, so it depends on the host pulsing. [g]
+
+### 15.2 Long-horizon context: sub-agents, compaction and lazy schemas [a]
+
+Long-horizon work has its own runtime physics: [a] if an agent researches 40 documents or drafts a multi-section RFC inside a single chat context, token bloat and context interference degrade reasoning quality.
+
+- **Hierarchical Sub-Agent Context Isolation:** Heavy research or artifact-generation steps spawn an isolated child Work scope (parent_work_id) with its own ephemeral scratchpad. When the child completes RECORD, its raw intermediate turns are discarded and only the ratified commitment and distilled bitemporal facts merge back into the parent control plane. Pruning removes raw traces from the active context, not from provenance: every promoted fact MUST keep a provenance pointer (child work_id, invocation IDs and a content hash of the pruned trace). Raw traces MAY be deleted only under a declared retention policy. [d]
+- **Inner-Loop Deterministic Context Compaction:** At every stage transition, the kernel compacts verbose tool outputs into concise bitemporal fact pointers (fact_id + 1-line summary), keeping the active prompt window flat across multi-day workflows.
+- **Lazy Capability Discovery:** Instead of injecting 50+ full JSON tool schemas on every turn, caop_pulse returns compact capability stubs (capability_id + summary) and hydrates full parameter schemas only when requested via hydrate_capability_ids.
+
+> **Informative.** `max_token_budget` and inner-loop compaction can be enforced by the kernel only when it drives the model (CAOP-STAGE-3). In CAOP-STAGE-1 the host runs the model; there they are advisory, and the kernel enforces only what reaches it (state writes, policy, leases). [e]
+
+#### Normative Schema: Lazy Capability Hydration & Context Compaction in Pulse
+
+```json
+{
+  "name": "caop_pulse",
+  "description": "OBSERVE & REVIEW (CAOP v0.2): Hydrate compacted session state, deferred Phase-2 verification checks, and on-demand capability schemas.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "scope_goal_ids": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "compaction_mode": {
+        "type": "string",
+        "enum": ["FACT_POINTERS_ONLY", "SUMMARY_WITH_LINEAGE", "FULL_RAW_ARTIFACTS"],
+        "default": "SUMMARY_WITH_LINEAGE"
+      },
+      "hydrate_capability_ids": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Lazy Capability Discovery: Pass specific capability IDs from the stub directory to load their full JSON input schemas."
+      }
+    }
+  }
+}
+```
+
+Capabilities are not MCP tools: they are invoked through caop_stage_work plan_steps by capability_id. Hydrating a capability’s schema in caop_pulse returns it as data; it does not change the host’s tool list. [f]
+
+#### Normative Schema: Hierarchical Sub-Agent Isolation in Stage Work
+
+```json
+{
+  "work_id": "wrk_sub_market_scan",
+  "parent_work_id": "wrk_q4_strategy_master",
+  "isolation_policy": {
+    "execution_scope": "ISOLATED_SUBAGENT_CONTEXT",
+    "return_contract": "DISTILLED_FACTS_AND_ARTIFACT_REF_ONLY",
+    "max_token_budget": 16000,
+    "prune_raw_traces_on_record": true
+  },
+  "distilled_return_payload": {
+    "artifact_ref": "art_market_benchmark_matrix_v1",
+    "promoted_fact_ids": ["fct_competitor_latency_p99", "fct_pricing_tier_delta"],
+    "compacted_summary": "Audited 18 vendor specs; isolated 2 verified latency bottlenecks linked to parent RFC.",
+    "trace_hash": "sha256:9f2c4e7a1b03d58e6c2f9a4b7d1e0c35a8b6f2d4e9c17a0b3d5f8e2c6a4b19d7"
+  }
+}
+```
+
+*Example updated: distilled_return_payload gains trace_hash, the content hash of the pruned trace.* [d]
+
+Child work scopes inherit the parent’s authority and can only narrow it. [e]
+
+With these five additions, the specification transitions cleanly from [j] CAOP v0.1.2 (single-agent stateful ledger + host enforcement) to CAOP v0.2 (full multi-horizon agentic operating system [a]).
+
+### Machine-readable contracts
+
+CAOP v0.2 is published in the same machine-readable forms as v0.1.2, generated from the same definitions. Both are additive supersets of v0.1.2, whose files stay unchanged at their versioned URLs.
+
+- OpenAPI 3.1: [caop-v0.2.openapi.yaml](openapi/caop-v0.2.openapi.yaml) · [caop-v0.2.openapi.json](openapi/caop-v0.2.openapi.json)
+- JSON Schema 2020-12: [caop-v0.2.schema.json](schema/caop-v0.2.schema.json)
+- The v0.2 additions as one Markdown file: [caop-v0.2.md](https://creasura.com/spec/caop-v0.2.md)
+
+The schemas published in §15.1 and §15.2 are in the bundle exactly as written: `SteeringDelta`, `TwoPhaseVerification` with `Phase2DeferredCheck`, `CompactionMode`, and the two tool inputSchemas as `DispatchWorkInputV02` and `PulseInputV02`. The `DispatchWorkInput` and `PulseInput` used by the OpenAPI operations keep their v0.1.2 fields (`approval_note`, `unobserved_events`) and add the v0.2 ones. The sub-agent example is `ChildWork`, with `IsolationPolicy` and `DistilledReturnPayload`; the new states are `VerifySubState` and `RecordSubState`; caop_pulse returns `CapabilityStub` entries.
+
+### Changes from the submitted draft
+
+Changes made to the submitted v0.2 text when it was integrated into this page. Everything else is reproduced word for word. Changed text is underlined and tagged with its item; removed text and changes inside code blocks are listed here.
+
+- **(a) Blog attributions removed.**
+  - “described in those two posts” → “that five production failure modes call for”
+  - “Those two posts expose five” → “These are the five”
+  - “Across Both Blog Posts” → “Across Five Production Failure Modes”
+  - Coverage table: the column naming a blog post as the source of each row was removed, with a footnote under the table. The other three columns are unchanged.
+  - “Additions for [title of a blog post]” → “Outcome verification and approval steering”
+  - “The core argument of [a blog post] is that standard agents” → “Standard agents”
+  - “Additions for [title of a blog post]” → “Long-horizon context: sub-agents, compaction and lazy schemas”
+  - “The [a blog post] post addresses the runtime physics of long-horizon work:” → “Long-horizon work has its own runtime physics:”
+  - Removed from the final sentence: “covering all five blog posts on creasura.com”.
+- **(b) Lifecycle stages named, not numbered.**
+  - “Stage 6 (VERIFY)” → “VERIFY”
+- **(c) Steering cannot bypass approval or policy.**
+  - Normative paragraph added after the caop_dispatch_work schema: “An APPROVE_WITH_STEERING_DELTA decision binds the approval to the patched plan, not the staged one. The kernel MUST apply the delta, re-run every Policy pre-commit hook and minimum_attestation check on the patched plan, and dispatch only if all pass; otherwise the work item returns to CANDIDATE_PROPOSAL with CAOP_422_PRECOMMIT_HOOK_FAILED. A delta can only narrow authority: added_policy_constraints may add restrictions but never remove existing ones.”
+- **(d) Pruning keeps provenance.**
+  - Added to the sub-agent isolation bullet, after “its raw intermediate turns are discarded …”: “Pruning removes raw traces from the active context, not from provenance: every promoted fact MUST keep a provenance pointer (child work_id, invocation IDs and a content hash of the pruned trace). Raw traces MAY be deleted only under a declared retention policy.” The IsolationPolicy and DistilledReturnPayload schemas gain the optional fields trace_hash and retention_policy.
+  - In a code block: ` "compacted_summary": "Audited 18 vendor specs; isolated 2 verified latency bottlenecks linked to parent RFC." }` → ` "compacted_summary": "Audited 18 vendor specs; isolated 2 verified latency bottlenecks linked to parent RFC.", "trace_hash": "sha256:9f2c4e7a1b03d58e6c2f9a4b7d1e0c35a8b6f2d4e9c17a0b3d5f8e2c6a4b19d7" }`
+  - Footnote under the sub-agent example flagging that change.
+- **(e) What can be enforced where.**
+  - Informative note after the sub-agent, compaction and lazy discovery bullets: “max_token_budget and inner-loop compaction can be enforced by the kernel only when it drives the model (CAOP-STAGE-3). In CAOP-STAGE-1 the host runs the model; there they are advisory, and the kernel enforces only what reaches it (state writes, policy, leases).”
+  - Sentence added after the sub-agent example: “Child work scopes inherit the parent’s authority and can only narrow it.”
+- **(f) Capabilities are not MCP tools.**
+  - Paragraph added after the caop_pulse schema: “Capabilities are not MCP tools: they are invoked through caop_stage_work plan_steps by capability_id. Hydrating a capability’s schema in caop_pulse returns it as data; it does not change the host’s tool list.”
+- **(g) Two-phase verification and the v0.1 state machine.**
+  - Compatibility note added after the two-phase verification paragraph: “RECORDED_AWAITING_OUTCOME_VERIFY maps to the v0.1 VERIFYING state: the execution reaches COMPLETED only after the deferred Phase-2 check passes; receipts recorded in Phase 1 are written as facts with their attestation tier, and the commitment stays open.” Informative note: “In CAOP-STAGE-1 the deferred check runs on the next caop_pulse after check_after_seconds, so it depends on the host pulsing.”
+- **(h) Sentences without content removed.**
+  - Not reproduced: the sentence pointing to an interactive diagram (“Use the interactive diagram below…”), because no diagram was submitted, and the closing question addressed to the reader.
+- **(i) This list of changes.**
+  - This box. It is generated from the same declarations that are applied to the text, so it lists every change.
+- **(j) Neutral voice.**
+  - “your spec transitions cleanly from” → “the specification transitions cleanly from”
+
+*Presentation only: the file header of the submitted text (its title and a note on how it was saved) is not reproduced. The submitted sections 1 and 2 are numbered 15.1 and 15.2 on this page.*

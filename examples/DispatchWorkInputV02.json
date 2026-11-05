@@ -1,0 +1,29 @@
+{
+  "work_id": "wrk_rfc_sharding_10",
+  "decision": "APPROVE_WITH_STEERING_DELTA",
+  "steering_delta": {
+    "patched_step_arguments": [
+      {
+        "step_index": 1,
+        "argument_overrides": {
+          "reviewers": [
+            "principal_eng"
+          ],
+          "draft": true
+        }
+      }
+    ],
+    "added_policy_constraints": [
+      "NO_PRODUCTION_DEPLOY_BEFORE_SHADOW_REPLAY"
+    ],
+    "rationale": "Open the RFC as a draft and add the principal engineer as reviewer; no deploy until the shadow replay passes."
+  },
+  "two_phase_verification": {
+    "phase_1_immediate": "REQUIRE_NONCE_AND_ARTIFACT",
+    "phase_2_deferred": {
+      "check_after_seconds": 86400,
+      "verification_capability_id": "metrics.query",
+      "success_predicate": "ledger.p99_latency_ms < 20 AND ledger.tps >= 15000"
+    }
+  }
+}

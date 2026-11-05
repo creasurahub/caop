@@ -9,5 +9,9 @@
       "external_ref": "ci_run_5521",
       "supersedes_fact_id": "fct_bench_2026_10_p99"
     }
+  ],
+  "compaction_mode": "FACT_POINTERS_ONLY",
+  "hydrate_capability_ids": [
+    "github.pulls.create"
   ]
 }

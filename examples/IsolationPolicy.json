@@ -1,0 +1,6 @@
+{
+  "execution_scope": "ISOLATED_SUBAGENT_CONTEXT",
+  "return_contract": "DISTILLED_FACTS_AND_ARTIFACT_REF_ONLY",
+  "max_token_budget": 16000,
+  "prune_raw_traces_on_record": true
+}

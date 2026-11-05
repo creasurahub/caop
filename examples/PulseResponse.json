@@ -44,5 +44,57 @@
         "message": "2 host leases expired in the past 7 days. Connect Gmail OAuth to Creasura Vault to upgrade to CAOP-STAGE-2 (KERNEL_PROXIED)."
       }
     ]
-  }
+  },
+  "capability_stubs": [
+    {
+      "capability_id": "github.pulls.create",
+      "summary": "Open a pull request in a connected repository."
+    },
+    {
+      "capability_id": "metrics.query",
+      "summary": "Query a production metric over a time window."
+    }
+  ],
+  "hydrated_capabilities": [
+    {
+      "capability_id": "github.pulls.create",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "repo",
+          "title",
+          "head",
+          "base"
+        ],
+        "properties": {
+          "repo": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "head": {
+            "type": "string"
+          },
+          "base": {
+            "type": "string"
+          },
+          "draft": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  ],
+  "outcome_verifications": [
+    {
+      "work_id": "wrk_rfc_sharding_10",
+      "invocation_id": "inv_99512C",
+      "sub_state": "VERIFY_PHASE_2_DEFERRED",
+      "verification_capability_id": "metrics.query",
+      "success_predicate": "ledger.p99_latency_ms < 20 AND ledger.tps >= 15000",
+      "check_due_at": "2026-11-06T13:40:00Z",
+      "status": "PENDING"
+    }
+  ]
 }

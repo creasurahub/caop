@@ -1,0 +1,4 @@
+{
+  "capability_id": "github.pulls.create",
+  "summary": "Open a pull request in a connected repository."
+}

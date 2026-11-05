@@ -1,0 +1,29 @@
+{
+  "capability_id": "github.pulls.create",
+  "input_schema": {
+    "type": "object",
+    "required": [
+      "repo",
+      "title",
+      "head",
+      "base"
+    ],
+    "properties": {
+      "repo": {
+        "type": "string"
+      },
+      "title": {
+        "type": "string"
+      },
+      "head": {
+        "type": "string"
+      },
+      "base": {
+        "type": "string"
+      },
+      "draft": {
+        "type": "boolean"
+      }
+    }
+  }
+}

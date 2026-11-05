@@ -1,5 +1,5 @@
 {
-  "work_id": "wrk_01J9Z8K4M2",
+  "work_id": "wrk_sub_market_scan",
   "invocation_id": "inv_99481A",
   "idempotency_key": "idem_wrk_01J9Z8K4M2_step_1",
   "nonce": "nnc_884920_x9",
@@ -10,5 +10,14 @@
     "htmlLink": "https://www.google.com/calendar/event?eid=ODgzOTIwMQ",
     "iCalUID": "8839201@google.com"
   },
-  "review_outcome": "GOAL_SATISFIED"
+  "review_outcome": "GOAL_SATISFIED",
+  "distilled_return_payload": {
+    "artifact_ref": "art_market_benchmark_matrix_v1",
+    "promoted_fact_ids": [
+      "fct_competitor_latency_p99",
+      "fct_pricing_tier_delta"
+    ],
+    "compacted_summary": "Audited 18 vendor specs; isolated 2 verified latency bottlenecks linked to parent RFC.",
+    "trace_hash": "sha256:9f2c4e7a1b03d58e6c2f9a4b7d1e0c35a8b6f2d4e9c17a0b3d5f8e2c6a4b19d7"
+  }
 }

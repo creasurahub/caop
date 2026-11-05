@@ -1,0 +1,5 @@
+{
+  "check_after_seconds": 86400,
+  "verification_capability_id": "metrics.query",
+  "success_predicate": "ledger.p99_latency_ms < 20 AND ledger.tps >= 15000"
+}
