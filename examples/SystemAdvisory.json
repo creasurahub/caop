@@ -1,0 +1,5 @@
+{
+  "code": "STAGE_UPGRADE_RECOMMENDED",
+  "capability_id": "gmail.users.messages.send",
+  "message": "2 host leases expired in the past 7 days. Connect Gmail OAuth to Creasura Vault to upgrade to CAOP-STAGE-2 (KERNEL_PROXIED)."
+}

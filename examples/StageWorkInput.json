@@ -1,0 +1,35 @@
+{
+  "goal_id": "goal_payment_ledger_v2",
+  "supersedes_work_id": "wrk_rfc_sharding_09",
+  "understanding": {
+    "intent_summary": "Re-plan the ledger partition strategy after the November benchmark.",
+    "derived_facts": [
+      {
+        "subject": "rfc_payment_ledger_v2",
+        "predicate": "selected_partition_strategy",
+        "object": {
+          "strategy": "multi_region_range",
+          "max_tps_assumed": 15000
+        },
+        "depends_on_fact_ids": [
+          "fct_bench_2026_11_p99"
+        ],
+        "valid_from": "2026-11-05T13:30:00Z"
+      }
+    ]
+  },
+  "commitment": {
+    "title": "Multi-Region Range Partitioning for Payment Ledger",
+    "rationale": "Single-region hash cannot hold p99 under 20ms at 15k TPS.",
+    "reversible": true
+  },
+  "plan_steps": [
+    {
+      "step_index": 1,
+      "capability_id": "github.pulls.create",
+      "arguments": {
+        "title": "RFC: payment ledger v2 partitioning"
+      }
+    }
+  ]
+}

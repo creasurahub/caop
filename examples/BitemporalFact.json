@@ -1,0 +1,38 @@
+{
+  "fact_id": "fct_rfc_sharding_decision",
+  "subject": "rfc_payment_ledger_v2",
+  "predicate": "selected_partition_strategy",
+  "object": {
+    "strategy": "single_region_hash",
+    "max_tps_assumed": 15000
+  },
+  "epistemic_status": "RATIFIED_COMMITMENT",
+  "freshness": "STALE_UPSTREAM_PREMISE",
+  "depends_on_fact_ids": [
+    "fct_bench_2026_10_p99"
+  ],
+  "invalidation_context": {
+    "invalidated_by_fact_id": "fct_bench_2026_11_p99",
+    "invalidated_at": "2026-11-04T18:20:00Z",
+    "reason": "Upstream fact fct_bench_2026_10_p99 was superseded."
+  },
+  "valid_time": {
+    "start": "2026-10-15T09:00:00Z",
+    "end": null
+  },
+  "transaction_time": {
+    "recorded_at": "2026-10-15T09:05:12Z",
+    "superseded_at": null
+  },
+  "provenance": {
+    "work_id": "wrk_01J9Z8K4M2",
+    "invocation_id": "inv_99481A",
+    "execution_locus": "HOST_DELEGATED",
+    "attestation": "HOST_ASSERTED",
+    "verified_fields": [
+      "external_ref",
+      "htmlLink",
+      "iCalUID"
+    ]
+  }
+}

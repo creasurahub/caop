@@ -1,0 +1,9 @@
+{
+  "work_id": "wrk_rfc_sharding_09",
+  "fact_id": "fct_rfc_sharding_decision",
+  "title": "Single-Region Hash Partitioning for Payment Ledger",
+  "epistemic_status": "RATIFIED_COMMITMENT",
+  "freshness": "STALE_UPSTREAM_PREMISE",
+  "invalidated_by_fact_id": "fct_bench_2026_11_p99",
+  "summary": "p99 latency spiked from 12ms to 48ms in November benchmark run, invalidating the 15k TPS single-region assumption."
+}

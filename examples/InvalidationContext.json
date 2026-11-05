@@ -1,0 +1,5 @@
+{
+  "invalidated_by_fact_id": "fct_bench_2026_11_p99",
+  "invalidated_at": "2026-11-04T18:20:00Z",
+  "reason": "Upstream fact fct_bench_2026_10_p99 was superseded."
+}

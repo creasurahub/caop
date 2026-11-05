@@ -1,0 +1,13 @@
+{
+  "scope_goal_ids": [
+    "goal_payment_ledger_v2"
+  ],
+  "unobserved_events": [
+    {
+      "source": "benchmark_ci",
+      "summary": "November p99 benchmark: 48ms at 15k TPS",
+      "external_ref": "ci_run_5521",
+      "supersedes_fact_id": "fct_bench_2026_10_p99"
+    }
+  ]
+}

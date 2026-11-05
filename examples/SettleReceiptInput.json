@@ -1,0 +1,14 @@
+{
+  "work_id": "wrk_01J9Z8K4M2",
+  "invocation_id": "inv_99481A",
+  "idempotency_key": "idem_wrk_01J9Z8K4M2_step_1",
+  "nonce": "nnc_884920_x9",
+  "status": "SUCCEEDED",
+  "external_ref": "gcal_evt_8839201",
+  "raw_output": {
+    "external_ref": "gcal_evt_8839201",
+    "htmlLink": "https://www.google.com/calendar/event?eid=ODgzOTIwMQ",
+    "iCalUID": "8839201@google.com"
+  },
+  "review_outcome": "GOAL_SATISFIED"
+}

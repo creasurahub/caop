@@ -1,0 +1,8 @@
+{
+  "id": "CAOP-STAGE-1",
+  "loop_driver": "CLIENT_POLLED",
+  "auth_custodian": "CLIENT_SESSION",
+  "execution_locus": "HOST_DELEGATED",
+  "max_attestation": "HOST_ASSERTED",
+  "v0_1_conformance_level": "L2"
+}

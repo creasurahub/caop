@@ -1,0 +1,29 @@
+{
+  "policy_id": "pol_principal_engineering_hygiene",
+  "scope_goal_types": [
+    "architecture_rfc",
+    "production_change"
+  ],
+  "minimum_attestation": "HOST_ASSERTED",
+  "require_human_approval": true,
+  "pre_commit_hooks": [
+    {
+      "hook_id": "REQUIRE_EXPLICIT_OWNER",
+      "target_path": "commitment.owner_principal_id",
+      "condition": "NON_EMPTY_PRINCIPAL_REF",
+      "error_code": "CAOP_422_PRECOMMIT_MISSING_OWNER"
+    },
+    {
+      "hook_id": "REQUIRE_EVIDENCE_LINEAGE",
+      "target_path": "understanding.derived_facts[*].depends_on_fact_ids",
+      "condition": "NON_EMPTY_ARRAY",
+      "error_code": "CAOP_422_PRECOMMIT_MISSING_LINEAGE"
+    },
+    {
+      "hook_id": "BLOCK_STALE_PREMISES",
+      "target_path": "understanding.derived_facts[*].depends_on_fact_ids",
+      "condition": "ALL_UPSTREAM_FACTS_VERIFIED_ACTIVE",
+      "error_code": "CAOP_422_PRECOMMIT_STALE_DEPENDENCY"
+    }
+  ]
+}

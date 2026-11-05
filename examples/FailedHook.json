@@ -1,0 +1,5 @@
+{
+  "hook_id": "REQUIRE_EXPLICIT_OWNER",
+  "error_code": "CAOP_422_PRECOMMIT_MISSING_OWNER",
+  "remediation": "Specify commitment.owner_principal_id (or ask the user to assign an owner) before committing this work plan."
+}

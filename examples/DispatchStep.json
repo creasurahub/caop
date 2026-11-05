@@ -1,0 +1,10 @@
+{
+  "step": 1,
+  "action": "INVOKE_HOST_NATIVE_TOOL",
+  "target_capability": "google_calendar.events.insert",
+  "arguments": {
+    "summary": "Q4 Architecture Review",
+    "start_time": "2026-11-06T15:00:00Z",
+    "end_time": "2026-11-06T15:30:00Z"
+  }
+}

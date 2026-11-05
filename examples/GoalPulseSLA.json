@@ -1,0 +1,7 @@
+{
+  "goal_id": "gol_morning_triage",
+  "loop_driver": "CLIENT_POLLED",
+  "expected_pulse_interval_seconds": 86400,
+  "grace_period_seconds": 3600,
+  "last_pulse_at": "2026-11-04T13:00:00Z"
+}

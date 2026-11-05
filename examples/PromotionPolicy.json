@@ -1,0 +1,4 @@
+{
+  "max_expired_leases_before_stage2_prompt": 2,
+  "rolling_window_days": 7
+}

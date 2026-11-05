@@ -1,0 +1,44 @@
+{
+  "unsettled_leases": [],
+  "stale_commitments": [
+    {
+      "work_id": "wrk_rfc_sharding_09",
+      "fact_id": "fct_rfc_sharding_decision",
+      "title": "Single-Region Hash Partitioning for Payment Ledger",
+      "epistemic_status": "RATIFIED_COMMITMENT",
+      "freshness": "STALE_UPSTREAM_PREMISE",
+      "invalidated_by_fact_id": "fct_bench_2026_11_p99",
+      "summary": "p99 latency spiked from 12ms to 48ms in November benchmark run, invalidating the 15k TPS single-region assumption."
+    }
+  ],
+  "unassigned_blockers": [
+    {
+      "work_id": "wrk_load_test_replay",
+      "title": "Run shadow-traffic replay on Iceberg partition",
+      "missing_hook": "REQUIRE_EXPLICIT_OWNER"
+    }
+  ],
+  "ranked_next_actions": [
+    {
+      "rank": 1,
+      "work_id": "wrk_rfc_sharding_09",
+      "action_type": "REPLAN_STALE_COMMITMENT",
+      "blocking_dependents_count": 3,
+      "recommended_prompt": "Re-evaluate partition strategy given fct_bench_2026_11_p99 (48ms p99) and stage an updated commitment."
+    },
+    {
+      "rank": 2,
+      "work_id": "wrk_load_test_replay",
+      "action_type": "ASSIGN_PRINCIPAL_OWNER",
+      "blocking_dependents_count": 1,
+      "recommended_prompt": "Assign an owner_principal_id to unblock shadow-traffic replay."
+    }
+  ],
+  "system_advisories": [
+    {
+      "code": "STAGE_UPGRADE_RECOMMENDED",
+      "capability_id": "gmail.users.messages.send",
+      "message": "2 host leases expired in the past 7 days. Connect Gmail OAuth to Creasura Vault to upgrade to CAOP-STAGE-2 (KERNEL_PROXIED)."
+    }
+  ]
+}

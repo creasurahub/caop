@@ -1,0 +1,7 @@
+{
+  "rank": 1,
+  "work_id": "wrk_rfc_sharding_09",
+  "action_type": "REPLAN_STALE_COMMITMENT",
+  "blocking_dependents_count": 3,
+  "recommended_prompt": "Re-evaluate partition strategy given fct_bench_2026_11_p99 (48ms p99) and stage an updated commitment."
+}

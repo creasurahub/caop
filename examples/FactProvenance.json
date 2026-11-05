@@ -1,0 +1,11 @@
+{
+  "work_id": "wrk_01J9Z8K4M2",
+  "invocation_id": "inv_99481A",
+  "execution_locus": "HOST_DELEGATED",
+  "attestation": "HOST_ASSERTED",
+  "verified_fields": [
+    "external_ref",
+    "htmlLink",
+    "iCalUID"
+  ]
+}

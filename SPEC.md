@@ -1,9 +1,14 @@
-# Creasura Agentic OS Protocol (CAOP) v0.1
+# Creasura Agentic OS Protocol (CAOP) v0.1.2
 
 Definition, lifecycle, and API contracts for an open, portable agentic operating system.
 
-**Version:** 0.1 · **Project:** Creasura One OSS · **Date:** November 1, 2026  
-Machine-readable contracts: [OpenAPI 3.1](openapi/caop-v0.1.openapi.yaml) · [JSON Schema 2020-12](schema/caop-v0.1.schema.json)
+**Version:** 0.1.2 · **Project:** Creasura One OSS · **Date:** November 5, 2026  
+Machine-readable contracts: [OpenAPI 3.1](openapi/caop-v0.1.2.openapi.yaml) · [JSON Schema 2020-12](schema/caop-v0.1.2.schema.json)  
+Previous version: [v0.1 contracts](openapi/caop-v0.1.openapi.yaml)
+
+> **What’s new in v0.1.2**
+>
+> Three runtime conformance profiles (CAOP-STAGE-1/2/3); epistemic status and a causal dependency graph on bitemporal facts, with synchronous invalidation of stale premises; deterministic Policy pre-commit hooks; execution locus, credential custody and receipt rules on every capability; EXECUTE sub-states, an anti-termination dispatch envelope, lease locks and a pulse dead-man’s switch; and a compact four-tool MCP / OpenAPI binding with a zero-upload resume brief. v0.1 (sections 1–13) remains the base; v0.1.2 is additive. [Read section 14 ›](#14-v012-conformance-stages-causal-state-and-host-enforcement)
 
 ## 1. Overview
 
@@ -138,7 +143,7 @@ A canonical lifecycle with eight stages:
 
 These are **logical lifecycle stages**, not a requirement that every request execute eight sequential LLM calls. A deterministic operation might bypass planning entirely. A failed verification might return work to planning. A blocked task might wait for an external event for several days.
 
-> The lifecycle is a coordination protocol, not a rigid prompt chain.
+> **Note:** The lifecycle is a coordination protocol, not a rigid prompt chain.
 
 ## 4. Lifecycle API
 
@@ -364,6 +369,8 @@ A transition from CREATED directly to COMPLETED should be rejected unless the wo
 
 [Try the state machine interactively ›](https://creasura.com/blog/agentic-os-spec-behind-the-scenes/#sm)
 
+> **v0.1.2:** EXECUTE is refined into sub-states that map onto these execution states. See [§14.5.1](#1451-the-execute-stage-a-sub-states) and [§14.8](#148-compatibility-with-v01).
+
 ## 6. Capability API
 
 The boundary between the OS and the assistants and services that do the work. The OS must not assume every provider supports the same features.
@@ -402,6 +409,8 @@ interface CapabilityResult {
 
 This makes the OS independent of a particular execution provider. A capability might be implemented through an AI assistant, a coding agent, an MCP tool, a deterministic function, or another provider.
 
+> **v0.1.2:** Capabilities also declare execution locus, credential custody, receipt lease, required receipt fields and promotion policy. See [§14.4](#144-capability-api-extensions-execution_locus--artifact-validation).
+
 ### 6.1 Native assistant mapping
 
 What a native ChatGPT setup can provide on its own, and what it guarantees:
@@ -417,7 +426,7 @@ What a native ChatGPT setup can provide on its own, and what it guarantees:
 | Record | Files, connected apps, or MCP state service | Depends on storage |
 | Review | Scheduled tasks and the assistant | Best effort |
 
-> Programmatic invocation of an assistant’s native work surfaces must use an explicitly supported interface. Do not assume arbitrary sessions can be launched through MCP.
+> **Note:** Programmatic invocation of an assistant’s native work surfaces must use an explicitly supported interface. Do not assume arbitrary sessions can be launched through MCP.
 
 ## 7. Cross-cutting contracts
 
@@ -498,6 +507,8 @@ The event transport can start simple. For a single-user deployment of Creasura O
 
 An assistant configured with projects and instructions can provide L1 immediately. L2 needs a persistent store outside conversational memory. L3 needs a lightweight execution controller that responds to events and enforces lifecycle transitions, delegating AI work to existing providers.
 
+> **v0.1.2:** Runtime conformance profiles CAOP-STAGE-1/2/3 map onto these levels. See [§14.1](#141-runtime-conformance-stages-normative-profiles) and [§14.8](#148-compatibility-with-v01).
+
 ## 10. Minimum public API
 
 Don’t expose all eight lifecycle stages as mandatory public tools. Expose a small set of outcome-oriented operations, mapped internally to the richer lifecycle API:
@@ -516,6 +527,8 @@ Don’t expose all eight lifecycle stages as mandatory public tools. Expose a sm
 | `review_goals` | Evaluate progress and next actions |
 
 Assistants see a manageable set of tools with clear purposes, and the internal OS can evolve without forcing changes to every integration.
+
+> **v0.1.2:** A four-tool compact binding is defined as an alternative public surface; these ten tools remain conformant. See [§14.6](#146-normative-8-to-4-mcp--openapi-lifecycle-binding).
 
 ## 11. Reference architecture
 
@@ -642,11 +655,598 @@ Immediate criteria are evaluated at Verify. When Record commits, the outbox sche
 | Reasoning & synthesis | `none` | LLM agents drafting review memos and candidate plans, constrained by deterministic outputs |
 | Operational | `reversible` / `irreversible` | ERP, CRM, billing, and media connectors with compensation (rollback) operations, gated by Delegation of Authority |
 
-> Dry run, ContextLease, and compensation operations are part of the Business Profile, not the core.
+> **Note:** Dry run, ContextLease, and compensation operations are part of the Business Profile, not the core.
 
 ## 13. Machine-readable contracts
 
 CAOP v0.1 is published in two machine-readable forms generated from the same definitions:
 
-- [**OpenAPI 3.1 contract**](openapi/caop-v0.1.openapi.yaml): every lifecycle operation, request, response, and error, with the MCP tool each one backs. [YAML](openapi/caop-v0.1.openapi.yaml) · [JSON](openapi/caop-v0.1.openapi.json)
-- [**JSON Schema 2020-12**](schema/caop-v0.1.schema.json): every object in this specification, in one bundle. [caop-v0.1.schema.json](schema/caop-v0.1.schema.json)
+- [**OpenAPI 3.1 contract**](https://creasura.com/spec/openapi/): every lifecycle operation, request, response, and error, with the MCP tool each one backs. [YAML](openapi/caop-v0.1.openapi.yaml) · [JSON](openapi/caop-v0.1.openapi.json)
+- [**JSON Schema 2020-12**](https://creasura.com/spec/schema/): every object in this specification, in one bundle. [caop-v0.1.schema.json](schema/caop-v0.1.schema.json)
+
+- CAOP v0.1.2 extends both forms additively (conformance profiles, causal state, pre-commit hooks, host execution enforcement, and the compact four-tool binding): [OpenAPI YAML](openapi/caop-v0.1.2.openapi.yaml) · [OpenAPI JSON](openapi/caop-v0.1.2.openapi.json) · [caop-v0.1.2.schema.json](schema/caop-v0.1.2.schema.json). The v0.1 files above stay published at their versioned URLs.
+
+## 14. v0.1.2: conformance stages, causal state and host enforcement
+
+**CAOP v0.1.2 Specification: Conformance Stages, Causal State, and Host Enforcement**
+
+The consolidated Creasura Agentic Operating Protocol (CAOP v0.1.2) specification below integrates the three runtime conformance stages, the bitemporal causal dependency graph, epistemic hygiene gates, deterministic pre-commit hooks, host execution enforcement, and the 8-to-4 MCP tool bindings into a single master document.
+
+> **Note:** In this addendum, Stage 1–3 are conformance profiles; lifecycle stages are named (OBSERVE … REVIEW). [a]
+
+### 14.1 Runtime Conformance Stages (Normative Profiles)
+
+CAOP v0.1.2 defines three progressive runtime conformance profiles. Advancing a workspace or individual capability from Stage 1 to Stage 3 requires zero breaking changes to Goal definitions, the eight-stage Work lifecycle (OBSERVE → UNDERSTAND → COMMIT → PLAN → EXECUTE → VERIFY → RECORD → REVIEW), or bitemporal State queries.
+
+| Profile | Loop Driver | Auth Custodian | Execution Locus | Max Attestation |
+|---|---|---|---|---|
+| Stage 1 (CAOP-STAGE-1) | CLIENT_POLLED | CLIENT_SESSION | HOST_DELEGATED | HOST_ASSERTED |
+| Stage 2 (CAOP-STAGE-2) | CLIENT_POLLED | CREASURA_VAULT | KERNEL_PROXIED | KERNEL_ATTESTED |
+| Stage 3 (CAOP-STAGE-3) | KERNEL_MANAGED | CREASURA_VAULT | KERNEL_PROXIED | KERNEL_ATTESTED |
+
+- **CAOP-STAGE-1 (Host-Delegated Ledger):** External conversational hosts (ChatGPT (Actions or MCP apps), Claude (MCP) [g]) initiate turns and execute downstream side effects using their native connectors while Creasura enforces lifecycle order, policy gates, lease locks, and causal state recording.
+- **CAOP-STAGE-2 (Kernel-Proxied Execution):** The host client drives conversational turns, but downstream OAuth tokens live in the Creasura Vault so the kernel invokes external providers directly over TLS during EXECUTE.
+- **CAOP-STAGE-3 (Autonomous Kernel Runtime):** The Creasura kernel owns the event-driven trigger loop (webhooks and durable schedules) and runs headless reasoning turns through OBSERVE → PLAN → EXECUTE, using chat clients as supervisor and approval surfaces.
+
+### 14.2 Epistemic State, Bitemporal Store & Causal Invalidation (State API)
+
+To prevent exploratory chat output from polluting durable workspace memory and to eliminate stale downstream decisions when upstream premises change, the State API enforces an epistemic state machine and a directed acyclic graph (DAG) of causal dependencies.
+
+#### 14.2.1 Epistemic Status Enum (epistemic_status)
+
+Every fact and commitment in the State API MUST carry one of three epistemic states (adoption), and separately a freshness value: [Q1]
+
+- **CANDIDATE_PROPOSAL:** Recorded during UNDERSTAND or PLAN. Excluded from default truth queries until ratified.
+- **RATIFIED_COMMITMENT:** Promoted when a Work item passes all Policy pre-commit hooks and human approval gates at COMMIT.
+- **VERIFIED_FACT:** Promoted at RECORD once execution evidence passes VERIFY (HOST_ASSERTED or KERNEL_ATTESTED).
+
+Freshness (freshness) is tracked separately from adoption: [Q1]
+
+- **CURRENT:** Every required premise has current support. The default. [Q1]
+- **STALE_UPSTREAM_PREMISE:** Assigned automatically by the kernel when any upstream dependency in depends_on_fact_ids is superseded or invalidated, under the support rule of §14.2.3 [Q2].
+
+A stale VERIFIED_FACT keeps epistemic_status: VERIFIED_FACT and gets freshness: STALE_UPSTREAM_PREMISE; its history stays intact. Default truth queries exclude CANDIDATE_PROPOSAL and flag, but do not hide, facts and commitments whose freshness is STALE_UPSTREAM_PREMISE. [Q1]
+
+#### 14.2.2 Bitemporal Fact & Causal Dependency Schema
+
+Facts are tracked across both valid_time (when the fact is true in the real world) and transaction_time (when the fact was recorded or superseded in the ledger), alongside explicit upstream lineage (depends_on_fact_ids) and execution provenance:
+
+```json
+{
+  "fact_id": "fct_rfc_sharding_decision",
+  "subject": "rfc_payment_ledger_v2",
+  "predicate": "selected_partition_strategy",
+  "object": {
+    "strategy": "single_region_hash",
+    "max_tps_assumed": 15000
+  },
+  "epistemic_status": "RATIFIED_COMMITMENT",
+  "freshness": "STALE_UPSTREAM_PREMISE",
+  "depends_on_fact_ids": ["fct_bench_2026_10_p99"],
+  "invalidation_context": {
+    "invalidated_by_fact_id": "fct_bench_2026_11_p99",
+    "invalidated_at": "2026-11-04T18:20:00Z",
+    "reason": "Upstream fact fct_bench_2026_10_p99 was superseded."
+  },
+  "valid_time": {
+    "start": "2026-10-15T09:00:00Z",
+    "end": null
+  },
+  "transaction_time": {
+    "recorded_at": "2026-10-15T09:05:12Z",
+    "superseded_at": null
+  },
+  "provenance": {
+    "work_id": "wrk_01J9Z8K4M2",
+    "invocation_id": "inv_99481A",
+    "execution_locus": "HOST_DELEGATED",
+    "attestation": "HOST_ASSERTED",
+    "verified_fields": ["external_ref", "htmlLink", "iCalUID"]
+  }
+}
+```
+
+*Example updated: epistemic_status is RATIFIED_COMMITMENT and freshness is STALE_UPSTREAM_PREMISE.* [Q1]
+
+#### 14.2.3 Synchronous Causal Invalidation Rule
+
+Whenever a new fact F_new supersedes an existing fact F_old (setting F_old.transaction_time.superseded_at), the Creasura kernel MUST, synchronously and within the same database transaction, re-evaluate every dependent commitment or fact reachable through reverse depends_on_fact_ids and depends_on_alternatives edges: [Q2]
+
+- A dependent becomes freshness: "STALE_UPSTREAM_PREMISE" only when at least one of its required premises has no remaining CURRENT support. [Q2]
+- Each depends_on_fact_ids entry is a required premise on its own. Dependency entries MAY instead be grouped as alternatives in the optional depends_on_alternatives: [[fact_id, ...], ...]. Each inner array is a set of interchangeable supports; the premise stays supported while ANY member is CURRENT. [Q2]
+- Staleness propagates transitively: a dependent that becomes stale is an unsupported premise for its own dependents. [Q2]
+- The kernel MUST enforce a declared max_invalidation_subgraph limit. An update whose affected subgraph exceeds it is rejected before commit with CAOP_413_INVALIDATION_SUBGRAPH_TOO_LARGE (HTTP 413, in the v0.1 error envelope), and nothing is partially applied. [Q2]
+- Re-supporting a premise restores freshness: "CURRENT"; the kernel recomputes it the same way. [Q2]
+- Superseded facts and their history are never rewritten; only freshness and invalidation_context change on dependents. [Q2]
+
+#### 14.2.4 Provenance Attestation Tiers (provenance.attestation)
+
+- **HOST_ASSERTED:** Assigned during VERIFY when a HOST_DELEGATED capability passes cryptographic nonce and provider-artifact checks via caop_settle_receipt.
+- **KERNEL_ATTESTED:** Assigned during VERIFY when the Creasura kernel executes the capability directly (KERNEL_PROXIED) or verifies a signed provider webhook.
+- **USER_CONFIRMED:** Assigned when a human principal explicitly confirms or overrides an outcome during REVIEW.
+
+### 14.3 Policy API & Deterministic Pre-Commit Hooks
+
+During the COMMIT stage [a], the kernel evaluates active Policy objects before any Work plan can advance to EXECUTE_PENDING or request user approval. Policies enforce both minimum attestation levels and structural metadata completeness via deterministic pre_commit_hooks.
+
+```json
+{
+  "policy_id": "pol_principal_engineering_hygiene",
+  "scope_goal_types": ["architecture_rfc", "production_change"],
+  "minimum_attestation": "HOST_ASSERTED",
+  "require_human_approval": true,
+  "pre_commit_hooks": [
+    {
+      "hook_id": "REQUIRE_EXPLICIT_OWNER",
+      "target_path": "commitment.owner_principal_id",
+      "condition": "NON_EMPTY_PRINCIPAL_REF",
+      "error_code": "CAOP_422_PRECOMMIT_MISSING_OWNER"
+    },
+    {
+      "hook_id": "REQUIRE_EVIDENCE_LINEAGE",
+      "target_path": "understanding.derived_facts[*].depends_on_fact_ids",
+      "condition": "NON_EMPTY_ARRAY",
+      "error_code": "CAOP_422_PRECOMMIT_MISSING_LINEAGE"
+    },
+    {
+      "hook_id": "BLOCK_STALE_PREMISES",
+      "target_path": "understanding.derived_facts[*].depends_on_fact_ids",
+      "condition": "ALL_UPSTREAM_FACTS_VERIFIED_ACTIVE",
+      "error_code": "CAOP_422_PRECOMMIT_STALE_DEPENDENCY"
+    }
+  ]
+}
+```
+
+The BLOCK_STALE_PREMISES condition ALL_UPSTREAM_FACTS_VERIFIED_ACTIVE holds only when every upstream fact has epistemic_status VERIFIED_FACT and freshness CURRENT. [Q1]
+
+The kernel MUST reject unknown or cross-workspace fact IDs in depends_on_fact_ids or depends_on_alternatives with CAOP_422_PRECOMMIT_UNKNOWN_FACT_ID. [Q3]
+
+#### Pre-Commit Hook Rejection Payload (CAOP_422_PRECOMMIT_HOOK_FAILED)
+
+If any pre-commit hook fails during caop_stage_work, the kernel keeps the work item in CANDIDATE_PROPOSAL and returns a structured remediation directive:
+
+```json
+{
+  "error": {
+    "code": "CAOP_422_PRECOMMIT_HOOK_FAILED",
+    "message": "One or more Policy pre-commit hooks failed. The work item remains in CANDIDATE_PROPOSAL.",
+    "retryable": false,
+    "details": {
+      "failed_hooks": [
+        {
+          "hook_id": "REQUIRE_EXPLICIT_OWNER",
+          "error_code": "CAOP_422_PRECOMMIT_MISSING_OWNER",
+          "remediation": "Specify commitment.owner_principal_id (or ask the user to assign an owner) before committing this work plan."
+        }
+      ]
+    }
+  },
+  "trace_id": "trace_7c41e2"
+}
+```
+
+*HTTP binding: 422 Unprocessable Content. Errors use the v0.1 standard error envelope, as defined in §7 of v0.1 ([7.1 Error format](#71-error-format)).* [c]
+
+### 14.4 Capability API Extensions (execution_locus & Artifact Validation)
+
+Every capability registered in the Capability API MUST declare its execution locus, credential custodian, lease timeout, provider-specific receipt verification keys, and Stage-2 promotion thresholds.
+
+```json
+{
+  "capability_id": "google_calendar.events.insert",
+  "version": "1.2.0",
+  "execution_locus": "HOST_DELEGATED",
+  "auth_custodian": "CLIENT_SESSION",
+  "receipt_lease_seconds": 300,
+  "required_receipt_fields": ["external_ref", "htmlLink", "iCalUID"],
+  "promotion_policy": {
+    "max_expired_leases_before_stage2_prompt": 2,
+    "rolling_window_days": 7
+  },
+  "input_schema": { "$ref": "#/schemas/CalendarEventInput" },
+  "output_schema": { "$ref": "#/schemas/CalendarEventOutput" }
+}
+```
+
+### 14.5 Lifecycle API Extensions & Host Execution Enforcement
+
+#### 14.5.1 The EXECUTE stage [a] Sub-States
+
+- **EXECUTE_PENDING:** The Work commitment has passed all Policy pre-commit hooks and approval gates and is ready for dispatch.
+- **EXECUTE_DISPATCHED:** Active only when execution_locus is "HOST_DELEGATED". The kernel locks the workspace thread against new mutations, generates a single-use required_nonce, starts the lease timer, and emits an INCOMPLETE_TURN_CONTINUATION_REQUIRED directive.
+- **EXECUTE_COMPLETED:** Either the kernel proxy received a valid HTTP response (KERNEL_PROXIED), or the host client submitted a verified receipt (HOST_DELEGATED). Immediately advances to VERIFY [a].
+- **EXECUTE_EXPIRED / EXECUTE_FAILED:** The lease timer elapsed without a valid receipt, or the downstream capability returned a terminal error.
+
+#### 14.5.2 Normative Stage-1 Dispatch Response (Anti-Termination Envelope)
+
+To prevent conversational LLMs from treating dispatch as a completed turn and replying to the user before invoking their native tool, caop_dispatch_work in Stage 1 MUST return the following continuation envelope:
+
+```json
+{
+  "work_id": "wrk_01J9Z8K4M2",
+  "lifecycle_stage": "EXECUTE",
+  "sub_state": "EXECUTE_DISPATCHED",
+  "turn_directive": "INCOMPLETE_TURN_CONTINUATION_REQUIRED",
+  "DO_NOT_RESPOND_TO_USER_YET": true,
+  "directive": {
+    "invocation_id": "inv_99481A",
+    "execution_locus": "HOST_DELEGATED",
+    "idempotency_key": "idem_wrk_01J9Z8K4M2_step_1",
+    "lease_expires_at": "2026-11-05T06:50:00Z",
+    "mandatory_next_steps": [
+      {
+        "step": 1,
+        "action": "INVOKE_HOST_NATIVE_TOOL",
+        "target_capability": "google_calendar.events.insert",
+        "arguments": {
+          "summary": "Q4 Architecture Review",
+          "start_time": "2026-11-06T15:00:00Z",
+          "end_time": "2026-11-06T15:30:00Z"
+        }
+      },
+      {
+        "step": 2,
+        "action": "CALL_CAOP_TOOL",
+        "tool_name": "caop_settle_receipt",
+        "required_nonce": "nnc_884920_x9",
+        "required_receipt_fields": ["external_ref", "htmlLink", "iCalUID"]
+      }
+    ]
+  }
+}
+```
+
+> **Informative.** `turn_directive` and `DO_NOT_RESPOND_TO_USER_YET` are instructions to the host model and cannot be enforced by the kernel; the enforceable guarantee is the lease lock in [§14.5.3](#1453-thread-write-locking-on-open-leases-caop_409_unsettled_execution_lease). [e]
+
+#### 14.5.3 Thread Write-Locking on Open Leases (CAOP_409_UNSETTLED_EXECUTION_LEASE)
+
+A workspace thread MAY hold at most one unsettled EXECUTE_DISPATCHED or EXECUTE_EXPIRED invocation at a time. Any call to caop_stage_work or caop_dispatch_work while a lease is open MUST be rejected with CAOP_409_UNSETTLED_EXECUTION_LEASE, forcing the host client to verify whether the previous native tool call succeeded and settle the receipt via caop_settle_receipt first.
+
+*HTTP binding: 409 Conflict, code CAOP_409_UNSETTLED_EXECUTION_LEASE. Errors use the v0.1 standard error envelope, as defined in §7 of v0.1 ([7.1 Error format](#71-error-format)).* [c]
+
+#### 14.5.4 Nonce & Provider-Artifact Challenge (CAOP_422_VERIFY_ARTIFACT_MISMATCH)
+
+During VERIFY, the kernel rejects any Stage-1 receipt where receipt.nonce does not match directive.required_nonce or where receipt.raw_output omits any field listed in the capability's required_receipt_fields.
+
+> **Informative.** Field presence is evidence, not proof; hence HOST_ASSERTED. [e]
+
+*HTTP binding: 422 Unprocessable Content, code CAOP_422_VERIFY_ARTIFACT_MISMATCH. Errors use the v0.1 standard error envelope, as defined in §7 of v0.1 ([7.1 Error format](#71-error-format)).* [c]
+
+#### 14.5.5 Scheduled Pulse Dead-Man's Switch (expected_pulse_interval_seconds)
+
+Goals operating under loop_driver: "CLIENT_POLLED" declare expected_pulse_interval_seconds and grace_period_seconds. If the host client misses a scheduled check-in or leaves a lease in EXECUTE_EXPIRED beyond the grace window, Creasura dispatches an out-of-band notification with a deep link to resume the session or upgrade the Goal to KERNEL_MANAGED (CAOP-STAGE-3).
+
+> **Informative.** The dead-man’s switch requires a kernel-side timer and an out-of-band notification channel, even for `CLIENT_POLLED` goals. In CAOP-STAGE-1 this is the only kernel-initiated behaviour. [f]
+
+### 14.6 Normative 8-to-4 MCP & OpenAPI Lifecycle Binding
+
+CAOP v0.1.2 binds the eight canonical lifecycle stages into four composite MCP / OpenAPI tools so conversational hosts cross the network only at true state, approval, or execution boundaries.
+
+| Composite Tool | Folded CAOP Stages | APIs Touched | Stage 1 Behavior | Stage 2 and 3 Behavior |
+|---|---|---|---|---|
+| caop_pulse | OBSERVE + REVIEW | State, Lifecycle, Capability | Compiles resume_brief, stale DAG nodes, and open leases | Compiles resume_brief, background runs, and pending approvals |
+| caop_stage_work | UNDERSTAND → COMMIT → PLAN | Lifecycle, Policy, State | Runs pre-commit hooks; halts at approval or EXECUTE_PENDING | Runs pre-commit hooks and validates minimum_attestation |
+| caop_dispatch_work | COMMIT (Approve) → EXECUTE | Lifecycle, Capability | Emits anti-termination directive + nonce in EXECUTE_DISPATCHED | Runs OAuth proxy call AND auto-folds VERIFY + RECORD |
+| caop_settle_receipt | VERIFY → RECORD → REVIEW | Lifecycle, State | Verifies nonce + artifact fields; writes HOST_ASSERTED fact | Used only for manual USER_CONFIRMED overrides |
+
+> **Compact binding.** The four composite tools are the *compact binding*, an alternative public surface. The v0.1 ten-tool *minimum public API* ([§10](#10-minimum-public-api)) remains conformant; an implementation MAY expose either or both. Inside the kernel the full eight-stage lifecycle always runs. [d]
+
+#### 14.6.1 Tool 1: caop_pulse & Normative Zero-Upload resume_brief
+
+Eliminates the "Monday Morning Reconstruction Trap" by returning a deterministic, ranked delta brief at the start of any session without requiring file uploads or chat history reconstruction.
+
+```json
+{
+  "name": "caop_pulse",
+  "description": "OBSERVE & REVIEW: Hydrate session state with a zero-upload resume brief including stale causal commitments, unassigned blockers, unsettled execution leases, and ranked next actions.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "scope_goal_ids": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "unobserved_events": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["source", "summary"],
+          "properties": {
+            "source": { "type": "string" },
+            "summary": { "type": "string" },
+            "external_ref": { "type": "string" },
+            "supersedes_fact_id": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+##### Normative caop_pulse Response Payload (resume_brief)
+
+```json
+{
+  "pulse_timestamp": "2026-11-05T13:00:00Z",
+  "workspace_stage_profile": "CAOP-STAGE-1",
+  "resume_brief": {
+    "unsettled_leases": [],
+    "stale_commitments": [
+      {
+        "work_id": "wrk_rfc_sharding_09",
+        "fact_id": "fct_rfc_sharding_decision",
+        "title": "Single-Region Hash Partitioning for Payment Ledger",
+        "epistemic_status": "RATIFIED_COMMITMENT",
+        "freshness": "STALE_UPSTREAM_PREMISE",
+        "invalidated_by_fact_id": "fct_bench_2026_11_p99",
+        "summary": "p99 latency spiked from 12ms to 48ms in November benchmark run, invalidating the 15k TPS single-region assumption."
+      }
+    ],
+    "unassigned_blockers": [
+      {
+        "work_id": "wrk_load_test_replay",
+        "title": "Run shadow-traffic replay on Iceberg partition",
+        "missing_hook": "REQUIRE_EXPLICIT_OWNER"
+      }
+    ],
+    "ranked_next_actions": [
+      {
+        "rank": 1,
+        "work_id": "wrk_rfc_sharding_09",
+        "action_type": "REPLAN_STALE_COMMITMENT",
+        "blocking_dependents_count": 3,
+        "recommended_prompt": "Re-evaluate partition strategy given fct_bench_2026_11_p99 (48ms p99) and stage an updated commitment."
+      },
+      {
+        "rank": 2,
+        "work_id": "wrk_load_test_replay",
+        "action_type": "ASSIGN_PRINCIPAL_OWNER",
+        "blocking_dependents_count": 1,
+        "recommended_prompt": "Assign an owner_principal_id to unblock shadow-traffic replay."
+      }
+    ],
+    "system_advisories": [
+      {
+        "code": "STAGE_UPGRADE_RECOMMENDED",
+        "capability_id": "gmail.users.messages.send",
+        "message": "2 host leases expired in the past 7 days. Connect Gmail OAuth to Creasura Vault to upgrade to CAOP-STAGE-2 (KERNEL_PROXIED)."
+      }
+    ]
+  }
+}
+```
+
+*Example updated: the stale_commitments entry keeps epistemic_status with an adoption value and gains freshness.* [Q1]
+
+#### 14.6.2 Tool 2: caop_stage_work (With Causal Lineage & Owner Hooks)
+
+```json
+{
+  "name": "caop_stage_work",
+  "description": "UNDERSTAND, COMMIT & PLAN: Stage a work commitment with explicit causal lineage and owner metadata, evaluating Policy pre-commit hooks.",
+  "inputSchema": {
+    "type": "object",
+    "required": ["goal_id", "understanding", "commitment", "plan_steps"],
+    "properties": {
+      "goal_id": { "type": "string" },
+      "supersedes_work_id": {
+        "type": "string",
+        "description": "Optional ID of a STALE_UPSTREAM_PREMISE work item being replaced."
+      },
+      "understanding": {
+        "type": "object",
+        "required": ["intent_summary", "derived_facts"],
+        "properties": {
+          "intent_summary": { "type": "string" },
+          "derived_facts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["subject", "predicate", "object"],
+              "properties": {
+                "subject": { "type": "string" },
+                "predicate": { "type": "string" },
+                "object": { "type": "object" },
+                "depends_on_fact_ids": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "Upstream Fact IDs that this derived fact or decision relies upon. Omit if unknown; the REQUIRE_EVIDENCE_LINEAGE hook will reject commit and the host must ask the user."
+                },
+                "depends_on_alternatives": {
+                  "type": "array",
+                  "items": { "type": "array", "items": { "type": "string" } },
+                  "description": "Optional groups of interchangeable supporting Fact IDs. The premise stays supported while any member is CURRENT."
+                },
+                "valid_from": { "type": "string", "format": "date-time" }
+              }
+            }
+          }
+        }
+      },
+      "commitment": {
+        "type": "object",
+        "required": ["title", "rationale", "reversible"],
+        "properties": {
+          "title": { "type": "string" },
+          "rationale": { "type": "string" },
+          "owner_principal_id": {
+            "type": "string",
+            "description": "Explicit human or agent principal responsible for this commitment. Omit if unknown; the REQUIRE_EXPLICIT_OWNER hook will reject commit and the host must ask the user."
+          },
+          "due_at": { "type": "string", "format": "date-time" },
+          "reversible": { "type": "boolean" }
+        }
+      },
+      "plan_steps": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["step_index", "capability_id", "arguments"],
+          "properties": {
+            "step_index": { "type": "integer" },
+            "capability_id": { "type": "string" },
+            "arguments": { "type": "object" }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+*Schema updated: owner_principal_id and depends_on_fact_ids are no longer required, and their descriptions say to omit them if unknown; depends_on_alternatives is added (Q2).* [Q3]
+
+#### 14.6.3 Tool 3: caop_dispatch_work
+
+```json
+{
+  "name": "caop_dispatch_work",
+  "description": "COMMIT RESOLUTION & EXECUTE: Ratify a staged work commitment and trigger execution via host delegation (Stage 1) or kernel OAuth proxy (Stage 2/3).",
+  "inputSchema": {
+    "type": "object",
+    "required": ["work_id", "decision"],
+    "properties": {
+      "work_id": { "type": "string" },
+      "decision": {
+        "type": "string",
+        "enum": ["APPROVE_AND_DISPATCH", "REJECT_WORK"]
+      },
+      "approval_note": { "type": "string" }
+    }
+  }
+}
+```
+
+#### 14.6.4 Tool 4: caop_settle_receipt
+
+```json
+{
+  "name": "caop_settle_receipt",
+  "description": "VERIFY, RECORD & REVIEW: Settle an open Stage-1 execution lease by supplying the dispatch nonce and provider artifact fields, or record a manual review override.",
+  "inputSchema": {
+    "type": "object",
+    "required": ["work_id", "invocation_id", "idempotency_key", "nonce", "status"],
+    "properties": {
+      "work_id": { "type": "string" },
+      "invocation_id": { "type": "string" },
+      "idempotency_key": { "type": "string" },
+      "nonce": {
+        "type": "string",
+        "description": "Exact required_nonce returned by caop_dispatch_work."
+      },
+      "status": {
+        "type": "string",
+        "enum": ["SUCCEEDED", "FAILED", "USER_CONFIRMED_OVERRIDE"]
+      },
+      "external_ref": { "type": "string" },
+      "raw_output": {
+        "type": "object",
+        "description": "Raw JSON output from the host native tool containing all required_receipt_fields."
+      },
+      "error_detail": { "type": "string" },
+      "review_outcome": {
+        "type": "string",
+        "enum": ["GOAL_SATISFIED", "PARTIAL_PROGRESS", "REPLAN_REQUIRED"]
+      }
+    }
+  }
+}
+```
+
+### 14.7 Reference Host Operating Prompt (CAOP v0.1.2)
+
+Deployments operating in ChatGPT (Custom GPT Instructions) or Claude (Project / MCP System Prompt) MUST include the following normative instruction block:
+
+> **Informative.** Conformance is determined by kernel behaviour; the kernel cannot verify that a host deployment includes this prompt. [e]
+
+```text
+You operate as a CAOP v0.1.2 Host Runner connected to the Creasura Kernel.
+Follow these strict state-machine and epistemic hygiene rules on every turn:
+
+1. ZERO-UPLOAD PULSE FIRST: Begin every work session or scheduled task by calling `caop_pulse`. Present the `resume_brief` in priority order:
+   - First, settle any `unsettled_leases` via `caop_settle_receipt`.
+   - Second, highlight any `stale_commitments` with `freshness: STALE_UPSTREAM_PREMISE` and their `ranked_next_actions`.
+   - Third, surface any `unassigned_blockers` requiring an `owner_principal_id`.
+2. EPISTEMIC HYGIENE & PRE-COMMIT HOOKS: Never state unverified numbers as settled facts. When calling `caop_stage_work`, always populate `depends_on_fact_ids` to link decisions to upstream evidence, and provide `commitment.owner_principal_id` only when the user has stated it; otherwise omit it and ask. If `caop_stage_work` returns `CAOP_422_PRECOMMIT_HOOK_FAILED`, ask the user for the missing owner or lineage rather than guessing.
+3. STAGE BEFORE ACTING: Never invoke a native external write tool (Gmail, Calendar, Slack, Notion, GitHub) without first calling `caop_stage_work` and `caop_dispatch_work`.
+4. RESPECT POLICY GATES: If `caop_stage_work` returns `sub_state: "COMMIT_AWAITING_APPROVAL"`, present the commitment and plan clearly to the user and wait for explicit confirmation before calling `caop_dispatch_work`.
+5. MANDATORY CONTINUATION ON DISPATCH: When `caop_dispatch_work` returns `turn_directive: "INCOMPLETE_TURN_CONTINUATION_REQUIRED"`, DO NOT reply to the user yet. Immediately execute `mandatory_next_steps[0]` (your native tool) and `mandatory_next_steps[1]` (`caop_settle_receipt` with the exact `required_nonce` and `raw_output` fields) within the same turn.
+```
+
+*Prompt updated in rule 1 (freshness, Q1) and rule 2 (owner only when stated, Q3). No other change to the prompt.* [Q3]
+
+### 14.8 Compatibility with v0.1
+
+CAOP v0.1.2 is additive: the conformance profiles and sub-states in this section refine the v0.1 [conformance levels](#9-conformance-levels) and [execution state machine](#5-execution-state-machine); they do not replace them. [b]
+
+| Profile | v0.1 conformance level | How it differs |
+|---|---|---|
+| CAOP-STAGE-1 | L2 (Stateful) | Variant of L2: execution locus HOST_DELEGATED, credentials held by the host (CLIENT_SESSION) |
+| CAOP-STAGE-2 | L2 (Stateful) | Variant of L2: execution locus KERNEL_PROXIED, credentials held in the Creasura Vault (CREASURA_VAULT) |
+| CAOP-STAGE-3 | L3 (Autonomous) | Kernel-managed loop (KERNEL_MANAGED); corresponds to L3 |
+| (no profile) | L1 (Agentic workspace) | Unchanged |
+
+CAOP-STAGE-1 and CAOP-STAGE-2 are variants of L2 (Stateful), differing in execution locus and credential custody; CAOP-STAGE-3 corresponds to L3 (Autonomous). L1 is unchanged.
+
+| EXECUTE sub-state | v0.1 execution state | Mapping |
+|---|---|---|
+| EXECUTE_PENDING | READY | ↔ equivalent |
+| EXECUTE_DISPATCHED | RUNNING (host-delegated) | ↔ equivalent |
+| EXECUTE_COMPLETED | VERIFYING | → transitions to |
+| EXECUTE_EXPIRED | EXPIRED | ↔ equivalent |
+| EXECUTE_FAILED | FAILED | ↔ equivalent |
+
+Sub-states refine, not replace, the v0.1 state machine. The v0.1 transition rules still hold: for example, an execution reaches COMPLETED only from VERIFYING with a passing verification, so EXECUTE_COMPLETED leads to VERIFYING and never directly to COMPLETED.
+
+**COMMIT_AWAITING_APPROVAL** is a COMMIT sub-state: the work item has passed the Policy pre-commit hooks, but an active Policy requires human approval before it may be dispatched. It is named only in the reference host operating prompt (§14.7) and is where `caop_stage_work` halts at approval (§14.6). It maps to the v0.1 approval path: the execution state is WAITING_APPROVAL and the error code is `POLICY_APPROVAL_REQUIRED` ([§7.1](#71-error-format)). It ends when `caop_dispatch_work` is called with `APPROVE_AND_DISPATCH` or `REJECT_WORK`, or when the approval expires.
+
+### Changes from the submitted draft
+
+Changes made to the submitted v0.1.2 text when it was integrated into this page. Items a–h are editorial; Q1–Q3 are design changes decided by the spec owner. Everything else is reproduced word for word. Changed text is underlined and tagged with its item; changes inside code blocks are listed here and flagged by a note under the block.
+
+- **(a) Lifecycle stages named, not numbered.**
+  - Terminology note added at the top of section 14: “In this addendum, Stage 1–3 are conformance profiles; lifecycle stages are named (OBSERVE … REVIEW).”
+  - “During Stage 3 (COMMIT)” → “During the COMMIT stage”
+  - “Stage 5 (EXECUTE)” → “The EXECUTE stage”
+  - “Stage 6 (VERIFY)” → “VERIFY”
+- **(b) Compatibility with v0.1.**
+  - New subsection §14.8 “Compatibility with v0.1”: profile → conformance level table (CAOP-STAGE-1/2 are L2 variants, CAOP-STAGE-3 is L3, L1 unchanged), EXECUTE sub-state → v0.1 execution state table, the statement that sub-states refine rather than replace the v0.1 state machine, and COMMIT_AWAITING_APPROVAL defined as a COMMIT sub-state mapped to WAITING_APPROVAL / POLICY_APPROVAL_REQUIRED.
+- **(c) Error envelope.**
+  - The flat CAOP_422_PRECOMMIT_HOOK_FAILED example in §14.3 is rendered in the v0.1 error envelope: {"error": {"code": "CAOP_422_PRECOMMIT_HOOK_FAILED", "message", "retryable": false, "details": {"failed_hooks": [...]}}, "trace_id"}, with failed_hooks moved into details. The message (“One or more Policy pre-commit hooks failed. The work item remains in CANDIDATE_PROPOSAL.”) and trace_id are added; code strings are unchanged.
+  - HTTP status noted for the OpenAPI binding, each with a footnote that the envelope follows §7 of v0.1: 409 for CAOP_409_UNSETTLED_EXECUTION_LEASE (§14.5.3), 422 for CAOP_422_VERIFY_ARTIFACT_MISMATCH (§14.5.4) and for CAOP_422_PRECOMMIT_HOOK_FAILED (§14.3).
+- **(d) Compact binding and the minimum public API.**
+  - Note added in §14.6: “The four composite tools are the compact binding, an alternative public surface. The v0.1 ten-tool minimum public API (§10) remains conformant; an implementation MAY expose either or both. Inside the kernel the full eight-stage lifecycle always runs.” A matching cross-link was added in §10.
+- **(e) Accuracy.**
+  - Informative note under the anti-termination envelope (§14.5.2): “turn_directive and DO_NOT_RESPOND_TO_USER_YET are instructions to the host model and cannot be enforced by the kernel; the enforceable guarantee is the lease lock in §14.5.3.”
+  - Informative note in §14.5.4: “Field presence is evidence, not proof; hence HOST_ASSERTED.”
+  - Informative note in §14.7 (the “MUST include” text is kept verbatim): “Conformance is determined by kernel behaviour; the kernel cannot verify that a host deployment includes this prompt.”
+- **(f) Implied requirement.**
+  - Informative note in §14.5.5: “The dead-man’s switch requires a kernel-side timer and an out-of-band notification channel, even for CLIENT_POLLED goals. In CAOP-STAGE-1 this is the only kernel-initiated behaviour.”
+- **(g) Host naming.**
+  - “ChatGPT Actions, Claude MCP” → “ChatGPT (Actions or MCP apps), Claude (MCP)”
+- **(h) This list of changes.**
+  - This box. It is generated from the same declarations that are applied to the text, so it lists every change.
+- **Q1, Adoption and freshness are separate.** *(decided by the spec owner, 2026-11-05)*
+  - “MUST carry one of four epistemic states:” → “MUST carry one of three epistemic states (adoption), and separately a freshness value:”
+  - STALE_UPSTREAM_PREMISE moved from epistemic_status to a new freshness field (CURRENT | STALE_UPSTREAM_PREMISE), keeping the submitted definition text; epistemic_status now has three values (CANDIDATE_PROPOSAL, RATIFIED_COMMITMENT, VERIFIED_FACT). Added: “A stale VERIFIED_FACT keeps epistemic_status: VERIFIED_FACT and gets freshness: STALE_UPSTREAM_PREMISE; its history stays intact. Default truth queries exclude CANDIDATE_PROPOSAL and flag, but do not hide, facts and commitments whose freshness is STALE_UPSTREAM_PREMISE.”
+  - In a code block: `"epistemic_status": "STALE_UPSTREAM_PREMISE", "depends_on_fact_ids"` → `"epistemic_status": "RATIFIED_COMMITMENT", "freshness": "STALE_UPSTREAM_PREMISE", "depends_on_fact_ids"`
+  - Footnote under the §14.2.2 example flagging that change.
+  - Sentence added in §14.3: “The BLOCK_STALE_PREMISES condition ALL_UPSTREAM_FACTS_VERIFIED_ACTIVE holds only when every upstream fact has epistemic_status VERIFIED_FACT and freshness CURRENT.” (The condition string is unchanged.)
+  - In a code block: `"epistemic_status": "STALE_UPSTREAM_PREMISE",` → `"epistemic_status": "RATIFIED_COMMITMENT", "freshness": "STALE_UPSTREAM_PREMISE",`
+  - Footnote under the §14.6.1 resume_brief example flagging that change.
+  - In a code block: `` highlight any `stale_commitments` flagged as `STALE_UPSTREAM_PREMISE` `` → `` highlight any `stale_commitments` with `freshness: STALE_UPSTREAM_PREMISE` ``
+- **Q2, Disjunctive support and bounded propagation.** *(decided by the spec owner, 2026-11-05)*
+  - §14.2.3 rewritten. Submitted text: “Whenever a new fact F_new supersedes an existing fact F_old (setting F_old.transaction_time.superseded_at), the Creasura kernel MUST synchronously traverse all reverse edges where depends_on_fact_ids contains F_old.fact_id and transition every active dependent commitment or fact to epistemic_status: "STALE_UPSTREAM_PREMISE" within the same database transaction.” Now: synchronous re-evaluation in the same transaction of every dependent reachable through reverse depends_on_fact_ids and depends_on_alternatives edges; a dependent becomes stale only when a required premise has no remaining CURRENT support; optional depends_on_alternatives groups interchangeable supports; staleness propagates transitively; a declared max_invalidation_subgraph limit rejects oversized updates before commit with CAOP_413_INVALIDATION_SUBGRAPH_TOO_LARGE, nothing partially applied; re-support restores CURRENT; superseded facts and history are never rewritten. The §14.2.1 STALE_UPSTREAM_PREMISE definition gains “, under the support rule of §14.2.3”.
+- **Q3, No required fields that invite guessing.** *(decided by the spec owner, 2026-11-05)*
+  - Sentence added in §14.3: “The kernel MUST reject unknown or cross-workspace fact IDs in depends_on_fact_ids or depends_on_alternatives with CAOP_422_PRECOMMIT_UNKNOWN_FACT_ID.”
+  - In a code block: `"required": ["subject", "predicate", "object", "depends_on_fact_ids"],` → `"required": ["subject", "predicate", "object"],`
+  - In a code block: `"description": "Upstream Fact IDs that this derived fact or decision relies upon." },` → `"description": "Upstream Fact IDs that this derived fact or decision relies upon. Omit if unknown; the REQUIRE_EVIDENCE_LINEAGE hook will reject commit and the host must ask the user." }, "depends_on_alternatives": { "type": "array", "items": { "type": "array", "items": { "type": "string" } }, "description": "Optional groups of interchangeable supporting Fact IDs. The premise stays supported while any member is CURRENT." },`
+  - In a code block: `"required": ["title", "rationale", "owner_principal_id", "reversible"],` → `"required": ["title", "rationale", "reversible"],`
+  - In a code block: `"description": "Explicit human or agent principal responsible for this commitment."` → `"description": "Explicit human or agent principal responsible for this commitment. Omit if unknown; the REQUIRE_EXPLICIT_OWNER hook will reject commit and the host must ask the user."`
+  - Footnote under the §14.6.2 schema flagging those changes.
+  - In a code block: `` always provide an explicit `commitment.owner_principal_id` `` → ``provide `commitment.owner_principal_id` only when the user has stated it; otherwise omit it and ask``
+  - Footnote under the §14.7 prompt flagging the two prompt changes.
+
+*Presentation only: the submitted sections 1–7 are numbered 14.1–14.7 on this page, so cross-references in added text use §14.x to avoid confusion with sections 1–13 of v0.1.*

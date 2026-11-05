@@ -1,0 +1,36 @@
+{
+  "work_id": "wrk_01J9Z8K4M2",
+  "lifecycle_stage": "EXECUTE",
+  "sub_state": "EXECUTE_DISPATCHED",
+  "turn_directive": "INCOMPLETE_TURN_CONTINUATION_REQUIRED",
+  "DO_NOT_RESPOND_TO_USER_YET": true,
+  "directive": {
+    "invocation_id": "inv_99481A",
+    "execution_locus": "HOST_DELEGATED",
+    "idempotency_key": "idem_wrk_01J9Z8K4M2_step_1",
+    "lease_expires_at": "2026-11-05T06:50:00Z",
+    "mandatory_next_steps": [
+      {
+        "step": 1,
+        "action": "INVOKE_HOST_NATIVE_TOOL",
+        "target_capability": "google_calendar.events.insert",
+        "arguments": {
+          "summary": "Q4 Architecture Review",
+          "start_time": "2026-11-06T15:00:00Z",
+          "end_time": "2026-11-06T15:30:00Z"
+        }
+      },
+      {
+        "step": 2,
+        "action": "CALL_CAOP_TOOL",
+        "tool_name": "caop_settle_receipt",
+        "required_nonce": "nnc_884920_x9",
+        "required_receipt_fields": [
+          "external_ref",
+          "htmlLink",
+          "iCalUID"
+        ]
+      }
+    ]
+  }
+}

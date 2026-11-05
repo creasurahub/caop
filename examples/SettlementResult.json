@@ -1,0 +1,11 @@
+{
+  "work_id": "wrk_01J9Z8K4M2",
+  "invocation_id": "inv_99481A",
+  "lifecycle_stage": "REVIEW",
+  "attestation": "HOST_ASSERTED",
+  "fact_ids": [
+    "fct_77210C"
+  ],
+  "thread_unlocked": true,
+  "review_outcome": "GOAL_SATISFIED"
+}

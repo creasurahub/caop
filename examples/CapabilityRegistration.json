@@ -1,0 +1,22 @@
+{
+  "capability_id": "google_calendar.events.insert",
+  "version": "1.2.0",
+  "execution_locus": "HOST_DELEGATED",
+  "auth_custodian": "CLIENT_SESSION",
+  "receipt_lease_seconds": 300,
+  "required_receipt_fields": [
+    "external_ref",
+    "htmlLink",
+    "iCalUID"
+  ],
+  "promotion_policy": {
+    "max_expired_leases_before_stage2_prompt": 2,
+    "rolling_window_days": 7
+  },
+  "input_schema": {
+    "$ref": "#/schemas/CalendarEventInput"
+  },
+  "output_schema": {
+    "$ref": "#/schemas/CalendarEventOutput"
+  }
+}
