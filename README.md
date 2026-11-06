@@ -40,20 +40,23 @@ See [`CHANGELOG.md`](CHANGELOG.md) and [section 15 of the specification](SPEC.md
 
 ## Implementation status
 
-As of November 5, 2026, Creasura’s reference kernel conforms to CAOP v0.1.2 at CAOP-STAGE-1 (host-delegated execution). Of the five v0.2 mechanisms it implements two, at CAOP-STAGE-1. The other three are specified but not yet implemented, so the reference kernel does not yet conform to v0.2 as a whole.
+As of November 5, 2026, Creasura’s reference kernel implements CAOP v0.2, including all five v0.2 mechanisms, at CAOP-STAGE-1 (host-delegated execution), with two exceptions: the pulse dead-man’s switch detects missed check-ins but does not yet deliver the out-of-band notification, and approvals do not expire because no expiry period is defined. Parts of section 15 that only the kernel can enforce when it drives the model (CAOP-STAGE-3) are recorded and reported as advisory, as section 15 specifies.
 
 | v0.2 mechanism | Section | Reference kernel |
 |---|---|---|
-| Two-phase outcome verification | [§15.1](SPEC.md#151-outcome-verification-and-approval-steering-a) | Implemented |
-| Mid-flight approval steering | [§15.1](SPEC.md#151-outcome-verification-and-approval-steering-a) | Implemented |
-| Hierarchical sub-agent isolation | [§15.2](SPEC.md#152-long-horizon-context-sub-agents-compaction-and-lazy-schemas-a) | Specified, not yet implemented |
-| Inner-loop context compaction | [§15.2](SPEC.md#152-long-horizon-context-sub-agents-compaction-and-lazy-schemas-a) | Specified, not yet implemented |
-| Lazy capability discovery | [§15.2](SPEC.md#152-long-horizon-context-sub-agents-compaction-and-lazy-schemas-a) | Specified, not yet implemented |
+| Two-phase outcome verification | [§15.1](SPEC.md#151-outcome-verification-and-approval-steering-a) | Implemented (CAOP-STAGE-1) |
+| Mid-flight approval steering | [§15.1](SPEC.md#151-outcome-verification-and-approval-steering-a) | Implemented (CAOP-STAGE-1) |
+| Hierarchical sub-agent isolation | [§15.2](SPEC.md#152-long-horizon-context-sub-agents-compaction-and-lazy-schemas-a) | Implemented (CAOP-STAGE-1) |
+| Inner-loop context compaction | [§15.2](SPEC.md#152-long-horizon-context-sub-agents-compaction-and-lazy-schemas-a) | Implemented (CAOP-STAGE-1) |
+| Lazy capability discovery | [§15.2](SPEC.md#152-long-horizon-context-sub-agents-compaction-and-lazy-schemas-a) | Implemented (CAOP-STAGE-1) |
 
 Notes for implementers:
 
 - In the reference kernel, a verification capability (`verification_capability_id`) must be side-effect-free: it may only read external state. Dispatch refuses a deferred check whose capability is not registered as side-effect-free.
 - On `APPROVE_WITH_STEERING_DELTA`, the reference kernel re-runs every policy check on the patched plan (every Policy pre-commit hook and the `minimum_attestation` check) before it dispatches.
+- Child work scopes inherit the parent’s authority and can only narrow it; a distilled return merges only the child’s promoted facts, each with a provenance pointer and a verifiable `trace_hash`; raw child traces are pruned from active context and deleted only under a declared `retention_policy`.
+- Compaction applies to what the kernel returns (`caop_pulse`, in all three `compaction_mode` levels) and is retrievable; capability schemas are hydrated as data and never change the host’s tool list.
+- CAOP-STAGE-3 only, not available at CAOP-STAGE-1: compacting the host’s own conversation context, compaction at every stage transition, enforcing `max_token_budget` (recorded and flagged as an advisory instead), and a separate model context for a child’s turns.
 
 ## The model at a glance
 
