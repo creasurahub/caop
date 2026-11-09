@@ -1,5 +1,7 @@
 # Changelog
 
+> **Implementation status update (2026-11-05, after the 0.2 release):** the reference kernel now implements all five v0.2 mechanisms at CAOP-STAGE-1, with three exceptions (pulse notification delivery, approval expiry and approver binding); see [README → Implementation status](README.md#implementation-status). The 0.2 entry below records the state at release.
+
 ## 0.2 (2026-11-05)
 
 An additive superset of v0.1.2, specified in [section 15 of `SPEC.md`](SPEC.md#15-v02-outcome-verification-approval-steering-and-long-horizon-context).
@@ -14,7 +16,7 @@ Contracts added: [`openapi/caop-v0.2.openapi.yaml`](openapi/caop-v0.2.openapi.ya
 
 The submitted v0.2 text is reproduced word for word except for the declared edits a–j, all editorial: (a) blog attributions removed; (b) lifecycle stages named, not numbered; (c) steering cannot bypass approval or policy; (d) pruning keeps provenance; (e) what can be enforced where; (f) capabilities are not MCP tools; (g) two-phase verification and the v0.1 state machine; (h) sentences without content removed; (i) this list of changes; (j) neutral voice. The full list is in [Changes from the submitted draft](SPEC.md#changes-from-the-submitted-draft-1).
 
-Implementation status: Creasura’s reference kernel conforms to CAOP v0.1.2 at CAOP-STAGE-1 and implements two-phase outcome verification and mid-flight approval steering at CAOP-STAGE-1; hierarchical sub-agent isolation, inner-loop context compaction and lazy capability discovery are specified, not yet implemented. See [Implementation status](README.md#implementation-status).
+At release: Creasura’s reference kernel conforms to CAOP v0.1.2 at CAOP-STAGE-1 and implements two-phase outcome verification and mid-flight approval steering at CAOP-STAGE-1; hierarchical sub-agent isolation, inner-loop context compaction and lazy capability discovery are specified, not yet implemented. See [Implementation status](README.md#implementation-status).
 
 ## 0.1.2 (2026-11-05)
 

@@ -6,6 +6,35 @@ CAOP defines an **Agentic Operating System**: a persistent, event-driven system 
 
 It is the protocol behind Creasura One OSS. It is model-independent and framework-independent: assistants like ChatGPT or Claude reason, research, and draft; CAOP defines what valid work is, which state transitions are allowed, what evidence is required, and who can authorize an action.
 
+## Start here
+
+A runtime profile says who drives the model and who runs external actions. Each maps to a v0.1 [conformance level](SPEC.md#9-conformance-levels) ([§14.1](SPEC.md#141-runtime-conformance-stages-normative-profiles), [§14.8](SPEC.md#148-compatibility-with-v01)).
+
+| Profile | Who drives turns | Who runs external actions | Conformance level |
+|---|---|---|---|
+| **CAOP-STAGE-1** (host-delegated) | The host (for example ChatGPT) | The host, with its own connectors; receipts are at most HOST_ASSERTED | L2 (Stateful) |
+| **CAOP-STAGE-2** (kernel-proxied) | The host | The kernel, with its own credentials | L2 (Stateful) |
+| **CAOP-STAGE-3** (autonomous kernel) | The kernel, driven by events | The kernel | L3 (Autonomous) |
+
+L1 (agentic workspace) is unchanged; it has no runtime profile.
+
+CAOP has two public tool surfaces. Both are conformant; an implementation may expose either or both. Both are listed under [Public MCP tools](#public-mcp-tools) below. A minimal compact sequence, at CAOP-STAGE-1:
+
+1. `caop_pulse`: Resume. The kernel returns current facts, stale commitments, open leases and capability stubs.
+2. `caop_stage_work`: Stage facts, a commitment and plan steps. Policy pre-commit hooks run here; a missing owner or evidence lineage returns a specific blocker.
+3. `caop_dispatch_work`: Approve, or approve with a steering delta, and dispatch. In CAOP-STAGE-1 the response holds an execution lease and a single-use nonce.
+4. `caop_settle_receipt`: Report the result. The kernel checks the nonce and the required receipt fields, then records the outcome with its attestation tier.
+
+Between calls 3 and 4 the host runs the action with its own connector. That is not a CAOP call.
+
+Where to read next, in [`SPEC.md`](SPEC.md#start-here-caop-v02-in-brief):
+
+- [Implementation status](SPEC.md#implementation-status): what Creasura’s reference kernel implements today, by runtime profile.
+- [Section 14](SPEC.md#14-v012-conformance-stages-causal-state-and-host-enforcement): v0.1.2 runtime profiles, causal state and host enforcement.
+- [Section 15](SPEC.md#15-v02-outcome-verification-approval-steering-and-long-horizon-context): the v0.2 additions, also published on their own as [CAOP v0.2: additions and release notes](https://creasura.com/spec/v0.2/).
+- Contracts: [OpenAPI 3.1](openapi/caop-v0.2.openapi.yaml) (17 operations) and [JSON Schema 2020-12](schema/caop-v0.2.schema.json) (95 definitions).
+- [Editorial history](SPEC.md#editorial-history): how the submitted texts of sections 14 and 15 were edited.
+
 ## What’s in this repository
 
 | Path | Contents |
@@ -40,15 +69,27 @@ See [`CHANGELOG.md`](CHANGELOG.md) and [section 15 of the specification](SPEC.md
 
 ## Implementation status
 
-As of November 5, 2026, Creasura’s reference kernel implements CAOP v0.2, including all five v0.2 mechanisms, at CAOP-STAGE-1 (host-delegated execution), with two exceptions: the pulse dead-man’s switch detects missed check-ins but does not yet deliver the out-of-band notification, and approvals do not expire because no expiry period is defined. Parts of section 15 that only the kernel can enforce when it drives the model (CAOP-STAGE-3) are recorded and reported as advisory, as section 15 specifies.
+As of November 5, 2026, Creasura’s reference kernel implements CAOP v0.2, including all five v0.2 mechanisms, at CAOP-STAGE-1 (host-delegated execution), with three exceptions: the pulse dead-man’s switch detects missed check-ins but does not yet deliver the out-of-band notification; approvals do not expire because no expiry period is defined; and approvals are not yet bound to an individual approver, because each workspace has a single authenticated principal. Parts of section 15 that only the kernel can enforce when it drives the model (CAOP-STAGE-3) are recorded and reported as advisory, as section 15 specifies.
 
-| v0.2 mechanism | Section | Reference kernel |
-|---|---|---|
-| Two-phase outcome verification | [§15.1](SPEC.md#151-outcome-verification-and-approval-steering-a) | Implemented (CAOP-STAGE-1) |
-| Mid-flight approval steering | [§15.1](SPEC.md#151-outcome-verification-and-approval-steering-a) | Implemented (CAOP-STAGE-1) |
-| Hierarchical sub-agent isolation | [§15.2](SPEC.md#152-long-horizon-context-sub-agents-compaction-and-lazy-schemas-a) | Implemented (CAOP-STAGE-1) |
-| Inner-loop context compaction | [§15.2](SPEC.md#152-long-horizon-context-sub-agents-compaction-and-lazy-schemas-a) | Implemented (CAOP-STAGE-1) |
-| Lazy capability discovery | [§15.2](SPEC.md#152-long-horizon-context-sub-agents-compaction-and-lazy-schemas-a) | Implemented (CAOP-STAGE-1) |
+**Status by runtime profile, as of November 5, 2026**
+
+| Feature | CAOP-STAGE-1 | CAOP-STAGE-2 | CAOP-STAGE-3 |
+|---|---|---|---|
+| **Two-phase outcome verification** ([§15.1](SPEC.md#151-outcome-verification-and-approval-steering-a)) | Implemented (reference kernel) | Specified | Specified |
+| **Mid-flight approval steering** ([§15.1](SPEC.md#151-outcome-verification-and-approval-steering-a)) | Implemented (reference kernel) | Specified | Specified |
+| **Hierarchical sub-agent isolation** ([§15.2](SPEC.md#152-long-horizon-context-sub-agents-compaction-and-lazy-schemas-a)) | Implemented (reference kernel) | Specified | Specified |
+| **Inner-loop context compaction** ([§15.2](SPEC.md#152-long-horizon-context-sub-agents-compaction-and-lazy-schemas-a)) | Implemented (reference kernel) | Specified | Specified |
+| **Lazy capability discovery** ([§15.2](SPEC.md#152-long-horizon-context-sub-agents-compaction-and-lazy-schemas-a)) | Implemented (reference kernel) | Specified | Specified |
+| **Model-side context control** ([§15.2](SPEC.md#152-long-horizon-context-sub-agents-compaction-and-lazy-schemas-a)) Compacting the host’s own conversation context, compaction at every stage transition, enforcing `max_token_budget` (recorded and flagged as an advisory instead), and a separate model context for a child’s turns. | Advisory only | Advisory only | Requires this profile |
+| **Pulse notification delivery** ([§14.5.5](SPEC.md#1455-scheduled-pulse-dead-mans-switch-expected_pulse_interval_seconds)) The pulse dead-man’s switch detects missed check-ins but does not yet deliver the out-of-band notification. | Specified | Specified | Does not apply |
+| **Approval expiry** ([§7](SPEC.md#7-cross-cutting-contracts)) Approvals do not expire because no expiry period is defined. | Specified | Specified | Specified |
+| **Approver binding** ([§7](SPEC.md#7-cross-cutting-contracts)) Approvals are not yet bound to an individual approver, because each workspace has a single authenticated principal. | Specified | Specified | Specified |
+
+- **Implemented (reference kernel):** specified, and implemented by Creasura’s reference kernel at this profile.
+- **Specified:** specified for this profile; the reference kernel does not implement it here yet.
+- **Requires this profile:** needs this profile, because only a kernel that drives the model can enforce it; specified, not yet implemented.
+- **Advisory only:** below the profile it needs: recorded and reported, not enforced.
+- **Does not apply:** the protocol does not ask for it at this profile.
 
 Notes for implementers:
 
@@ -57,6 +98,19 @@ Notes for implementers:
 - Child work scopes inherit the parent’s authority and can only narrow it; a distilled return merges only the child’s promoted facts, each with a provenance pointer and a verifiable `trace_hash`; raw child traces are pruned from active context and deleted only under a declared `retention_policy`.
 - Compaction applies to what the kernel returns (`caop_pulse`, in all three `compaction_mode` levels) and is retrievable; capability schemas are hydrated as data and never change the host’s tool list.
 - CAOP-STAGE-3 only, not available at CAOP-STAGE-1: compacting the host’s own conversation context, compaction at every stage transition, enforcing `max_token_budget` (recorded and flagged as an advisory instead), and a separate model context for a child’s turns.
+
+### Runtime checks beyond the schema
+
+JSON Schema checks the shape of a request. Some obligations of the protocol are not in the schemas, so the kernel checks them at run time. The reference kernel enforces, among others:
+
+- Provenance on promoted facts: a distilled return merges a fact only with its provenance pointer and a verifiable `trace_hash`. The schema leaves `trace_hash` optional; the prose of §15.2 requires it.
+- Receipt nonce: a Stage-1 receipt must echo the `required_nonce` from dispatch (`CAOP_422_VERIFY_ARTIFACT_MISMATCH` otherwise).
+- Required receipt fields: the receipt’s `raw_output` must hold every field in the capability’s `required_receipt_fields`.
+- One open lease per thread: new work is refused while an execution lease is unsettled (`CAOP_409_UNSETTLED_EXECUTION_LEASE`).
+- Policy hooks at commit and on steering: every Policy pre-commit hook runs at commit, and runs again on the patched plan after `APPROVE_WITH_STEERING_DELTA`, with the `minimum_attestation` check.
+- Side-effect-free verifier: a deferred check is dispatched only if its `verification_capability_id` is registered as side-effect-free.
+
+Passing JSON Schema validation is therefore not proof of runtime conformance.
 
 ## The model at a glance
 
