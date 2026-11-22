@@ -1,0 +1,12 @@
+{
+  "agent_id": "agt_impl_7",
+  "display_name": "Implementer 7",
+  "principal": {
+    "type": "service",
+    "id": "svc_build_fleet"
+  },
+  "provider": "example-provider",
+  "model": "example-model-large",
+  "public_key": "ed25519:MCowBQYDK2VwAyEAG2q0rI3kq6QvVq9a7S4Zr0b5mJqgYb6dKkX8P1lC0aM=",
+  "attestation": "HOST_ASSERTED"
+}

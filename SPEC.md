@@ -1,3 +1,7 @@
+> **Status (2026-11-22):** CAOP v0.2, below, is the current published version and is unchanged.
+> A vendor-neutral, multi-agent successor, **MAOP v1** (1.0.0-draft.1, DRAFT), is under review in [`docs/maop-v1.md`](docs/maop-v1.md).
+> MAOP keeps all 17 CAOP v0.2 operations and 95 definitions with the same names; see [parity](docs/maop-v1-parity.md) and [migration](docs/maop-v1-migration.md).
+
 # Creasura Agentic OS Protocol (CAOP) v0.2
 
 Definition, lifecycle, and API contracts for an open, portable agentic operating system.

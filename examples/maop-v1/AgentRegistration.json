@@ -1,0 +1,28 @@
+{
+  "registration_id": "reg_0192",
+  "identity": {
+    "agent_id": "agt_impl_7",
+    "display_name": "Implementer 7",
+    "principal": {
+      "type": "service",
+      "id": "svc_build_fleet"
+    },
+    "provider": "example-provider",
+    "model": "example-model-large",
+    "public_key": "ed25519:MCowBQYDK2VwAyEAG2q0rI3kq6QvVq9a7S4Zr0b5mJqgYb6dKkX8P1lC0aM=",
+    "attestation": "HOST_ASSERTED"
+  },
+  "roles": [
+    "implementer",
+    "verifier"
+  ],
+  "capability_stubs": [
+    {
+      "capability_id": "github.pulls.create",
+      "summary": "Open a pull request in a connected repository."
+    }
+  ],
+  "max_concurrent_leases": 2,
+  "status": "active",
+  "registered_at": "2026-11-22T09:00:00Z"
+}

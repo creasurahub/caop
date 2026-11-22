@@ -1,0 +1,15 @@
+{
+  "grant_id": "grt_impl_7_ledger",
+  "grantor": {
+    "type": "agent",
+    "id": "agt_supervisor_1"
+  },
+  "grantee_agent_id": "agt_impl_7",
+  "parent_grant_id": "grt_supervisor_1_ledger",
+  "trust_level": "T1_attested",
+  "scope": [
+    "github.pulls.create",
+    "metrics.query"
+  ],
+  "expires_at": "2026-11-22T17:00:00Z"
+}

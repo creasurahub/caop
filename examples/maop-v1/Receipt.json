@@ -1,0 +1,24 @@
+{
+  "receipt_id": "rct_88d1",
+  "action": "github.pulls.create",
+  "actor": {
+    "type": "agent",
+    "id": "agt_impl_7"
+  },
+  "idempotency_key": "pr-wrk_ledger_partitioning-1",
+  "outcome": "succeeded",
+  "evidence_refs": [
+    "art_pr_1284"
+  ],
+  "causal_parents": [
+    "evd_plan_v3"
+  ],
+  "work_id": "wrk_ledger_partitioning",
+  "delegation_id": "dlg_7f3c",
+  "lease_id": "lse_51a2",
+  "fencing_token": 42,
+  "trust_level": "T1_attested",
+  "attestation": "KERNEL_ATTESTED",
+  "digest": "sha256:9f2c4e7a1b03d58e6c2f9a4b7d1e0c35a8b6f2d4e9c17a0b3d5f8e2c6a4b19d7",
+  "recorded_at": "2026-11-22T09:40:00Z"
+}

@@ -6,6 +6,16 @@ CAOP defines an **Agentic Operating System**: a persistent, event-driven system 
 
 It is the protocol behind Creasura One OSS. It is model-independent and framework-independent: assistants like ChatGPT or Claude reason, research, and draft; CAOP defines what valid work is, which state transitions are allowed, what evidence is required, and who can authorize an action.
 
+## Draft: MAOP v1 (vendor-neutral, multi-agent successor)
+
+CAOP v0.2 remains the current published version. Its proposed successor, **MAOP: Multi-Agent Orchestration Protocol**, version 1.0.0-draft.1, is a DRAFT for review and is not yet stable:
+
+- Specification: [`docs/maop-v1.md`](docs/maop-v1.md). Supervision lifecycle with back-edges, nested child lifecycle, agent roles and delegation, authority grants (T0 relayed / T1 attested), durable guards, fenced leases, receipts and causal evidence.
+- Contracts: [OpenAPI 3.1](openapi/maop-v1.openapi.yaml) ([JSON](openapi/maop-v1.openapi.json)), 23 operations under `/maop/v1` (the 17 CAOP v0.2 operations with the same ids, plus 6 new ones), and [JSON Schema 2020-12](schema/maop-v1.schema.json), 110 definitions (the 95 CAOP v0.2 definitions with the same names, plus 15 new ones). Examples are in [`examples/maop-v1/`](examples/maop-v1/).
+- [Parity with CAOP v0.2](docs/maop-v1-parity.md) · [Migration guide](docs/maop-v1-migration.md) · [Contract checks](tests/README.md) (`python tests/validate.py`).
+
+The MAOP files are hand-authored in this repository for now; the CAOP files are generated from the website's spec sources.
+
 ## Start here
 
 A runtime profile says who drives the model and who runs external actions. Each maps to a v0.1 [conformance level](SPEC.md#9-conformance-levels) ([§14.1](SPEC.md#141-runtime-conformance-stages-normative-profiles), [§14.8](SPEC.md#148-compatibility-with-v01)).
@@ -47,12 +57,18 @@ Where to read next, in [`SPEC.md`](SPEC.md#start-here-caop-v02-in-brief):
 | [`schema/caop-v0.1.2.schema.json`](schema/caop-v0.1.2.schema.json) | v0.1.2 (previous, unchanged): JSON Schema 2020-12 bundle (81 definitions in `$defs`) |
 | [`openapi/caop-v0.1.openapi.yaml`](openapi/caop-v0.1.openapi.yaml) | v0.1 (previous, unchanged): OpenAPI 3.1 contract for the lifecycle API (13 operations), also as [JSON](openapi/caop-v0.1.openapi.json) |
 | [`schema/caop-v0.1.schema.json`](schema/caop-v0.1.schema.json) | v0.1 (previous, unchanged): JSON Schema 2020-12 bundle (44 definitions in `$defs`) |
+| [`docs/maop-v1.md`](docs/maop-v1.md) | MAOP v1 (1.0.0-draft.1, DRAFT): specification; also [parity](docs/maop-v1-parity.md) and [migration](docs/maop-v1-migration.md) notes |
+| [`openapi/maop-v1.openapi.yaml`](openapi/maop-v1.openapi.yaml) | MAOP v1 draft: OpenAPI 3.1 contract (23 operations), also as [JSON](openapi/maop-v1.openapi.json) |
+| [`schema/maop-v1.schema.json`](schema/maop-v1.schema.json) | MAOP v1 draft: JSON Schema 2020-12 bundle (110 definitions in `$defs`) |
+| [`examples/maop-v1/`](examples/maop-v1/) | MAOP v1 draft example payloads |
+| [`tests/`](tests/) | Contract checks for the MAOP draft (`python tests/validate.py`) |
 | [`examples/`](examples/) | 71 v0.2 example payloads, each validated against its schema (one per definition, covering all 29 v0.1 definitions) |
 
 Each version is an additive superset of the one before (v0.1 ⊂ v0.1.2 ⊂ v0.2): every v0.1 document is also valid under v0.2. Published contract files never change at their versioned paths.
 
 | Version | Operations | Schemas | Examples |
 |---|---|---|---|
+| MAOP v1 (1.0.0-draft.1, draft) | 23 | 110 | see [`examples/maop-v1/`](examples/maop-v1/) |
 | v0.2 | 17 | 95 | 71 |
 | v0.1.2 | 17 | 81 | 57 |
 | v0.1 | 13 | 44 | 29 |

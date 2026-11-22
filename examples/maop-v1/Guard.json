@@ -1,0 +1,11 @@
+{
+  "guard_id": "grd_sod_reviewer",
+  "kind": "separation_of_duties",
+  "expression": "review.actor.id != execution.actor.id",
+  "durable": true,
+  "applies_to": [
+    "review"
+  ],
+  "on_failure": "coordinate",
+  "description": "The reviewer must be a different agent than the implementer."
+}
