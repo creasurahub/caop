@@ -1,0 +1,22 @@
+# tests/validate.py output at exact commit 05e4845f69ed4062dc8e7abaae4437e803f55ad2
+# Reproduce: git worktree add --detach /tmp/maop 05e4845 && cd /tmp/maop && python tests/validate.py
+# git status of the clean checkout before the run: 0 changed files
+# python 3.14.4 jsonschema 4.26.0 pyyaml 6.0.3
+
+PASS 1 protected-hashes: protected CAOP files match contract sha256 (9 protected files checked)
+PASS 2 protected-git: other protected files unchanged versus HEAD (71 tracked CAOP examples unchanged)
+      SPEC.md: 0 line(s) added at the top
+PASS 3 schema: MAOP schema is 2020-12, 110 defs, contract enums (110 definitions (95 CAOP + 15 new))
+PASS 4 openapi: MAOP OpenAPI 3.1, 23 ops, parity paths, refs resolve (23 operations, 239 $refs checked)
+PASS 5 caop-examples: CAOP v0.2 examples validate against MAOP (backward compat) (71/71 CAOP v0.2 examples validate against MAOP v1)
+PASS 6 maop-examples: MAOP v1 examples validate (24/24 MAOP examples validate; 15/15 new definitions covered)
+PASS 7 parity: tests/parity.json counts and coverage (counts 17/95/71 found at counts)
+      0 removed entries
+PASS 8 neutrality: vendor neutrality of MAOP files (29 file(s) scanned; 3 allowed 'Creasura' mention(s))
+        allowed schema/maop-v1.schema.json:1552: legacy token CREASURA_VAULT
+        allowed openapi/maop-v1.openapi.yaml:2783: legacy token CREASURA_VAULT
+        allowed openapi/maop-v1.openapi.json:4292: legacy token CREASURA_VAULT
+PASS 9 topics: docs/maop-v1.md required topics (11 topics + Northstar rows A-K checked)
+PASS 10 parity-reproducible: parity record regenerates byte for byte (tests/parity.json and docs/maop-v1-parity.md reproduce byte for byte)
+10/10 checks passed
+# exit code 0
