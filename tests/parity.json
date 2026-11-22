@@ -1,0 +1,2261 @@
+{
+  "title": "MAOP v1 parity with CAOP v0.2",
+  "maop_version": "1.0.0-draft.1",
+  "generated_by": "tests/parity_gen.py (regenerate with: python tests/parity_gen.py all); baseline read from git at 8c7bd07939171efc2d39079bd018904175ea8db2; output is deterministic and checked by tests/validate.py check 10 (parity-reproducible)",
+  "baseline": {
+    "repository_commit": "8c7bd07939171efc2d39079bd018904175ea8db2",
+    "spec": "SPEC.md (CAOP v0.2)",
+    "files": [
+      {
+        "path": "openapi/caop-v0.1.2.openapi.json",
+        "sha256": "6b727a0fa60efc1f487fe154d3eb3fe63c3f1e7121a89962a553116b04b005a8",
+        "unchanged_in_working_tree": true
+      },
+      {
+        "path": "openapi/caop-v0.1.2.openapi.yaml",
+        "sha256": "05dd1dfbe6449cc5447420023f336aa48c7221d229219cbd17396da4bf9be8b4",
+        "unchanged_in_working_tree": true
+      },
+      {
+        "path": "openapi/caop-v0.1.openapi.json",
+        "sha256": "076a128385a1bc7d4841d1447cf3b2a4eedfc612ad393c3b14d0714f9857a4eb",
+        "unchanged_in_working_tree": true
+      },
+      {
+        "path": "openapi/caop-v0.1.openapi.yaml",
+        "sha256": "272fd7face00997359c9d185851995d9397281846ce6166d25a32e98f16a622f",
+        "unchanged_in_working_tree": true
+      },
+      {
+        "path": "openapi/caop-v0.2.openapi.json",
+        "sha256": "699fc607a7b0473d8b2c08bac3d1f59b11687f2f6670cb391d86ec4b1aa7fcd6",
+        "unchanged_in_working_tree": true
+      },
+      {
+        "path": "openapi/caop-v0.2.openapi.yaml",
+        "sha256": "aaf1ae25400fd3db9483c737b787e36a31976415434d9bb615ca3481ec790e42",
+        "unchanged_in_working_tree": true
+      },
+      {
+        "path": "schema/caop-v0.1.2.schema.json",
+        "sha256": "3a72213ecf506df646cfb8c455b564349e2eae819bf3b6b9686f6868cfdbf000",
+        "unchanged_in_working_tree": true
+      },
+      {
+        "path": "schema/caop-v0.1.schema.json",
+        "sha256": "4cc2cda6f49926efa8521aa5dabd66803b23691ce8a7488c51f0477798005ded",
+        "unchanged_in_working_tree": true
+      },
+      {
+        "path": "schema/caop-v0.2.schema.json",
+        "sha256": "7a4e7ce9fdd5328d10a93595fe0269e63ba9a8fb9bce21b300dd6c7020a45f75",
+        "unchanged_in_working_tree": true
+      }
+    ]
+  },
+  "maop_contracts_compared": {
+    "schema/maop-v1.schema.json": true,
+    "openapi/maop-v1.openapi.yaml": true
+  },
+  "counts": {
+    "operations": 17,
+    "definitions": 95,
+    "examples": 71,
+    "guarantees": 16,
+    "guarantees_normative": 10,
+    "guarantees_editorial_record": 6,
+    "supplementary_requirements": 17,
+    "additions_operations": 6,
+    "additions_definitions": 15,
+    "maop_operations_total": 23,
+    "maop_definitions_total": 110
+  },
+  "status_summary": {
+    "operations": {
+      "kept": 17,
+      "refined": 0,
+      "replaced": 0,
+      "removed": 0
+    },
+    "definitions": {
+      "kept": 94,
+      "refined": 1,
+      "replaced": 0,
+      "removed": 0
+    },
+    "examples": {
+      "kept": 71,
+      "refined": 0,
+      "replaced": 0,
+      "removed": 0
+    },
+    "guarantees": {
+      "kept": 12,
+      "refined": 4,
+      "replaced": 0,
+      "removed": 0
+    },
+    "supplementary_requirements": {
+      "kept": 15,
+      "refined": 2,
+      "replaced": 0,
+      "removed": 0
+    }
+  },
+  "operations": {
+    "observations.ingest": {
+      "caop": {
+        "method": "POST",
+        "path": "/v1/observations"
+      },
+      "maop": {
+        "method": "POST",
+        "path": "/maop/v1/observations",
+        "operationId": "observations.ingest"
+      },
+      "status": "kept",
+      "summary": "Ingest an observation",
+      "request": [
+        "ObservationCreate"
+      ],
+      "responses": {
+        "202": [
+          "ObservationAccepted"
+        ],
+        "400": [
+          "Error"
+        ],
+        "401": [
+          "Error"
+        ],
+        "403": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    },
+    "context.resolve": {
+      "caop": {
+        "method": "POST",
+        "path": "/v1/context/resolve"
+      },
+      "maop": {
+        "method": "POST",
+        "path": "/maop/v1/context/resolve",
+        "operationId": "context.resolve"
+      },
+      "status": "kept",
+      "summary": "Resolve context",
+      "request": [
+        "ContextResolveRequest"
+      ],
+      "responses": {
+        "200": [
+          "ContextBundle"
+        ],
+        "400": [
+          "Error"
+        ],
+        "401": [
+          "Error"
+        ],
+        "403": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    },
+    "commitments.create": {
+      "caop": {
+        "method": "POST",
+        "path": "/v1/commitments"
+      },
+      "maop": {
+        "method": "POST",
+        "path": "/maop/v1/commitments",
+        "operationId": "commitments.create"
+      },
+      "status": "kept",
+      "summary": "Create a commitment",
+      "request": [
+        "CommitmentCreate"
+      ],
+      "responses": {
+        "201": [
+          "Commitment"
+        ],
+        "400": [
+          "Error"
+        ],
+        "401": [
+          "Error"
+        ],
+        "403": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    },
+    "commitments.list": {
+      "caop": {
+        "method": "GET",
+        "path": "/v1/commitments"
+      },
+      "maop": {
+        "method": "GET",
+        "path": "/maop/v1/commitments",
+        "operationId": "commitments.list"
+      },
+      "status": "kept",
+      "summary": "List commitments",
+      "request": [],
+      "responses": {
+        "200": [
+          "CommitmentList"
+        ],
+        "401": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    },
+    "plans.create": {
+      "caop": {
+        "method": "POST",
+        "path": "/v1/plans"
+      },
+      "maop": {
+        "method": "POST",
+        "path": "/maop/v1/plans",
+        "operationId": "plans.create"
+      },
+      "status": "kept",
+      "summary": "Create a plan",
+      "request": [
+        "PlanCreate"
+      ],
+      "responses": {
+        "201": [
+          "Plan"
+        ],
+        "400": [
+          "Error"
+        ],
+        "401": [
+          "Error"
+        ],
+        "403": [
+          "Error"
+        ],
+        "404": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    },
+    "executions.start": {
+      "caop": {
+        "method": "POST",
+        "path": "/v1/executions"
+      },
+      "maop": {
+        "method": "POST",
+        "path": "/maop/v1/executions",
+        "operationId": "executions.start"
+      },
+      "status": "kept",
+      "summary": "Start an execution",
+      "request": [
+        "ExecutionCreate"
+      ],
+      "responses": {
+        "202": [
+          "ExecutionAccepted"
+        ],
+        "400": [
+          "Error"
+        ],
+        "401": [
+          "Error"
+        ],
+        "403": [
+          "Error"
+        ],
+        "404": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    },
+    "executions.get": {
+      "caop": {
+        "method": "GET",
+        "path": "/v1/executions/{execution_id}"
+      },
+      "maop": {
+        "method": "GET",
+        "path": "/maop/v1/executions/{execution_id}",
+        "operationId": "executions.get"
+      },
+      "status": "kept",
+      "summary": "Get execution status",
+      "request": [],
+      "responses": {
+        "200": [
+          "Execution"
+        ],
+        "401": [
+          "Error"
+        ],
+        "404": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    },
+    "executions.submit_result": {
+      "caop": {
+        "method": "POST",
+        "path": "/v1/executions/{execution_id}/results"
+      },
+      "maop": {
+        "method": "POST",
+        "path": "/maop/v1/executions/{execution_id}/results",
+        "operationId": "executions.submit_result"
+      },
+      "status": "kept",
+      "summary": "Submit a result",
+      "request": [
+        "ResultSubmission"
+      ],
+      "responses": {
+        "202": [
+          "Execution"
+        ],
+        "400": [
+          "Error"
+        ],
+        "401": [
+          "Error"
+        ],
+        "404": [
+          "Error"
+        ],
+        "409": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    },
+    "executions.transition": {
+      "caop": {
+        "method": "POST",
+        "path": "/v1/executions/{execution_id}/transitions"
+      },
+      "maop": {
+        "method": "POST",
+        "path": "/maop/v1/executions/{execution_id}/transitions",
+        "operationId": "executions.transition"
+      },
+      "status": "kept",
+      "summary": "Transition an execution",
+      "request": [
+        "TransitionRequest"
+      ],
+      "responses": {
+        "200": [
+          "Transition"
+        ],
+        "400": [
+          "Error"
+        ],
+        "401": [
+          "Error"
+        ],
+        "403": [
+          "Error"
+        ],
+        "404": [
+          "Error"
+        ],
+        "409": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    },
+    "verifications.evaluate": {
+      "caop": {
+        "method": "POST",
+        "path": "/v1/verifications"
+      },
+      "maop": {
+        "method": "POST",
+        "path": "/maop/v1/verifications",
+        "operationId": "verifications.evaluate"
+      },
+      "status": "kept",
+      "summary": "Evaluate verification",
+      "request": [
+        "VerificationRequest"
+      ],
+      "responses": {
+        "200": [
+          "Verification"
+        ],
+        "400": [
+          "Error"
+        ],
+        "401": [
+          "Error"
+        ],
+        "404": [
+          "Error"
+        ],
+        "422": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    },
+    "records.commit": {
+      "caop": {
+        "method": "POST",
+        "path": "/v1/records/commit"
+      },
+      "maop": {
+        "method": "POST",
+        "path": "/maop/v1/records/commit",
+        "operationId": "records.commit"
+      },
+      "status": "kept",
+      "summary": "Commit a record",
+      "request": [
+        "RecordCommit"
+      ],
+      "responses": {
+        "200": [
+          "RecordCommitted"
+        ],
+        "400": [
+          "Error"
+        ],
+        "401": [
+          "Error"
+        ],
+        "403": [
+          "Error"
+        ],
+        "409": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    },
+    "reviews.evaluate": {
+      "caop": {
+        "method": "POST",
+        "path": "/v1/reviews"
+      },
+      "maop": {
+        "method": "POST",
+        "path": "/maop/v1/reviews",
+        "operationId": "reviews.evaluate"
+      },
+      "status": "kept",
+      "summary": "Evaluate a review",
+      "request": [
+        "ReviewRequest"
+      ],
+      "responses": {
+        "200": [
+          "Review"
+        ],
+        "400": [
+          "Error"
+        ],
+        "401": [
+          "Error"
+        ],
+        "404": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    },
+    "approvals.decide": {
+      "caop": {
+        "method": "POST",
+        "path": "/v1/approvals/{approval_request_id}/decision"
+      },
+      "maop": {
+        "method": "POST",
+        "path": "/maop/v1/approvals/{approval_request_id}/decision",
+        "operationId": "approvals.decide"
+      },
+      "status": "kept",
+      "summary": "Decide an approval request",
+      "request": [
+        "ApprovalDecision"
+      ],
+      "responses": {
+        "200": [
+          "Approval"
+        ],
+        "400": [
+          "Error"
+        ],
+        "401": [
+          "Error"
+        ],
+        "403": [
+          "Error"
+        ],
+        "404": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    },
+    "compact.pulse": {
+      "caop": {
+        "method": "POST",
+        "path": "/v1/compact/pulse"
+      },
+      "maop": {
+        "method": "POST",
+        "path": "/maop/v1/compact/pulse",
+        "operationId": "compact.pulse"
+      },
+      "status": "kept",
+      "summary": "Pulse",
+      "request": [
+        "PulseInput"
+      ],
+      "responses": {
+        "200": [
+          "PulseResponse"
+        ],
+        "400": [
+          "Error"
+        ],
+        "401": [
+          "Error"
+        ],
+        "413": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    },
+    "compact.stage_work": {
+      "caop": {
+        "method": "POST",
+        "path": "/v1/compact/stage-work"
+      },
+      "maop": {
+        "method": "POST",
+        "path": "/maop/v1/compact/stage-work",
+        "operationId": "compact.stage_work"
+      },
+      "status": "kept",
+      "summary": "Stage work",
+      "request": [
+        "StageWorkInput"
+      ],
+      "responses": {
+        "200": [
+          "StageWorkResult"
+        ],
+        "400": [
+          "Error"
+        ],
+        "401": [
+          "Error"
+        ],
+        "403": [
+          "Error"
+        ],
+        "409": [
+          "Error"
+        ],
+        "422": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    },
+    "compact.dispatch_work": {
+      "caop": {
+        "method": "POST",
+        "path": "/v1/compact/dispatch-work"
+      },
+      "maop": {
+        "method": "POST",
+        "path": "/maop/v1/compact/dispatch-work",
+        "operationId": "compact.dispatch_work"
+      },
+      "status": "kept",
+      "summary": "Dispatch work",
+      "request": [
+        "DispatchWorkInput"
+      ],
+      "responses": {
+        "200": [
+          "DispatchWorkResult"
+        ],
+        "400": [
+          "Error"
+        ],
+        "401": [
+          "Error"
+        ],
+        "403": [
+          "Error"
+        ],
+        "404": [
+          "Error"
+        ],
+        "409": [
+          "Error"
+        ],
+        "413": [
+          "Error"
+        ],
+        "422": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    },
+    "compact.settle_receipt": {
+      "caop": {
+        "method": "POST",
+        "path": "/v1/compact/settle-receipt"
+      },
+      "maop": {
+        "method": "POST",
+        "path": "/maop/v1/compact/settle-receipt",
+        "operationId": "compact.settle_receipt"
+      },
+      "status": "kept",
+      "summary": "Settle a receipt",
+      "request": [
+        "SettleReceiptInput"
+      ],
+      "responses": {
+        "200": [
+          "SettlementResult"
+        ],
+        "400": [
+          "Error"
+        ],
+        "401": [
+          "Error"
+        ],
+        "404": [
+          "Error"
+        ],
+        "413": [
+          "Error"
+        ],
+        "422": [
+          "Error"
+        ]
+      },
+      "note": "Same operationId, method, sub-path, request and response definitions and semantics under the /maop/v1 prefix."
+    }
+  },
+  "definitions": {
+    "PrincipalRef": {
+      "maop_name": "PrincipalRef",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Structure identical in schema/maop-v1.schema.json."
+    },
+    "EntityRef": {
+      "maop_name": "EntityRef",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Structure identical in schema/maop-v1.schema.json. Description reworded (vendor-neutral), no structural change."
+    },
+    "EvidenceRef": {
+      "maop_name": "EvidenceRef",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Structure identical in schema/maop-v1.schema.json."
+    },
+    "ArtifactRef": {
+      "maop_name": "ArtifactRef",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Structure identical in schema/maop-v1.schema.json."
+    },
+    "Expression": {
+      "maop_name": "Expression",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Structure identical in schema/maop-v1.schema.json."
+    },
+    "Criterion": {
+      "maop_name": "Criterion",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Structure identical in schema/maop-v1.schema.json."
+    },
+    "Constraint": {
+      "maop_name": "Constraint",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Structure identical in schema/maop-v1.schema.json."
+    },
+    "AuthorizationPolicy": {
+      "maop_name": "AuthorizationPolicy",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Structure identical in schema/maop-v1.schema.json."
+    },
+    "Goal": {
+      "maop_name": "Goal",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Structure identical in schema/maop-v1.schema.json."
+    },
+    "WorkItem": {
+      "maop_name": "WorkItem",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Structure identical in schema/maop-v1.schema.json."
+    },
+    "Fact": {
+      "maop_name": "Fact",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Example: examples/Fact.json. Structure identical in schema/maop-v1.schema.json. Description reworded (vendor-neutral), no structural change."
+    },
+    "Capability": {
+      "maop_name": "Capability",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Structure identical in schema/maop-v1.schema.json. Description reworded (vendor-neutral), no structural change."
+    },
+    "Policy": {
+      "maop_name": "Policy",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Example: examples/Policy.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "CapabilityDescriptor": {
+      "maop_name": "CapabilityDescriptor",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Example: examples/CapabilityDescriptor.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "CapabilityInvocation": {
+      "maop_name": "CapabilityInvocation",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Structure identical in schema/maop-v1.schema.json."
+    },
+    "CapabilityResult": {
+      "maop_name": "CapabilityResult",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Structure identical in schema/maop-v1.schema.json."
+    },
+    "ExecutionState": {
+      "maop_name": "ExecutionState",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Structure identical in schema/maop-v1.schema.json."
+    },
+    "ObservationCreate": {
+      "maop_name": "ObservationCreate",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by observations.ingest. Example: examples/ObservationCreate.json. Structure identical in schema/maop-v1.schema.json. Description reworded (vendor-neutral), no structural change."
+    },
+    "ObservationAccepted": {
+      "maop_name": "ObservationAccepted",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by observations.ingest. Example: examples/ObservationAccepted.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "ContextResolveRequest": {
+      "maop_name": "ContextResolveRequest",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by context.resolve. Example: examples/ContextResolveRequest.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "ContextBundle": {
+      "maop_name": "ContextBundle",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by context.resolve. Example: examples/ContextBundle.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "CommitmentCreate": {
+      "maop_name": "CommitmentCreate",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by commitments.create. Example: examples/CommitmentCreate.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "Commitment": {
+      "maop_name": "Commitment",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by commitments.create. Example: examples/Commitment.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "CommitmentList": {
+      "maop_name": "CommitmentList",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by commitments.list. Structure identical in schema/maop-v1.schema.json."
+    },
+    "PlanCreate": {
+      "maop_name": "PlanCreate",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by plans.create. Example: examples/PlanCreate.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "Plan": {
+      "maop_name": "Plan",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by plans.create. Example: examples/Plan.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "ExecutionCreate": {
+      "maop_name": "ExecutionCreate",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by executions.start. Example: examples/ExecutionCreate.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "ExecutionAccepted": {
+      "maop_name": "ExecutionAccepted",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by executions.start. Example: examples/ExecutionAccepted.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "Execution": {
+      "maop_name": "Execution",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by executions.get, executions.submit_result. Example: examples/Execution.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "TransitionRequest": {
+      "maop_name": "TransitionRequest",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by executions.transition. Example: examples/TransitionRequest.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "Transition": {
+      "maop_name": "Transition",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by executions.transition. Example: examples/Transition.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "ResultSubmission": {
+      "maop_name": "ResultSubmission",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by executions.submit_result. Example: examples/ResultSubmission.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "VerificationRequest": {
+      "maop_name": "VerificationRequest",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by verifications.evaluate. Example: examples/VerificationRequest.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "Verification": {
+      "maop_name": "Verification",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by verifications.evaluate. Example: examples/Verification.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "RecordCommit": {
+      "maop_name": "RecordCommit",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by records.commit. Example: examples/RecordCommit.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "RecordCommitted": {
+      "maop_name": "RecordCommitted",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by records.commit. Example: examples/RecordCommitted.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "ReviewRequest": {
+      "maop_name": "ReviewRequest",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by reviews.evaluate. Example: examples/ReviewRequest.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "Review": {
+      "maop_name": "Review",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by reviews.evaluate. Example: examples/Review.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "ApprovalDecision": {
+      "maop_name": "ApprovalDecision",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by approvals.decide. Example: examples/ApprovalDecision.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "Approval": {
+      "maop_name": "Approval",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by approvals.decide. Example: examples/Approval.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "EventEnvelope": {
+      "maop_name": "EventEnvelope",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Example: examples/EventEnvelope.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "Error": {
+      "maop_name": "Error",
+      "status": "refined",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Used directly by approvals.decide, commitments.create, commitments.list, compact.dispatch_work, compact.pulse, compact.settle_receipt, compact.stage_work, context.resolve, executions.get, executions.start, executions.submit_result, executions.transition, observations.ingest, plans.create, records.commit, reviews.evaluate, verifications.evaluate. Example: examples/Error.json. Additive refinement: /properties/error/properties/code/enum +['MAOP_403_AUTHORITY_INVALID', 'MAOP_403_AUTHORITY_WIDENING', 'MAOP_403_SEPARATION_OF_DUTIES', 'MAOP_403_TRUST_FLOOR', 'MAOP_409_IDEMPOTENCY_KEY_REUSED', 'MAOP_409_LEASE_CONFLICT', 'MAOP_409_LEASE_FENCED', 'MAOP_409_OUTCOME_UNRECONCILED', 'MAOP_410_LEASE_EXPIRED', 'MAOP_422_BUDGET_EXCEEDED', 'MAOP_422_EVIDENCE_MISMATCH', 'MAOP_422_GUARD_FAILED']. Description reworded (vendor-neutral)."
+    },
+    "MetricNode": {
+      "maop_name": "MetricNode",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Example: examples/MetricNode.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "ApprovalRoutingRule": {
+      "maop_name": "ApprovalRoutingRule",
+      "status": "kept",
+      "introduced_in": "v0.1",
+      "note": "Introduced in CAOP v0.1. Example: examples/ApprovalRoutingRule.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "LoopDriver": {
+      "maop_name": "LoopDriver",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Structure identical in schema/maop-v1.schema.json. Description reworded (vendor-neutral), no structural change."
+    },
+    "ExecutionLocus": {
+      "maop_name": "ExecutionLocus",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Structure identical in schema/maop-v1.schema.json."
+    },
+    "AuthCustodian": {
+      "maop_name": "AuthCustodian",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Structure identical in schema/maop-v1.schema.json. Description reworded (vendor-neutral), no structural change."
+    },
+    "AttestationTier": {
+      "maop_name": "AttestationTier",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Structure identical in schema/maop-v1.schema.json."
+    },
+    "ConformanceProfileId": {
+      "maop_name": "ConformanceProfileId",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Structure identical in schema/maop-v1.schema.json."
+    },
+    "ConformanceProfile": {
+      "maop_name": "ConformanceProfile",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/ConformanceProfile.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "PromotionPolicy": {
+      "maop_name": "PromotionPolicy",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/PromotionPolicy.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "CapabilityRegistration": {
+      "maop_name": "CapabilityRegistration",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/CapabilityRegistration.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "EpistemicStatus": {
+      "maop_name": "EpistemicStatus",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Structure identical in schema/maop-v1.schema.json."
+    },
+    "Freshness": {
+      "maop_name": "Freshness",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Structure identical in schema/maop-v1.schema.json."
+    },
+    "DependsOnAlternatives": {
+      "maop_name": "DependsOnAlternatives",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/DependsOnAlternatives.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "InvalidationContext": {
+      "maop_name": "InvalidationContext",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/InvalidationContext.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "FactProvenance": {
+      "maop_name": "FactProvenance",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/FactProvenance.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "BitemporalFact": {
+      "maop_name": "BitemporalFact",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/BitemporalFact.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "StateConfig": {
+      "maop_name": "StateConfig",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/StateConfig.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "PreCommitHook": {
+      "maop_name": "PreCommitHook",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/PreCommitHook.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "PolicyRegistration": {
+      "maop_name": "PolicyRegistration",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/PolicyRegistration.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "FailedHook": {
+      "maop_name": "FailedHook",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/FailedHook.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "ExecuteSubState": {
+      "maop_name": "ExecuteSubState",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Structure identical in schema/maop-v1.schema.json."
+    },
+    "CommitSubState": {
+      "maop_name": "CommitSubState",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Structure identical in schema/maop-v1.schema.json."
+    },
+    "DispatchStep": {
+      "maop_name": "DispatchStep",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/DispatchStep.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "DispatchDirective": {
+      "maop_name": "DispatchDirective",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/DispatchDirective.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "GoalPulseSLA": {
+      "maop_name": "GoalPulseSLA",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/GoalPulseSLA.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "PulseInput": {
+      "maop_name": "PulseInput",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Used directly by compact.pulse. Example: examples/PulseInput.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "StageWorkInput": {
+      "maop_name": "StageWorkInput",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Used directly by compact.stage_work. Example: examples/StageWorkInput.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "DispatchWorkInput": {
+      "maop_name": "DispatchWorkInput",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Used directly by compact.dispatch_work. Example: examples/DispatchWorkInput.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "SettleReceiptInput": {
+      "maop_name": "SettleReceiptInput",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Used directly by compact.settle_receipt. Example: examples/SettleReceiptInput.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "OpenLease": {
+      "maop_name": "OpenLease",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/OpenLease.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "StaleCommitment": {
+      "maop_name": "StaleCommitment",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/StaleCommitment.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "UnassignedBlocker": {
+      "maop_name": "UnassignedBlocker",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/UnassignedBlocker.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "RankedNextAction": {
+      "maop_name": "RankedNextAction",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/RankedNextAction.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "SystemAdvisory": {
+      "maop_name": "SystemAdvisory",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/SystemAdvisory.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "ResumeBrief": {
+      "maop_name": "ResumeBrief",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Example: examples/ResumeBrief.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "PulseResponse": {
+      "maop_name": "PulseResponse",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Used directly by compact.pulse. Example: examples/PulseResponse.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "StageWorkResult": {
+      "maop_name": "StageWorkResult",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Used directly by compact.stage_work. Example: examples/StageWorkResult.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "SettlementResult": {
+      "maop_name": "SettlementResult",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Used directly by compact.settle_receipt. Example: examples/SettlementResult.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "DispatchWorkResult": {
+      "maop_name": "DispatchWorkResult",
+      "status": "kept",
+      "introduced_in": "v0.1.2",
+      "note": "Introduced in CAOP v0.1.2. Used directly by compact.dispatch_work. Example: examples/DispatchWorkResult.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "SteeringDelta": {
+      "maop_name": "SteeringDelta",
+      "status": "kept",
+      "introduced_in": "v0.2",
+      "note": "Introduced in CAOP v0.2. Example: examples/SteeringDelta.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "Phase2DeferredCheck": {
+      "maop_name": "Phase2DeferredCheck",
+      "status": "kept",
+      "introduced_in": "v0.2",
+      "note": "Introduced in CAOP v0.2. Example: examples/Phase2DeferredCheck.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "TwoPhaseVerification": {
+      "maop_name": "TwoPhaseVerification",
+      "status": "kept",
+      "introduced_in": "v0.2",
+      "note": "Introduced in CAOP v0.2. Example: examples/TwoPhaseVerification.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "VerifySubState": {
+      "maop_name": "VerifySubState",
+      "status": "kept",
+      "introduced_in": "v0.2",
+      "note": "Introduced in CAOP v0.2. Example: examples/VerifySubState.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "RecordSubState": {
+      "maop_name": "RecordSubState",
+      "status": "kept",
+      "introduced_in": "v0.2",
+      "note": "Introduced in CAOP v0.2. Example: examples/RecordSubState.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "OutcomeVerification": {
+      "maop_name": "OutcomeVerification",
+      "status": "kept",
+      "introduced_in": "v0.2",
+      "note": "Introduced in CAOP v0.2. Example: examples/OutcomeVerification.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "IsolationPolicy": {
+      "maop_name": "IsolationPolicy",
+      "status": "kept",
+      "introduced_in": "v0.2",
+      "note": "Introduced in CAOP v0.2. Example: examples/IsolationPolicy.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "DistilledReturnPayload": {
+      "maop_name": "DistilledReturnPayload",
+      "status": "kept",
+      "introduced_in": "v0.2",
+      "note": "Introduced in CAOP v0.2. Example: examples/DistilledReturnPayload.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "ChildWork": {
+      "maop_name": "ChildWork",
+      "status": "kept",
+      "introduced_in": "v0.2",
+      "note": "Introduced in CAOP v0.2. Example: examples/ChildWork.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "CompactionMode": {
+      "maop_name": "CompactionMode",
+      "status": "kept",
+      "introduced_in": "v0.2",
+      "note": "Introduced in CAOP v0.2. Example: examples/CompactionMode.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "CapabilityStub": {
+      "maop_name": "CapabilityStub",
+      "status": "kept",
+      "introduced_in": "v0.2",
+      "note": "Introduced in CAOP v0.2. Example: examples/CapabilityStub.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "HydratedCapability": {
+      "maop_name": "HydratedCapability",
+      "status": "kept",
+      "introduced_in": "v0.2",
+      "note": "Introduced in CAOP v0.2. Example: examples/HydratedCapability.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "DispatchWorkInputV02": {
+      "maop_name": "DispatchWorkInputV02",
+      "status": "kept",
+      "introduced_in": "v0.2",
+      "note": "Introduced in CAOP v0.2. Example: examples/DispatchWorkInputV02.json. Structure identical in schema/maop-v1.schema.json."
+    },
+    "PulseInputV02": {
+      "maop_name": "PulseInputV02",
+      "status": "kept",
+      "introduced_in": "v0.2",
+      "note": "Introduced in CAOP v0.2. Example: examples/PulseInputV02.json. Structure identical in schema/maop-v1.schema.json."
+    }
+  },
+  "examples": {
+    "Approval.json": {
+      "definition": "Approval",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/Approval in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/Approval.json, unchanged."
+    },
+    "ApprovalDecision.json": {
+      "definition": "ApprovalDecision",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/ApprovalDecision in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/ApprovalDecision.json, unchanged."
+    },
+    "ApprovalRoutingRule.json": {
+      "definition": "ApprovalRoutingRule",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/ApprovalRoutingRule in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/ApprovalRoutingRule.json, unchanged."
+    },
+    "BitemporalFact.json": {
+      "definition": "BitemporalFact",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/BitemporalFact in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/BitemporalFact.json, unchanged."
+    },
+    "CapabilityDescriptor.json": {
+      "definition": "CapabilityDescriptor",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/CapabilityDescriptor in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/CapabilityDescriptor.json, unchanged."
+    },
+    "CapabilityRegistration.json": {
+      "definition": "CapabilityRegistration",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/CapabilityRegistration in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/CapabilityRegistration.json, unchanged."
+    },
+    "CapabilityStub.json": {
+      "definition": "CapabilityStub",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/CapabilityStub in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/CapabilityStub.json, unchanged."
+    },
+    "ChildWork.json": {
+      "definition": "ChildWork",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/ChildWork in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/ChildWork.json, unchanged."
+    },
+    "Commitment.json": {
+      "definition": "Commitment",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/Commitment in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/Commitment.json, unchanged."
+    },
+    "CommitmentCreate.json": {
+      "definition": "CommitmentCreate",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/CommitmentCreate in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/CommitmentCreate.json, unchanged."
+    },
+    "CompactionMode.json": {
+      "definition": "CompactionMode",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/CompactionMode in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/CompactionMode.json, unchanged."
+    },
+    "ConformanceProfile.json": {
+      "definition": "ConformanceProfile",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/ConformanceProfile in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/ConformanceProfile.json, unchanged."
+    },
+    "ContextBundle.json": {
+      "definition": "ContextBundle",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/ContextBundle in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/ContextBundle.json, unchanged."
+    },
+    "ContextResolveRequest.json": {
+      "definition": "ContextResolveRequest",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/ContextResolveRequest in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/ContextResolveRequest.json, unchanged."
+    },
+    "DependsOnAlternatives.json": {
+      "definition": "DependsOnAlternatives",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/DependsOnAlternatives in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/DependsOnAlternatives.json, unchanged."
+    },
+    "DispatchDirective.json": {
+      "definition": "DispatchDirective",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/DispatchDirective in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/DispatchDirective.json, unchanged."
+    },
+    "DispatchStep.json": {
+      "definition": "DispatchStep",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/DispatchStep in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/DispatchStep.json, unchanged."
+    },
+    "DispatchWorkInput.json": {
+      "definition": "DispatchWorkInput",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/DispatchWorkInput in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/DispatchWorkInput.json, unchanged."
+    },
+    "DispatchWorkInputV02.json": {
+      "definition": "DispatchWorkInputV02",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/DispatchWorkInputV02 in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/DispatchWorkInputV02.json, unchanged."
+    },
+    "DispatchWorkResult.json": {
+      "definition": "DispatchWorkResult",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/DispatchWorkResult in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/DispatchWorkResult.json, unchanged."
+    },
+    "DistilledReturnPayload.json": {
+      "definition": "DistilledReturnPayload",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/DistilledReturnPayload in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/DistilledReturnPayload.json, unchanged."
+    },
+    "Error.json": {
+      "definition": "Error",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/Error in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/Error.json, unchanged."
+    },
+    "EventEnvelope.json": {
+      "definition": "EventEnvelope",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/EventEnvelope in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/EventEnvelope.json, unchanged."
+    },
+    "Execution.json": {
+      "definition": "Execution",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/Execution in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/Execution.json, unchanged."
+    },
+    "ExecutionAccepted.json": {
+      "definition": "ExecutionAccepted",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/ExecutionAccepted in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/ExecutionAccepted.json, unchanged."
+    },
+    "ExecutionCreate.json": {
+      "definition": "ExecutionCreate",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/ExecutionCreate in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/ExecutionCreate.json, unchanged."
+    },
+    "Fact.json": {
+      "definition": "Fact",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/Fact in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/Fact.json, unchanged."
+    },
+    "FactProvenance.json": {
+      "definition": "FactProvenance",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/FactProvenance in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/FactProvenance.json, unchanged."
+    },
+    "FailedHook.json": {
+      "definition": "FailedHook",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/FailedHook in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/FailedHook.json, unchanged."
+    },
+    "GoalPulseSLA.json": {
+      "definition": "GoalPulseSLA",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/GoalPulseSLA in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/GoalPulseSLA.json, unchanged."
+    },
+    "HydratedCapability.json": {
+      "definition": "HydratedCapability",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/HydratedCapability in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/HydratedCapability.json, unchanged."
+    },
+    "InvalidationContext.json": {
+      "definition": "InvalidationContext",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/InvalidationContext in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/InvalidationContext.json, unchanged."
+    },
+    "IsolationPolicy.json": {
+      "definition": "IsolationPolicy",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/IsolationPolicy in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/IsolationPolicy.json, unchanged."
+    },
+    "MetricNode.json": {
+      "definition": "MetricNode",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/MetricNode in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/MetricNode.json, unchanged."
+    },
+    "ObservationAccepted.json": {
+      "definition": "ObservationAccepted",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/ObservationAccepted in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/ObservationAccepted.json, unchanged."
+    },
+    "ObservationCreate.json": {
+      "definition": "ObservationCreate",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/ObservationCreate in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/ObservationCreate.json, unchanged."
+    },
+    "OpenLease.json": {
+      "definition": "OpenLease",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/OpenLease in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/OpenLease.json, unchanged."
+    },
+    "OutcomeVerification.json": {
+      "definition": "OutcomeVerification",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/OutcomeVerification in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/OutcomeVerification.json, unchanged."
+    },
+    "Phase2DeferredCheck.json": {
+      "definition": "Phase2DeferredCheck",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/Phase2DeferredCheck in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/Phase2DeferredCheck.json, unchanged."
+    },
+    "Plan.json": {
+      "definition": "Plan",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/Plan in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/Plan.json, unchanged."
+    },
+    "PlanCreate.json": {
+      "definition": "PlanCreate",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/PlanCreate in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/PlanCreate.json, unchanged."
+    },
+    "Policy.json": {
+      "definition": "Policy",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/Policy in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/Policy.json, unchanged."
+    },
+    "PolicyRegistration.json": {
+      "definition": "PolicyRegistration",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/PolicyRegistration in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/PolicyRegistration.json, unchanged."
+    },
+    "PreCommitHook.json": {
+      "definition": "PreCommitHook",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/PreCommitHook in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/PreCommitHook.json, unchanged."
+    },
+    "PromotionPolicy.json": {
+      "definition": "PromotionPolicy",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/PromotionPolicy in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/PromotionPolicy.json, unchanged."
+    },
+    "PulseInput.json": {
+      "definition": "PulseInput",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/PulseInput in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/PulseInput.json, unchanged."
+    },
+    "PulseInputV02.json": {
+      "definition": "PulseInputV02",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/PulseInputV02 in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/PulseInputV02.json, unchanged."
+    },
+    "PulseResponse.json": {
+      "definition": "PulseResponse",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/PulseResponse in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/PulseResponse.json, unchanged."
+    },
+    "RankedNextAction.json": {
+      "definition": "RankedNextAction",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/RankedNextAction in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/RankedNextAction.json, unchanged."
+    },
+    "RecordCommit.json": {
+      "definition": "RecordCommit",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/RecordCommit in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/RecordCommit.json, unchanged."
+    },
+    "RecordCommitted.json": {
+      "definition": "RecordCommitted",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/RecordCommitted in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/RecordCommitted.json, unchanged."
+    },
+    "RecordSubState.json": {
+      "definition": "RecordSubState",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/RecordSubState in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/RecordSubState.json, unchanged."
+    },
+    "ResultSubmission.json": {
+      "definition": "ResultSubmission",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/ResultSubmission in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/ResultSubmission.json, unchanged."
+    },
+    "ResumeBrief.json": {
+      "definition": "ResumeBrief",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/ResumeBrief in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/ResumeBrief.json, unchanged."
+    },
+    "Review.json": {
+      "definition": "Review",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/Review in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/Review.json, unchanged."
+    },
+    "ReviewRequest.json": {
+      "definition": "ReviewRequest",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/ReviewRequest in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/ReviewRequest.json, unchanged."
+    },
+    "SettleReceiptInput.json": {
+      "definition": "SettleReceiptInput",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/SettleReceiptInput in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/SettleReceiptInput.json, unchanged."
+    },
+    "SettlementResult.json": {
+      "definition": "SettlementResult",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/SettlementResult in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/SettlementResult.json, unchanged."
+    },
+    "StageWorkInput.json": {
+      "definition": "StageWorkInput",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/StageWorkInput in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/StageWorkInput.json, unchanged."
+    },
+    "StageWorkResult.json": {
+      "definition": "StageWorkResult",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/StageWorkResult in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/StageWorkResult.json, unchanged."
+    },
+    "StaleCommitment.json": {
+      "definition": "StaleCommitment",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/StaleCommitment in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/StaleCommitment.json, unchanged."
+    },
+    "StateConfig.json": {
+      "definition": "StateConfig",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/StateConfig in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/StateConfig.json, unchanged."
+    },
+    "SteeringDelta.json": {
+      "definition": "SteeringDelta",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/SteeringDelta in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/SteeringDelta.json, unchanged."
+    },
+    "SystemAdvisory.json": {
+      "definition": "SystemAdvisory",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/SystemAdvisory in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/SystemAdvisory.json, unchanged."
+    },
+    "Transition.json": {
+      "definition": "Transition",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/Transition in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/Transition.json, unchanged."
+    },
+    "TransitionRequest.json": {
+      "definition": "TransitionRequest",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/TransitionRequest in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/TransitionRequest.json, unchanged."
+    },
+    "TwoPhaseVerification.json": {
+      "definition": "TwoPhaseVerification",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/TwoPhaseVerification in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/TwoPhaseVerification.json, unchanged."
+    },
+    "UnassignedBlocker.json": {
+      "definition": "UnassignedBlocker",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/UnassignedBlocker in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/UnassignedBlocker.json, unchanged."
+    },
+    "Verification.json": {
+      "definition": "Verification",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/Verification in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/Verification.json, unchanged."
+    },
+    "VerificationRequest.json": {
+      "definition": "VerificationRequest",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/VerificationRequest in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/VerificationRequest.json, unchanged."
+    },
+    "VerifySubState.json": {
+      "definition": "VerifySubState",
+      "definition_exists": true,
+      "valid_against_caop_v0.2": true,
+      "maop_status": "kept",
+      "note": "Validates against #/$defs/VerifySubState in CAOP v0.2 and therefore against the same-named MAOP v1 definition (kept or additively refined). File stays at examples/VerifySubState.json, unchanged."
+    }
+  },
+  "guarantees": [
+    {
+      "id": "G-001",
+      "spec_line": 789,
+      "spec_section": "14.2.1 Epistemic Status Enum (epistemic_status)",
+      "keywords": [
+        "MUST"
+      ],
+      "text": "Every fact and commitment in the State API MUST carry one of three epistemic states (adoption), and separately a freshness value: [Q1]",
+      "kind": "normative",
+      "status": "kept",
+      "maop_section": "State: epistemic status, freshness and causal invalidation",
+      "note": "Same three adoption states and separate freshness value (EpistemicStatus, Freshness).",
+      "spec_numbered_section": "14.2.1 Epistemic Status Enum (epistemic_status)"
+    },
+    {
+      "id": "G-002",
+      "spec_line": 845,
+      "spec_section": "14.2.3 Synchronous Causal Invalidation Rule",
+      "keywords": [
+        "MUST"
+      ],
+      "text": "Whenever a new fact F_new supersedes an existing fact F_old (setting F_old.transaction_time.superseded_at), the Creasura kernel MUST, synchronously and within the same database transaction, re-evaluate every dependent commitment or fact reachable through reverse depends_on_fact_ids and depends_on_alternatives edges: [Q2]",
+      "kind": "normative",
+      "status": "refined",
+      "maop_section": "State: epistemic status, freshness and causal invalidation",
+      "note": "Obligation unchanged; subject reworded from 'the Creasura kernel' to 'the runtime' (vendor-neutral). MAOP also treats each invalidation as a trigger for supervision.evaluate (event-driven re-evaluation of durable guards).",
+      "spec_numbered_section": "14.2.3 Synchronous Causal Invalidation Rule"
+    },
+    {
+      "id": "G-003",
+      "spec_line": 850,
+      "spec_section": "14.2.3 Synchronous Causal Invalidation Rule",
+      "keywords": [
+        "MUST"
+      ],
+      "text": "- The kernel MUST enforce a declared max_invalidation_subgraph limit. An update whose affected subgraph exceeds it is rejected before commit with CAOP_413_INVALIDATION_SUBGRAPH_TOO_LARGE (HTTP 413, in the v0.1 error envelope), and nothing is partially applied. [Q2]",
+      "kind": "normative",
+      "status": "kept",
+      "maop_section": "State: epistemic status, freshness and causal invalidation",
+      "note": "Same max_invalidation_subgraph limit and CAOP_413_INVALIDATION_SUBGRAPH_TOO_LARGE error code.",
+      "spec_numbered_section": "14.2.3 Synchronous Causal Invalidation Rule"
+    },
+    {
+      "id": "G-004",
+      "spec_line": 895,
+      "spec_section": "14.3 Policy API & Deterministic Pre-Commit Hooks",
+      "keywords": [
+        "MUST"
+      ],
+      "text": "The kernel MUST reject unknown or cross-workspace fact IDs in depends_on_fact_ids or depends_on_alternatives with CAOP_422_PRECOMMIT_UNKNOWN_FACT_ID. [Q3]",
+      "kind": "normative",
+      "status": "kept",
+      "maop_section": "Guards: policy and pre-commit hooks (durable guards)",
+      "note": "Same CAOP_422_PRECOMMIT_UNKNOWN_FACT_ID rejection; MAOP models it as an evidence Guard.",
+      "spec_numbered_section": "14.3 Policy API & Deterministic Pre-Commit Hooks"
+    },
+    {
+      "id": "G-005",
+      "spec_line": 925,
+      "spec_section": "14.4 Capability API Extensions (execution_locus & Artifact Validation)",
+      "keywords": [
+        "MUST"
+      ],
+      "text": "Every capability registered in the Capability API MUST declare its execution locus, credential custodian, lease timeout, provider-specific receipt verification keys, and Stage-2 promotion thresholds.",
+      "kind": "normative",
+      "status": "kept",
+      "maop_section": "Capabilities: registration and lazy discovery",
+      "note": "Same CapabilityRegistration obligations; agents.register advertises capabilities lazily.",
+      "spec_numbered_section": "14.4 Capability API Extensions (execution_locus & Artifact Validation)"
+    },
+    {
+      "id": "G-006",
+      "spec_line": 955,
+      "spec_section": "14.5.2 Normative Stage-1 Dispatch Response (Anti-Termination Envelope)",
+      "keywords": [
+        "MUST"
+      ],
+      "text": "To prevent conversational LLMs from treating dispatch as a completed turn and replying to the user before invoking their native tool, caop_dispatch_work in Stage 1 MUST return the following continuation envelope:",
+      "kind": "normative",
+      "status": "kept",
+      "maop_section": "Act: dispatch and host execution",
+      "note": "Same Stage-1 continuation envelope (DispatchDirective).",
+      "spec_numbered_section": "14.5.2 Normative Stage-1 Dispatch Response (Anti-Termination Envelope)"
+    },
+    {
+      "id": "G-007",
+      "spec_line": 996,
+      "spec_section": "14.5.3 Thread Write-Locking on Open Leases (CAOP_409_UNSETTLED_EXECUTION_LEASE)",
+      "keywords": [
+        "MUST"
+      ],
+      "text": "A workspace thread MAY hold at most one unsettled EXECUTE_DISPATCHED or EXECUTE_EXPIRED invocation at a time. Any call to caop_stage_work or caop_dispatch_work while a lease is open MUST be rejected with CAOP_409_UNSETTLED_EXECUTION_LEASE, forcing the host client to verify whether the previous native tool call succeeded and settle the receipt via caop_settle_receipt first.",
+      "kind": "normative",
+      "status": "refined",
+      "maop_section": "Leases and fencing",
+      "note": "Same one-open-lease rule and CAOP_409_UNSETTLED_EXECUTION_LEASE; MAOP adds fenced leases (Lease.fencing_token, monotonic) and leases.renew, so a stale holder cannot settle.",
+      "spec_numbered_section": "14.5.3 Thread Write-Locking on Open Leases (CAOP_409_UNSETTLED_EXECUTION_LEASE)"
+    },
+    {
+      "id": "G-008",
+      "spec_line": 1252,
+      "spec_section": "14.7 Reference Host Operating Prompt (CAOP v0.1.2)",
+      "keywords": [
+        "MUST"
+      ],
+      "text": "Deployments operating in ChatGPT (Custom GPT Instructions) or Claude (Project / MCP System Prompt) MUST include the following normative instruction block:",
+      "kind": "normative",
+      "status": "refined",
+      "maop_section": "Bindings: host operating prompt",
+      "note": "Normative block kept verbatim; the obligation is generalised from two named vendor hosts to any conversational host (vendor names become informative examples).",
+      "spec_numbered_section": "14.7 Reference Host Operating Prompt (CAOP v0.1.2)"
+    },
+    {
+      "id": "G-009",
+      "spec_line": 1386,
+      "spec_section": "Normative Schema: Two-Phase Verification & Mid-Flight Steering",
+      "keywords": [
+        "MUST"
+      ],
+      "text": "An APPROVE_WITH_STEERING_DELTA decision binds the approval to the patched plan, not the staged one. The kernel MUST apply the delta, re-run every Policy pre-commit hook and minimum_attestation check on the patched plan, and dispatch only if all pass; otherwise the work item returns to CANDIDATE_PROPOSAL with CAOP_422_PRECOMMIT_HOOK_FAILED. A delta can only narrow authority: added_policy_constraints may add restrictions but never remove existing ones. [c]",
+      "kind": "normative",
+      "status": "kept",
+      "maop_section": "Two-phase verification and approval steering",
+      "note": "Same steering rule; MAOP states it as an authority Guard (a delta can only narrow an AuthorityGrant).",
+      "spec_numbered_section": "15.1 Outcome verification and approval steering [a]"
+    },
+    {
+      "id": "G-010",
+      "spec_line": 1398,
+      "spec_section": "15.2 Long-horizon context: sub-agents, compaction and lazy schemas [a]",
+      "keywords": [
+        "MUST"
+      ],
+      "text": "- **Hierarchical Sub-Agent Context Isolation:** Heavy research or artifact-generation steps spawn an isolated child Work scope (parent_work_id) with its own ephemeral scratchpad. When the child completes RECORD, its raw intermediate turns are discarded and only the ratified commitment and distilled bitemporal facts merge back into the parent control plane. Pruning removes raw traces from the active context, not from provenance: every promoted fact MUST keep a provenance pointer (child work_id, invocation IDs and a content hash of the pruned trace). Raw traces MAY be deleted only under a declared retention policy. [d]",
+      "kind": "normative",
+      "status": "refined",
+      "maop_section": "Sub-agent isolation, compaction and lazy discovery",
+      "note": "Same provenance-pointer rule; MAOP adds Delegation (isolation policy, budget, authority subset) and Receipt.causal_parents so pruned traces stay traceable.",
+      "spec_numbered_section": "15.2 Long-horizon context: sub-agents, compaction and lazy schemas [a]"
+    },
+    {
+      "id": "G-011",
+      "spec_line": 1494,
+      "spec_section": "Changes from the submitted draft",
+      "keywords": [
+        "MUST"
+      ],
+      "text": "- Informative note in §14.7 (the “MUST include” text is kept verbatim): “Conformance is determined by kernel behaviour; the kernel cannot verify that a host deployment includes this prompt.”",
+      "kind": "editorial_record",
+      "status": "kept",
+      "maop_section": "Compatibility and migration (CAOP history is frozen)",
+      "note": "Editorial-history entry recording the change that produced SPEC.md line 1252; kept as frozen history. Its normative content is tracked by that line's guarantee.",
+      "records_guarantee": "G-008"
+    },
+    {
+      "id": "G-012",
+      "spec_line": 1502,
+      "spec_section": "Changes from the submitted draft",
+      "keywords": [
+        "MUST"
+      ],
+      "text": "- “MUST carry one of four epistemic states:” → “MUST carry one of three epistemic states (adoption), and separately a freshness value:”",
+      "kind": "editorial_record",
+      "status": "kept",
+      "maop_section": "Compatibility and migration (CAOP history is frozen)",
+      "note": "Editorial-history entry recording the change that produced SPEC.md line 789; kept as frozen history. Its normative content is tracked by that line's guarantee.",
+      "records_guarantee": "G-001"
+    },
+    {
+      "id": "G-013",
+      "spec_line": 1511,
+      "spec_section": "Changes from the submitted draft",
+      "keywords": [
+        "MUST"
+      ],
+      "text": "- §14.2.3 rewritten. Submitted text: “Whenever a new fact F_new supersedes an existing fact F_old (setting F_old.transaction_time.superseded_at), the Creasura kernel MUST synchronously traverse all reverse edges where depends_on_fact_ids contains F_old.fact_id and transition every active dependent commitment or fact to epistemic_status: \"STALE_UPSTREAM_PREMISE\" within the same database transaction.” Now: synchronous re-evaluation in the same transaction of every dependent reachable through reverse depends_on_fact_ids and depends_on_alternatives edges; a dependent becomes stale only when a required premise has no remaining CURRENT support; optional depends_on_alternatives groups interchangeable supports; staleness propagates transitively; a declared max_invalidation_subgraph limit rejects oversized updates before commit with CAOP_413_INVALIDATION_SUBGRAPH_TOO_LARGE, nothing partially applied; re-support restores CURRENT; superseded facts and history are never rewritten. The §14.2.1 STALE_UPSTREAM_PREMISE definition gains “, under the support rule of §14.2.3”.",
+      "kind": "editorial_record",
+      "status": "kept",
+      "maop_section": "Compatibility and migration (CAOP history is frozen)",
+      "note": "Editorial-history entry recording the change that produced SPEC.md line 845; kept as frozen history. Its normative content is tracked by that line's guarantee.",
+      "records_guarantee": "G-002"
+    },
+    {
+      "id": "G-014",
+      "spec_line": 1513,
+      "spec_section": "Changes from the submitted draft",
+      "keywords": [
+        "MUST"
+      ],
+      "text": "- Sentence added in §14.3: “The kernel MUST reject unknown or cross-workspace fact IDs in depends_on_fact_ids or depends_on_alternatives with CAOP_422_PRECOMMIT_UNKNOWN_FACT_ID.”",
+      "kind": "editorial_record",
+      "status": "kept",
+      "maop_section": "Compatibility and migration (CAOP history is frozen)",
+      "note": "Editorial-history entry recording the change that produced SPEC.md line 895; kept as frozen history. Its normative content is tracked by that line's guarantee.",
+      "records_guarantee": "G-004"
+    },
+    {
+      "id": "G-015",
+      "spec_line": 1541,
+      "spec_section": "Changes from the submitted draft",
+      "keywords": [
+        "MUST"
+      ],
+      "text": "- Normative paragraph added after the caop_dispatch_work schema: “An APPROVE_WITH_STEERING_DELTA decision binds the approval to the patched plan, not the staged one. The kernel MUST apply the delta, re-run every Policy pre-commit hook and minimum_attestation check on the patched plan, and dispatch only if all pass; otherwise the work item returns to CANDIDATE_PROPOSAL with CAOP_422_PRECOMMIT_HOOK_FAILED. A delta can only narrow authority: added_policy_constraints may add restrictions but never remove existing ones.”",
+      "kind": "editorial_record",
+      "status": "kept",
+      "maop_section": "Compatibility and migration (CAOP history is frozen)",
+      "note": "Editorial-history entry recording the change that produced SPEC.md line 1386; kept as frozen history. Its normative content is tracked by that line's guarantee.",
+      "records_guarantee": "G-009"
+    },
+    {
+      "id": "G-016",
+      "spec_line": 1543,
+      "spec_section": "Changes from the submitted draft",
+      "keywords": [
+        "MUST"
+      ],
+      "text": "- Added to the sub-agent isolation bullet, after “its raw intermediate turns are discarded …”: “Pruning removes raw traces from the active context, not from provenance: every promoted fact MUST keep a provenance pointer (child work_id, invocation IDs and a content hash of the pruned trace). Raw traces MAY be deleted only under a declared retention policy.” The IsolationPolicy and DistilledReturnPayload schemas gain the optional fields trace_hash and retention_policy.",
+      "kind": "editorial_record",
+      "status": "kept",
+      "maop_section": "Compatibility and migration (CAOP history is frozen)",
+      "note": "Editorial-history entry recording the change that produced SPEC.md line 1398; kept as frozen history. Its normative content is tracked by that line's guarantee.",
+      "records_guarantee": "G-010"
+    }
+  ],
+  "supplementary_requirements": [
+    {
+      "id": "S-001",
+      "spec_line": 80,
+      "spec_section": "Implementation status",
+      "text": "- In the reference kernel, a verification capability (`verification_capability_id`) must be side-effect-free: it may only read external state. Dispatch refuses a deferred check whose capability is not registered as side-effect-free.",
+      "maop_section": "Two-phase verification and approval steering",
+      "spec_numbered_section": "Implementation status",
+      "status": "kept",
+      "note": "Kept unchanged in meaning."
+    },
+    {
+      "id": "S-002",
+      "spec_line": 91,
+      "spec_section": "Runtime checks beyond the schema",
+      "text": "- Receipt nonce: a Stage-1 receipt must echo the `required_nonce` from dispatch (`CAOP_422_VERIFY_ARTIFACT_MISMATCH` otherwise).",
+      "maop_section": "Receipts and evidence",
+      "spec_numbered_section": "Runtime checks beyond the schema",
+      "status": "kept",
+      "note": "Kept unchanged in meaning."
+    },
+    {
+      "id": "S-003",
+      "spec_line": 92,
+      "spec_section": "Runtime checks beyond the schema",
+      "text": "- Required receipt fields: the receipt’s `raw_output` must hold every field in the capability’s `required_receipt_fields`.",
+      "maop_section": "Receipts and evidence",
+      "spec_numbered_section": "Runtime checks beyond the schema",
+      "status": "kept",
+      "note": "Kept unchanged in meaning."
+    },
+    {
+      "id": "S-004",
+      "spec_line": 188,
+      "spec_section": "2.3 State",
+      "text": "> **Critical requirement: provenance.** Every material fact should have a traceable origin.",
+      "maop_section": "Core abstractions",
+      "spec_numbered_section": "2.3 State",
+      "status": "kept",
+      "note": "Kept unchanged in meaning."
+    },
+    {
+      "id": "S-005",
+      "spec_line": 206,
+      "spec_section": "2.4 Capability",
+      "text": "A capability contract should describe what an operation *can do*, not merely what an agent is instructed to attempt.",
+      "maop_section": "Core abstractions",
+      "spec_numbered_section": "2.4 Capability",
+      "status": "kept",
+      "note": "Kept unchanged in meaning."
+    },
+    {
+      "id": "S-006",
+      "spec_line": 222,
+      "spec_section": "2.5 Policy",
+      "text": "> **Advisory vs. enforced.** A policy written in an assistant’s instructions is advisory. A policy enforced by a runtime before executing an action is an actual control. Every Creasura policy must state which it is.",
+      "maop_section": "Core abstractions",
+      "spec_numbered_section": "2.5 Policy",
+      "status": "refined",
+      "note": "Kept; wording made vendor-neutral (no vendor or operating-system subject)."
+    },
+    {
+      "id": "S-007",
+      "spec_line": 269,
+      "spec_section": "4.1 Observe",
+      "text": "> **Invariant:** replaying the same source event must not create duplicate observations.",
+      "maop_section": "Outer supervision lifecycle",
+      "spec_numbered_section": "4.1 Observe",
+      "status": "kept",
+      "note": "Kept unchanged in meaning."
+    },
+    {
+      "id": "S-008",
+      "spec_line": 294,
+      "spec_section": "4.2 Understand",
+      "text": "This operation should distinguish retrieved facts from inferred interpretations.",
+      "maop_section": "Outer supervision lifecycle",
+      "spec_numbered_section": "4.2 Understand",
+      "status": "kept",
+      "note": "Kept unchanged in meaning."
+    },
+    {
+      "id": "S-009",
+      "spec_line": 338,
+      "spec_section": "4.4 Plan",
+      "text": "The planner may use an LLM. The runtime must still validate the generated plan against schemas, dependencies, and policy constraints.",
+      "maop_section": "Outer supervision lifecycle",
+      "spec_numbered_section": "4.4 Plan",
+      "status": "kept",
+      "note": "Kept unchanged in meaning."
+    },
+    {
+      "id": "S-010",
+      "spec_line": 369,
+      "spec_section": "4.6 Verify",
+      "text": "Verification can include deterministic checks, human approval, or model-based evaluation. **The verdict must identify which checks were performed.**",
+      "maop_section": "Outer supervision lifecycle",
+      "spec_numbered_section": "4.6 Verify",
+      "status": "kept",
+      "note": "Kept unchanged in meaning."
+    },
+    {
+      "id": "S-011",
+      "spec_line": 386,
+      "spec_section": "4.7 Record",
+      "text": "> **Invariant:** a conflicting state version must reject the transaction or invoke an explicitly defined conflict-resolution policy.",
+      "maop_section": "Outer supervision lifecycle",
+      "spec_numbered_section": "4.7 Record",
+      "status": "kept",
+      "note": "Kept unchanged in meaning."
+    },
+    {
+      "id": "S-012",
+      "spec_line": 410,
+      "spec_section": "5. Execution state machine",
+      "text": "The eight lifecycle stages should not be confused with execution states.",
+      "maop_section": "Child lifecycle (execution state machine)",
+      "spec_numbered_section": "5. Execution state machine",
+      "status": "kept",
+      "note": "Kept unchanged in meaning."
+    },
+    {
+      "id": "S-013",
+      "spec_line": 443,
+      "spec_section": "5. Execution state machine",
+      "text": "The API must reject invalid transitions.",
+      "maop_section": "Child lifecycle (execution state machine)",
+      "spec_numbered_section": "5. Execution state machine",
+      "status": "kept",
+      "note": "Kept unchanged in meaning."
+    },
+    {
+      "id": "S-014",
+      "spec_line": 454,
+      "spec_section": "5. Execution state machine",
+      "text": "A transition from CREATED directly to COMPLETED should be rejected unless the work type explicitly supports that shortcut. The runtime persists each accepted transition with an actor, timestamp, reason, and correlation ID.",
+      "maop_section": "Child lifecycle (execution state machine)",
+      "spec_numbered_section": "5. Execution state machine",
+      "status": "kept",
+      "note": "Kept unchanged in meaning."
+    },
+    {
+      "id": "S-015",
+      "spec_line": 464,
+      "spec_section": "6. Capability API",
+      "text": "The boundary between the OS and the assistants and services that do the work. The OS must not assume every provider supports the same features.",
+      "maop_section": "Capabilities: registration and lazy discovery",
+      "spec_numbered_section": "6. Capability API",
+      "status": "refined",
+      "note": "Kept; wording made vendor-neutral (no vendor or operating-system subject)."
+    },
+    {
+      "id": "S-016",
+      "spec_line": 517,
+      "spec_section": "6.1 Native assistant mapping",
+      "text": "> **Note:** Programmatic invocation of an assistant’s native work surfaces must use an explicitly supported interface. Do not assume arbitrary sessions can be launched through MCP.",
+      "maop_section": "Capabilities: registration and lazy discovery",
+      "spec_numbered_section": "6.1 Native assistant mapping",
+      "status": "kept",
+      "note": "Kept unchanged in meaning."
+    },
+    {
+      "id": "S-017",
+      "spec_line": 538,
+      "spec_section": "7. Cross-cutting contracts",
+      "text": "> **v0.2:** An approval can steer the work it approves: APPROVE_WITH_STEERING_DELTA binds the approval to a patched plan, which must pass every policy check again. See [§15.1](#151-outcome-verification-and-approval-steering-a).",
+      "maop_section": "Two-phase verification and approval steering",
+      "spec_numbered_section": "7. Cross-cutting contracts",
+      "status": "kept",
+      "note": "Kept unchanged in meaning."
+    }
+  ],
+  "additions": {
+    "operations": [
+      {
+        "method": "POST",
+        "path": "/maop/v1/agents",
+        "operationId": "agents.register",
+        "justification": "CAOP has principals but no agent identity: roles and capabilities could not be declared per agent, so separation of duties (implementer != reviewer != approver) could not be checked. Capabilities are advertised as stubs and hydrated lazily, preserving v0.2 lazy discovery.",
+        "present_in_maop_openapi": true
+      },
+      {
+        "method": "POST",
+        "path": "/maop/v1/delegations",
+        "operationId": "delegations.create",
+        "justification": "v0.2 isolates child work (parent_work_id, isolation_policy) but only through stage_work. A first-class delegation lets a supervisor hand work to another agent with an isolation policy, a budget and an authority subset that can only narrow the parent's authority (Act->Coordinate edge).",
+        "present_in_maop_openapi": true
+      },
+      {
+        "method": "GET",
+        "path": "/maop/v1/delegations/{delegation_id}",
+        "operationId": "delegations.get",
+        "justification": "Read model for a delegation and its child lifecycle state, so a supervisor can re-evaluate without polling executions one by one.",
+        "present_in_maop_openapi": true
+      },
+      {
+        "method": "POST",
+        "path": "/maop/v1/leases/{lease_id}/renew",
+        "operationId": "leases.renew",
+        "justification": "v0.2 leases have a timeout but no renewal or fencing. Renewal with a monotonic fencing_token prevents a holder whose lease expired from settling a receipt after another holder took over (split-brain).",
+        "present_in_maop_openapi": true
+      },
+      {
+        "method": "GET",
+        "path": "/maop/v1/receipts/{receipt_id}",
+        "operationId": "receipts.get",
+        "justification": "Receipts were only returned inline by settle_receipt. A stable read path with idempotency_key, outcome (including outcome_unknown) and causal_parents makes recovery and audit possible after a crash.",
+        "present_in_maop_openapi": true
+      },
+      {
+        "method": "POST",
+        "path": "/maop/v1/supervision/{work_id}/evaluate",
+        "operationId": "supervision.evaluate",
+        "justification": "CAOP re-evaluates only on pulse. Event-driven re-evaluation of durable guards returns the next outer transition (including Act->Decide, Act->Coordinate, Verify->Act and any->Recover) with the guards that passed and failed.",
+        "present_in_maop_openapi": true
+      }
+    ],
+    "definitions": [
+      {
+        "name": "AgentIdentity",
+        "justification": "Stable identity of an agent (who acts), distinct from PrincipalRef (who is accountable).",
+        "present_in_maop_schema": true
+      },
+      {
+        "name": "AgentRole",
+        "justification": "Enum supervisor, planner, implementer, reviewer, verifier, approver, observer: needed for separation-of-duties guards.",
+        "present_in_maop_schema": true
+      },
+      {
+        "name": "AgentRegistration",
+        "justification": "Request/response body of agents.register: identity, roles and lazily advertised capability stubs.",
+        "present_in_maop_schema": true
+      },
+      {
+        "name": "Delegation",
+        "justification": "First-class supervisor-to-child work record: isolation policy, budget, authority subset, child lifecycle state.",
+        "present_in_maop_schema": true
+      },
+      {
+        "name": "DelegationCreate",
+        "justification": "Request body of delegations.create.",
+        "present_in_maop_schema": true
+      },
+      {
+        "name": "AuthorityGrant",
+        "justification": "Explicit, expiring, scoped authority with trust_level (T0_relayed, T1_attested); delegation and steering can only narrow it.",
+        "present_in_maop_schema": true
+      },
+      {
+        "name": "Lease",
+        "justification": "Fenced execution lease (lease_id, holder, fencing_token, expires_at); generalises OpenLease.",
+        "present_in_maop_schema": true
+      },
+      {
+        "name": "LeaseRenewal",
+        "justification": "Request body of leases.renew; the runtime rejects a stale fencing_token.",
+        "present_in_maop_schema": true
+      },
+      {
+        "name": "Receipt",
+        "justification": "Durable action receipt (idempotency_key, outcome incl. outcome_unknown, evidence_refs, causal_parents) for audit and recovery.",
+        "present_in_maop_schema": true
+      },
+      {
+        "name": "SupervisionStage",
+        "justification": "Enum of outer-lifecycle stages observe ... closed, including recover, so transitions are machine-checkable.",
+        "present_in_maop_schema": true
+      },
+      {
+        "name": "ChildLifecycleState",
+        "justification": "Enum of child-work states proposed ... expired, mapping delegated work onto the inner lifecycle.",
+        "present_in_maop_schema": true
+      },
+      {
+        "name": "Guard",
+        "justification": "Durable guard (authority, policy, evidence, freshness, lease, separation_of_duties, budget) re-evaluated on events, not only at commit.",
+        "present_in_maop_schema": true
+      },
+      {
+        "name": "SupervisionEvaluation",
+        "justification": "Request/response body of supervision.evaluate.",
+        "present_in_maop_schema": true
+      },
+      {
+        "name": "TransitionDecision",
+        "justification": "Result of evaluation: from_stage, to_stage, trigger, guards_passed, guards_failed, next_action.",
+        "present_in_maop_schema": true
+      },
+      {
+        "name": "CausalEvidence",
+        "justification": "Evidence item with digest, derived_from and bitemporal times, linking receipts, facts and guards causally.",
+        "present_in_maop_schema": true
+      }
+    ]
+  }
+}

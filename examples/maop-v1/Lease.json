@@ -1,0 +1,10 @@
+{
+  "lease_id": "lse_51a2",
+  "holder": "agt_impl_7",
+  "work_id": "wrk_ledger_partitioning",
+  "delegation_id": "dlg_7f3c",
+  "fencing_token": 42,
+  "state": "active",
+  "issued_at": "2026-11-22T09:05:00Z",
+  "expires_at": "2026-11-22T09:20:00Z"
+}

@@ -1,0 +1,6 @@
+{
+  "holder": "agt_impl_7",
+  "fencing_token": 42,
+  "extend_seconds": 900,
+  "idempotency_key": "renew-lse_51a2-1"
+}

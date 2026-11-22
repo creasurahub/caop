@@ -1,0 +1,33 @@
+{
+  "current_stage": "act",
+  "trigger": "evidence.received",
+  "evidence": [
+    {
+      "evidence_id": "evd_bench_2026_11",
+      "kind": "metric",
+      "digest": "sha256:3b7e1d9c0a4f62b85e1c7d3a9f0b2e64c8d1a5f7b3e9c2d0a6f4b8e1c3d5a7f9",
+      "derived_from": [
+        "evd_ci_run_5521"
+      ],
+      "observed_at": "2026-11-22T10:00:00Z",
+      "valid_time": {
+        "start": "2026-11-22T09:55:00Z",
+        "end": null
+      },
+      "source": "benchmark_ci",
+      "ref": "ci_run_5521"
+    }
+  ],
+  "guard_ids": [
+    "grd_freshness_premise",
+    "grd_lease_valid"
+  ],
+  "child_states": [
+    {
+      "delegation_id": "dlg_7f3c",
+      "state": "executing"
+    }
+  ],
+  "expected_state_version": 7,
+  "idempotency_key": "eval-wrk_payment_ledger_v2-7"
+}

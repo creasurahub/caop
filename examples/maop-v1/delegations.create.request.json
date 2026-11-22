@@ -1,0 +1,54 @@
+{
+  "parent_work_id": "wrk_payment_ledger_v2",
+  "supervisor_agent_id": "agt_supervisor_1",
+  "child_agent_id": "agt_impl_7",
+  "role": "implementer",
+  "objective": "Implement range partitioning for the ledger table and open a pull request.",
+  "acceptance_criteria": [
+    {
+      "type": "metric_threshold",
+      "metric": "ledger.p99_latency_ms",
+      "lt": 20
+    }
+  ],
+  "isolation_policy": {
+    "execution_scope": "ISOLATED_SUBAGENT_CONTEXT",
+    "return_contract": "DISTILLED_FACTS_AND_ARTIFACT_REF_ONLY",
+    "max_token_budget": 16000,
+    "prune_raw_traces_on_record": true
+  },
+  "budget": {
+    "max_token_budget": 16000,
+    "max_wall_clock_seconds": 3600
+  },
+  "authority": {
+    "grant_id": "grt_impl_7_ledger",
+    "grantor": {
+      "type": "agent",
+      "id": "agt_supervisor_1"
+    },
+    "grantee_agent_id": "agt_impl_7",
+    "parent_grant_id": "grt_supervisor_1_ledger",
+    "trust_level": "T1_attested",
+    "scope": [
+      "github.pulls.create",
+      "metrics.query"
+    ],
+    "expires_at": "2026-11-22T17:00:00Z"
+  },
+  "guards": [
+    {
+      "guard_id": "grd_sod_reviewer",
+      "kind": "separation_of_duties",
+      "expression": "review.actor.id != execution.actor.id",
+      "durable": true,
+      "applies_to": [
+        "review"
+      ],
+      "on_failure": "coordinate",
+      "description": "The reviewer must be a different agent than the implementer."
+    }
+  ],
+  "lease_seconds": 900,
+  "idempotency_key": "dlg-wrk_payment_ledger_v2-impl-1"
+}

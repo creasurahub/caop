@@ -2,6 +2,21 @@
 
 > **Implementation status update (2026-11-05, after the 0.2 release):** the reference kernel now implements all five v0.2 mechanisms at CAOP-STAGE-1, with three exceptions (pulse notification delivery, approval expiry and approver binding); see [README → Implementation status](README.md#implementation-status). The 0.2 entry below records the state at release.
 
+## MAOP 1.0.0-draft.1 (2026-11-22, DRAFT)
+
+A draft of **MAOP: Multi-Agent Orchestration Protocol**, the proposed vendor-neutral, multi-agent successor to CAOP v0.2. CAOP v0.2 remains the current published version; its files, including `SPEC.md` below a short status banner, are unchanged.
+
+- **Specification:** [`docs/maop-v1.md`](docs/maop-v1.md), with RFC 2119 requirements. It restates every CAOP v0.2 concept and keeps each CAOP requirement at the same or a stronger level (traceability in its Appendix A).
+- **Parity by construction:** all 17 CAOP v0.2 operations kept with the same operation ids and sub-paths under `/maop/v1`; all 95 definitions kept with the same names, refined only additively.
+- **6 new operations (23 in total):** `agents.register`, `delegations.create`, `delegations.get`, `leases.renew`, `receipts.get`, `supervision.evaluate`.
+- **15 new definitions (110 in total):** `AgentIdentity`, `AgentRole`, `AgentRegistration`, `Delegation`, `DelegationCreate`, `AuthorityGrant`, `Lease`, `LeaseRenewal`, `Receipt`, `SupervisionStage`, `ChildLifecycleState`, `Guard`, `SupervisionEvaluation`, `TransitionDecision`, `CausalEvidence`.
+- **Multi-agent model:** roles and delegation with narrow-only authority; authority grants with trust levels `T0_relayed` and `T1_attested`; durable guards; fenced leases; receipts with `outcome_unknown`; causal evidence bound by digest.
+- **Supervision lifecycle:** a normative outer state/transition matrix with back-edges Act → Decide, Act → Coordinate, Verify → Act, any → Recover and Recover → Decide; a nested child lifecycle matrix; event-driven re-evaluation through `supervision.evaluate`; and the Northstar A–K end-to-end trace.
+- **Conformance classes:** MAOP-Core, MAOP-Coordinated and MAOP-Supervised.
+- Also added: [parity](docs/maop-v1-parity.md) and [migration](docs/maop-v1-migration.md) notes, [`openapi/maop-v1.openapi.yaml`](openapi/maop-v1.openapi.yaml) and [JSON](openapi/maop-v1.openapi.json), [`schema/maop-v1.schema.json`](schema/maop-v1.schema.json), [`examples/maop-v1/`](examples/maop-v1/) and [`tests/`](tests/README.md).
+
+The MAOP files are hand-authored in this repository; generator and website integration is a follow-up (MAOP-W1).
+
 ## 0.2 (2026-11-05)
 
 An additive superset of v0.1.2, specified in [section 15 of `SPEC.md`](SPEC.md#15-v02-outcome-verification-approval-steering-and-long-horizon-context).

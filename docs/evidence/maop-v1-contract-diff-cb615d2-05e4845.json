@@ -1,0 +1,462 @@
+{
+  "base": "cb615d2f825aecbe70e92c1cbd7722538d1ab3e6",
+  "definitions": {
+    "added": [],
+    "base_count": 110,
+    "changed": {
+      "AuthorityGrant": {
+        "after": {
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "trust_level": {
+                    "const": "T0_relayed"
+                  }
+                },
+                "required": [
+                  "trust_level"
+                ]
+              },
+              "then": {
+                "required": [
+                  "principal_statement"
+                ]
+              }
+            }
+          ],
+          "description": "A time-bounded, scoped grant of authority to one agent. Authority only narrows down the delegation tree.",
+          "properties": {
+            "constraints": {
+              "items": {
+                "$ref": "#/$defs/Constraint"
+              },
+              "type": "array"
+            },
+            "digest": {
+              "description": "Digest of the canonical grant \"<algorithm>:<lowercase hex>\", so approvals and receipts can bind to it.",
+              "pattern": "^(sha256|sha384|sha512|blake3):[0-9a-f]{32,128}$",
+              "type": "string"
+            },
+            "expires_at": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "grant_id": {
+              "description": "Grant identifier.",
+              "minLength": 1,
+              "type": "string"
+            },
+            "grantee_agent_id": {
+              "description": "Stable agent identifier, e.g. \"agt_impl_7\".",
+              "pattern": "^agt_[A-Za-z0-9_.-]+$",
+              "type": "string"
+            },
+            "grantor": {
+              "$ref": "#/$defs/PrincipalRef",
+              "description": "Who grants the authority (the supervisor agent or a human principal)."
+            },
+            "parent_grant_id": {
+              "description": "The grant this one is derived from. A derived grant's scope MUST be a subset of its parent's, and its expires_at MUST NOT be later.",
+              "type": "string"
+            },
+            "principal_statement": {
+              "description": "The principal's words as relayed, recorded verbatim. MUST be present when trust_level is T0_relayed (MAOP section 5.1).",
+              "minLength": 1,
+              "type": "string"
+            },
+            "revoked_at": {
+              "description": "When the grant was withdrawn; null or absent while it is not revoked. A revoked grant authorizes nothing, nor does any grant derived from it.",
+              "format": "date-time",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "scope": {
+              "description": "Capability ids or action scopes the grantee may use, e.g. \"github.pulls.create\".",
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "trust_level": {
+              "description": "T0_relayed: the grantee's claims are relayed by the host and treated as assertions. T1_attested: the grantee's receipts are attested (signed or runtime-observed).",
+              "enum": [
+                "T0_relayed",
+                "T1_attested"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "grant_id",
+            "grantee_agent_id",
+            "trust_level",
+            "scope",
+            "expires_at"
+          ],
+          "type": "object"
+        },
+        "before": {
+          "additionalProperties": false,
+          "description": "A time-bounded, scoped grant of authority to one agent. Authority only narrows down the delegation tree.",
+          "properties": {
+            "constraints": {
+              "items": {
+                "$ref": "#/$defs/Constraint"
+              },
+              "type": "array"
+            },
+            "expires_at": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "grant_id": {
+              "description": "Grant identifier.",
+              "minLength": 1,
+              "type": "string"
+            },
+            "grantee_agent_id": {
+              "description": "Stable agent identifier, e.g. \"agt_impl_7\".",
+              "pattern": "^agt_[A-Za-z0-9_.-]+$",
+              "type": "string"
+            },
+            "grantor": {
+              "$ref": "#/$defs/PrincipalRef",
+              "description": "Who grants the authority (the supervisor agent or a human principal)."
+            },
+            "parent_grant_id": {
+              "description": "The grant this one is derived from. A derived grant's scope MUST be a subset of its parent's, and its expires_at MUST NOT be later.",
+              "type": "string"
+            },
+            "scope": {
+              "description": "Capability ids or action scopes the grantee may use, e.g. \"github.pulls.create\".",
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "trust_level": {
+              "description": "T0_relayed: the grantee's claims are relayed by the host and treated as assertions. T1_attested: the grantee's receipts are attested (signed or runtime-observed).",
+              "enum": [
+                "T0_relayed",
+                "T1_attested"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "grant_id",
+            "grantee_agent_id",
+            "trust_level",
+            "scope",
+            "expires_at"
+          ],
+          "type": "object"
+        },
+        "enum_changes": {}
+      },
+      "Error": {
+        "after": {
+          "additionalProperties": false,
+          "description": "Standard error envelope (§7.1). v0.1.2 adds CAOP_409_UNSETTLED_EXECUTION_LEASE (HTTP 409), CAOP_413_INVALIDATION_SUBGRAPH_TOO_LARGE (HTTP 413), CAOP_422_VERIFY_ARTIFACT_MISMATCH and the CAOP_422_PRECOMMIT_* codes (HTTP 422; CAOP_422_PRECOMMIT_HOOK_FAILED carries details.failed_hooks), and STAGE_UPGRADE_RECOMMENDED (advisory code, used in resume_brief.system_advisories). MAOP v1 adds the MAOP_* codes of MAOP section 23.2 (HTTP 403, 409, 410 and 422 as the code's number states); MAOP_422_GUARD_FAILED carries details.guards_failed.",
+          "properties": {
+            "error": {
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "enum": [
+                    "INVALID_REQUEST",
+                    "UNAUTHENTICATED",
+                    "FORBIDDEN",
+                    "NOT_FOUND",
+                    "POLICY_APPROVAL_REQUIRED",
+                    "POLICY_DENIED",
+                    "INVALID_TRANSITION",
+                    "STATE_VERSION_CONFLICT",
+                    "VERIFICATION_FAILED",
+                    "RATE_LIMITED",
+                    "INTERNAL",
+                    "CAOP_409_UNSETTLED_EXECUTION_LEASE",
+                    "CAOP_413_INVALIDATION_SUBGRAPH_TOO_LARGE",
+                    "CAOP_422_VERIFY_ARTIFACT_MISMATCH",
+                    "CAOP_422_PRECOMMIT_HOOK_FAILED",
+                    "CAOP_422_PRECOMMIT_MISSING_OWNER",
+                    "CAOP_422_PRECOMMIT_MISSING_LINEAGE",
+                    "CAOP_422_PRECOMMIT_STALE_DEPENDENCY",
+                    "CAOP_422_PRECOMMIT_UNKNOWN_FACT_ID",
+                    "STAGE_UPGRADE_RECOMMENDED",
+                    "MAOP_403_AUTHORITY_INVALID",
+                    "MAOP_403_AUTHORITY_WIDENING",
+                    "MAOP_403_TRUST_FLOOR",
+                    "MAOP_403_SEPARATION_OF_DUTIES",
+                    "MAOP_409_LEASE_CONFLICT",
+                    "MAOP_409_LEASE_FENCED",
+                    "MAOP_410_LEASE_EXPIRED",
+                    "MAOP_409_IDEMPOTENCY_KEY_REUSED",
+                    "MAOP_409_OUTCOME_UNRECONCILED",
+                    "MAOP_422_GUARD_FAILED",
+                    "MAOP_422_EVIDENCE_MISMATCH",
+                    "MAOP_422_BUDGET_EXCEEDED"
+                  ],
+                  "type": "string"
+                },
+                "details": {
+                  "type": "object"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "retryable": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "code",
+                "message",
+                "retryable"
+              ],
+              "type": "object"
+            },
+            "trace_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "error",
+            "trace_id"
+          ],
+          "type": "object"
+        },
+        "before": {
+          "additionalProperties": false,
+          "description": "Standard error envelope (§7.1). v0.1.2 adds CAOP_409_UNSETTLED_EXECUTION_LEASE (HTTP 409), CAOP_413_INVALIDATION_SUBGRAPH_TOO_LARGE (HTTP 413), CAOP_422_VERIFY_ARTIFACT_MISMATCH and the CAOP_422_PRECOMMIT_* codes (HTTP 422; CAOP_422_PRECOMMIT_HOOK_FAILED carries details.failed_hooks), and STAGE_UPGRADE_RECOMMENDED (advisory code, used in resume_brief.system_advisories).",
+          "properties": {
+            "error": {
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "enum": [
+                    "INVALID_REQUEST",
+                    "UNAUTHENTICATED",
+                    "FORBIDDEN",
+                    "NOT_FOUND",
+                    "POLICY_APPROVAL_REQUIRED",
+                    "POLICY_DENIED",
+                    "INVALID_TRANSITION",
+                    "STATE_VERSION_CONFLICT",
+                    "VERIFICATION_FAILED",
+                    "RATE_LIMITED",
+                    "INTERNAL",
+                    "CAOP_409_UNSETTLED_EXECUTION_LEASE",
+                    "CAOP_413_INVALIDATION_SUBGRAPH_TOO_LARGE",
+                    "CAOP_422_VERIFY_ARTIFACT_MISMATCH",
+                    "CAOP_422_PRECOMMIT_HOOK_FAILED",
+                    "CAOP_422_PRECOMMIT_MISSING_OWNER",
+                    "CAOP_422_PRECOMMIT_MISSING_LINEAGE",
+                    "CAOP_422_PRECOMMIT_STALE_DEPENDENCY",
+                    "CAOP_422_PRECOMMIT_UNKNOWN_FACT_ID",
+                    "STAGE_UPGRADE_RECOMMENDED"
+                  ],
+                  "type": "string"
+                },
+                "details": {
+                  "type": "object"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "retryable": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "code",
+                "message",
+                "retryable"
+              ],
+              "type": "object"
+            },
+            "trace_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "error",
+            "trace_id"
+          ],
+          "type": "object"
+        },
+        "enum_changes": {
+          "/properties/error/properties/code": {
+            "added": [
+              "MAOP_403_AUTHORITY_INVALID",
+              "MAOP_403_AUTHORITY_WIDENING",
+              "MAOP_403_TRUST_FLOOR",
+              "MAOP_403_SEPARATION_OF_DUTIES",
+              "MAOP_409_LEASE_CONFLICT",
+              "MAOP_409_LEASE_FENCED",
+              "MAOP_410_LEASE_EXPIRED",
+              "MAOP_409_IDEMPOTENCY_KEY_REUSED",
+              "MAOP_409_OUTCOME_UNRECONCILED",
+              "MAOP_422_GUARD_FAILED",
+              "MAOP_422_EVIDENCE_MISMATCH",
+              "MAOP_422_BUDGET_EXCEEDED"
+            ],
+            "removed": []
+          }
+        }
+      },
+      "Guard": {
+        "after": {
+          "additionalProperties": false,
+          "description": "A durable, machine-evaluable condition that gates a supervision transition.",
+          "properties": {
+            "applies_to": {
+              "description": "Stages whose exit this guard gates.",
+              "items": {
+                "$ref": "#/$defs/SupervisionStage"
+              },
+              "type": "array"
+            },
+            "description": {
+              "type": "string"
+            },
+            "durable": {
+              "const": true,
+              "description": "Guards are persisted with the work item and re-evaluated on every relevant event, never held only in a prompt."
+            },
+            "enforcement": {
+              "default": "ENFORCED",
+              "description": "ENFORCED: a failed guard blocks the transition. ADVISORY: a failed guard is reported in guards_failed and does not block it. Absent means ENFORCED.",
+              "enum": [
+                "ENFORCED",
+                "ADVISORY"
+              ],
+              "type": "string"
+            },
+            "expression": {
+              "$ref": "#/$defs/Expression"
+            },
+            "guard_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "authority",
+                "policy",
+                "evidence",
+                "freshness",
+                "lease",
+                "separation_of_duties",
+                "budget"
+              ],
+              "type": "string"
+            },
+            "on_failure": {
+              "$ref": "#/$defs/SupervisionStage",
+              "description": "Stage to transition to when the guard fails."
+            }
+          },
+          "required": [
+            "guard_id",
+            "kind",
+            "expression",
+            "durable"
+          ],
+          "type": "object"
+        },
+        "before": {
+          "additionalProperties": false,
+          "description": "A durable, machine-evaluable condition that gates a supervision transition.",
+          "properties": {
+            "applies_to": {
+              "description": "Stages whose exit this guard gates.",
+              "items": {
+                "$ref": "#/$defs/SupervisionStage"
+              },
+              "type": "array"
+            },
+            "description": {
+              "type": "string"
+            },
+            "durable": {
+              "const": true,
+              "description": "Guards are persisted with the work item and re-evaluated on every relevant event, never held only in a prompt."
+            },
+            "expression": {
+              "$ref": "#/$defs/Expression"
+            },
+            "guard_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "authority",
+                "policy",
+                "evidence",
+                "freshness",
+                "lease",
+                "separation_of_duties",
+                "budget"
+              ],
+              "type": "string"
+            },
+            "on_failure": {
+              "$ref": "#/$defs/SupervisionStage",
+              "description": "Stage to transition to when the guard fails."
+            }
+          },
+          "required": [
+            "guard_id",
+            "kind",
+            "expression",
+            "durable"
+          ],
+          "type": "object"
+        },
+        "enum_changes": {
+          "/properties/enforcement": {
+            "added": [
+              "ENFORCED",
+              "ADVISORY"
+            ],
+            "removed": []
+          }
+        }
+      }
+    },
+    "head_count": 110,
+    "removed": []
+  },
+  "files": {
+    "openapi/maop-v1.openapi.json": {
+      "base_sha256": "8e106b98827c29f10ada12d06764443c3846e1d30ce8887078eba96701df5b0a",
+      "head_sha256": "c88103a822c9eb12136c473aaea1d834c3f0f6361057270f347f719d02ae1735"
+    },
+    "openapi/maop-v1.openapi.yaml": {
+      "base_sha256": "54a925f912bfe4d673e4664bb9cc4e631ff8a6a2dd2dc5af8efa938dc65a7227",
+      "head_sha256": "499c14bd5be1d4a6e1d30bbaecb8bb514367a14541f1740e6f8e8a435ad75072"
+    },
+    "schema/maop-v1.schema.json": {
+      "base_sha256": "fa93efdbef820348ea14f47faa72e46efab65e4f1ed0db7d1ac5ed6c193886ca",
+      "head_sha256": "7881f1490cabe3719838588f4dded65745b699a68e5587f29fa4ecb78dd1a99c"
+    }
+  },
+  "head": "05e4845f69ed4062dc8e7abaae4437e803f55ad2",
+  "head_consistency": {
+    "openapi_components_equal_schema_defs": true,
+    "openapi_yaml_equals_json": true,
+    "operation_count": 23
+  }
+}
