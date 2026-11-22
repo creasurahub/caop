@@ -879,6 +879,31 @@ def check_topics():
     return fails, info
 
 
+def check_parity_reproducible():
+    """Regenerate the parity record with tests/parity_gen.py into a temporary directory and
+    require it to be byte-identical to the committed tests/parity.json and docs/maop-v1-parity.md."""
+    import subprocess
+    import tempfile
+    fails, info = [], []
+    gen = os.path.join(ROOT, "tests", "parity_gen.py")
+    if not os.path.exists(gen):
+        raise CheckFailed("missing file: tests/parity_gen.py")
+    with tempfile.TemporaryDirectory() as tmp:
+        proc = subprocess.run([sys.executable, gen, "all", "--out", tmp],
+                              cwd=ROOT, capture_output=True, text=True)
+        if proc.returncode != 0:
+            raise CheckFailed("parity_gen.py failed: %s" % (proc.stderr.strip() or proc.stdout.strip()))
+        for rel in ("tests/parity.json", "docs/maop-v1-parity.md"):
+            with open(os.path.join(tmp, rel), "rb") as fh:
+                fresh = fh.read()
+            with open(os.path.join(ROOT, rel), "rb") as fh:
+                committed = fh.read()
+            if fresh != committed:
+                fails.append("%s differs from a fresh regeneration; run: python tests/parity_gen.py all" % rel)
+    info.append("tests/parity.json and docs/maop-v1-parity.md reproduce byte for byte")
+    return fails, info
+
+
 CHECKS = [
     ("protected-hashes", "protected CAOP files match contract sha256", check_protected_hashes),
     ("protected-git", "other protected files unchanged versus HEAD", check_protected_git),
@@ -889,6 +914,7 @@ CHECKS = [
     ("parity", "tests/parity.json counts and coverage", check_parity),
     ("neutrality", "vendor neutrality of MAOP files", check_neutrality),
     ("topics", "docs/maop-v1.md required topics", check_topics),
+    ("parity-reproducible", "parity record regenerates byte for byte", check_parity_reproducible),
 ]
 
 

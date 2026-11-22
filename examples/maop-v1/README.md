@@ -24,6 +24,18 @@ Each `<Name>.json` is a valid instance of `#/$defs/<Name>`.
 | [`TransitionDecision.json`](TransitionDecision.json) | `#/$defs/TransitionDecision` |
 | [`CausalEvidence.json`](CausalEvidence.json) | `#/$defs/CausalEvidence` |
 
+## Variant and error examples
+
+Each `<Name>.<variant>.json` is another valid instance of `#/$defs/<Name>`, showing fields or values the base example does not.
+
+| File | Definition | Shows |
+| --- | --- | --- |
+| [`AuthorityGrant.relayed.json`](AuthorityGrant.relayed.json) | `#/$defs/AuthorityGrant` | A `T0_relayed` grant with the required `principal_statement`, a `digest` and a `revoked_at` time (section 5.1) |
+| [`Guard.advisory.json`](Guard.advisory.json) | `#/$defs/Guard` | A guard with `enforcement: ADVISORY`, which is reported but does not block (sections 6.1, 12.3) |
+| [`Error.maop.json`](Error.maop.json) | `#/$defs/Error` | The error envelope with the MAOP code `MAOP_409_LEASE_FENCED` (section 23.2) |
+
+The base examples also use the new optional fields: [`AuthorityGrant.json`](AuthorityGrant.json) carries `digest` and `revoked_at: null`, and [`Guard.json`](Guard.json) carries `enforcement: ENFORCED`.
+
 ## Operation request examples
 
 Each `<operationId>.request.json` is a valid request for one new operation. For POST operations it is the request body and validates against the named definition. For GET operations, which have no body, it holds the path parameters and validates against the operation's path parameters (each a non-empty string).

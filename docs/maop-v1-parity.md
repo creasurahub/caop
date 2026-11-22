@@ -2,7 +2,7 @@
 
 **Status:** DRAFT · **MAOP version:** 1.0.0-draft.1 · **Baseline:** CAOP v0.2 at commit `8c7bd07939171efc2d39079bd018904175ea8db2`
 
-This document shows that MAOP v1 (Multi-Agent Orchestration Protocol) covers every operation, schema definition, example and normative guarantee of CAOP v0.2, and lists what MAOP adds. The machine-readable version is [`tests/parity.json`](../tests/parity.json). Both are generated from the files at the pinned baseline commit, not typed by hand: the generator reads `SPEC.md`, `schema/caop-v0.2.schema.json`, `openapi/caop-v0.2.openapi.yaml` and `examples/*.json` from git at that commit, validates every example, and extracts every line of `SPEC.md` that contains MUST, MUST NOT, SHALL, SHOULD or REQUIRED. Line numbers refer to `SPEC.md` at the baseline commit.
+This document shows that MAOP v1 (Multi-Agent Orchestration Protocol) covers every operation, schema definition, example and normative guarantee of CAOP v0.2, and lists what MAOP adds. The machine-readable version is [`tests/parity.json`](../tests/parity.json). Both are generated from the files at the pinned baseline commit, not typed by hand: the generator, [`tests/parity_gen.py`](../tests/parity_gen.py), reads `SPEC.md`, `schema/caop-v0.2.schema.json`, `openapi/caop-v0.2.openapi.yaml` and `examples/*.json` from git at that commit, validates every example, and extracts every line of `SPEC.md` that contains MUST, MUST NOT, SHALL, SHOULD or REQUIRED. Line numbers refer to `SPEC.md` at the baseline commit. Regenerate both files with `python tests/parity_gen.py all`; see [Regenerating](#regenerating).
 
 The specification itself is [`docs/maop-v1.md`](maop-v1.md); migration and compatibility are in [`docs/maop-v1-migration.md`](maop-v1-migration.md).
 
@@ -33,7 +33,7 @@ These nine historical contract files are frozen. The sha256 values were computed
 | Category | CAOP v0.2 count | Kept | Refined | Replaced | Removed |
 |---|---|---|---|---|---|
 | Operations | 17 | 17 | 0 | 0 | 0 |
-| Schema definitions | 95 | 95 | 0 | 0 | 0 |
+| Schema definitions | 95 | 94 | 1 | 0 | 0 |
 | Examples | 71 | 71 | 0 | 0 | 0 |
 | Normative guarantees (MUST/SHALL/SHOULD/REQUIRED lines) | 16 | 12 | 4 | 0 | 0 |
 | Supplementary lower-case requirements (informative check) | 17 | 15 | 2 | 0 | 0 |
@@ -42,7 +42,7 @@ Nothing is removed or replaced, so no removal needs a justification. Of the 16 g
 
 MAOP v1 adds 6 operations and 15 definitions, for 23 operations and 110 definitions in total.
 
-> **Generation note.** Statuses were derived by structurally comparing `schema/maop-v1.schema.json` and `openapi/maop-v1.openapi.yaml` with CAOP v0.2, ignoring descriptions. All 17 operations have the same method, sub-path, request body and response codes and bodies. All 95 definitions are structurally identical, so none needed an additive refinement. 6 have reworded, vendor-neutral descriptions only (`EntityRef`, `Fact`, `Capability`, `ObservationCreate`, `LoopDriver`, `AuthCustodian`), and their status stays `kept`. Re-run the generator after any contract change; an additive change shows as `refined`, and any other change is flagged `CHECK`.
+> **Generation note.** Statuses were derived by structurally comparing `schema/maop-v1.schema.json` and `openapi/maop-v1.openapi.yaml` with CAOP v0.2, ignoring descriptions. All 17 operations have the same method, sub-path, request body and response codes and bodies. 94 of 95 definitions are structurally identical. 1 are refined additively (new optional properties or enum values only; see the Note column): `Error`. 6 kept definitions have reworded, vendor-neutral descriptions only (`EntityRef`, `Fact`, `Capability`, `ObservationCreate`, `LoopDriver`, `AuthCustodian`), and their status stays `kept`. Re-run `python tests/parity_gen.py all` after any contract change; an additive change shows as `refined`, and any other change is flagged `CHECK`.
 
 ## Operations
 
@@ -113,7 +113,7 @@ Every operation keeps its error responses (Error envelope, same codes). Note for
 | 39 | `ApprovalDecision` | `ApprovalDecision` | v0.1 | kept | Introduced in CAOP v0.1. Used directly by approvals.decide. Example: examples/ApprovalDecision.json. Structure identical in schema/maop-v1.schema.json. |
 | 40 | `Approval` | `Approval` | v0.1 | kept | Introduced in CAOP v0.1. Used directly by approvals.decide. Example: examples/Approval.json. Structure identical in schema/maop-v1.schema.json. |
 | 41 | `EventEnvelope` | `EventEnvelope` | v0.1 | kept | Introduced in CAOP v0.1. Example: examples/EventEnvelope.json. Structure identical in schema/maop-v1.schema.json. |
-| 42 | `Error` | `Error` | v0.1 | kept | Introduced in CAOP v0.1. Used directly by approvals.decide, commitments.create, commitments.list, compact.dispatch_work, compact.pulse, compact.settle_receipt, compact.stage_work, context.resolve, executions.get, executions.start, executions.submit_result, executions.transition, observations.ingest, plans.create, records.commit, reviews.evaluate, verifications.evaluate. Example: examples/Error.json. Structure identical in schema/maop-v1.schema.json. |
+| 42 | `Error` | `Error` | v0.1 | refined | Introduced in CAOP v0.1. Used directly by approvals.decide, commitments.create, commitments.list, compact.dispatch_work, compact.pulse, compact.settle_receipt, compact.stage_work, context.resolve, executions.get, executions.start, executions.submit_result, executions.transition, observations.ingest, plans.create, records.commit, reviews.evaluate, verifications.evaluate. Example: examples/Error.json. Additive refinement: /properties/error/properties/code/enum +['MAOP_403_AUTHORITY_INVALID', 'MAOP_403_AUTHORITY_WIDENING', 'MAOP_403_SEPARATION_OF_DUTIES', 'MAOP_403_TRUST_FLOOR', 'MAOP_409_IDEMPOTENCY_KEY_REUSED', 'MAOP_409_LEASE_CONFLICT', 'MAOP_409_LEASE_FENCED', 'MAOP_409_OUTCOME_UNRECONCILED', 'MAOP_410_LEASE_EXPIRED', 'MAOP_422_BUDGET_EXCEEDED', 'MAOP_422_EVIDENCE_MISMATCH', 'MAOP_422_GUARD_FAILED']. Description reworded (vendor-neutral). |
 | 43 | `MetricNode` | `MetricNode` | v0.1 | kept | Introduced in CAOP v0.1. Example: examples/MetricNode.json. Structure identical in schema/maop-v1.schema.json. |
 | 44 | `ApprovalRoutingRule` | `ApprovalRoutingRule` | v0.1 | kept | Introduced in CAOP v0.1. Example: examples/ApprovalRoutingRule.json. Structure identical in schema/maop-v1.schema.json. |
 | 45 | `LoopDriver` | `LoopDriver` | v0.1.2 | kept | Introduced in CAOP v0.1.2. Structure identical in schema/maop-v1.schema.json. Description reworded (vendor-neutral), no structural change. |
@@ -476,7 +476,7 @@ All five v0.2 mechanisms are preserved unchanged: two-phase verification (`TwoPh
 
 | # | Criterion | Satisfied by | State |
 |---|---|---|---|
-| 1 | Pin the CAOP v0.2 baseline and map all 17 operations, 95 schema definitions, 71 examples and normative guarantees to MAOP or justify improvements. | `tests/parity.json` (counts asserted at generation: 17 / 95 / 71, 16 guarantees); this file (baseline pin, full tables, Additions, Improvements) | Done (parity) |
+| 1 | Pin the CAOP v0.2 baseline and map all 17 operations, 95 schema definitions, 71 examples and normative guarantees to MAOP or justify improvements. | `tests/parity.json` and `tests/parity_gen.py` (counts asserted at generation: 17 / 95 / 71, 16 guarantees; reproducibility checked by `tests/validate.py` check 10); this file (baseline pin, full tables, Additions, Improvements) | Done (parity) |
 | 2 | Historical CAOP contracts unchanged; document migration and compatibility. | The baseline pin table above (sha256 of the 9 frozen files, checked against the working tree); [`docs/maop-v1-migration.md`](maop-v1-migration.md); `tests/validate.py` (conformance) | Done for documentation; hash check in CI depends on `tests/validate.py` |
 | 3 | Vendor-neutral MAOP, with no Creasura protocol branding or operating system positioning. | `docs/maop-v1.md` (spec); `schema/maop-v1.schema.json` (relative `$id`); `openapi/maop-v1.openapi.yaml`/`.json` (placeholder server); Improvement 1 above | Depends on spec and contract workstreams |
 | 4 | A normative outer and inner lifecycle, including Act→Decide and Act→Coordinate, durable guards and event-driven re-evaluation. | `docs/maop-v1.md` (lifecycle sections); `SupervisionStage`, `ChildLifecycleState`, `Guard`, `TransitionDecision` in `schema/maop-v1.schema.json`; `supervision.evaluate` in the OpenAPI; Improvements 2–4 | Depends on spec and contract workstreams |
@@ -487,15 +487,27 @@ All five v0.2 mechanisms are preserved unchanged: two-phase verification (`TwoPh
 
 ## Regenerating
 
-`tests/parity.json` and the tables in this file come from a generator that is run against the repository and is deliberately not stored in it. The generator:
+`tests/parity.json` and the tables in this file are generated by [`tests/parity_gen.py`](../tests/parity_gen.py), which is committed with them. From a clone whose history contains the baseline commit, run:
 
-1. reads the baseline files from git at the pinned commit;
+```sh
+pip install jsonschema pyyaml          # jsonschema >= 4.18
+python tests/parity_gen.py all         # rewrites tests/parity.json and docs/maop-v1-parity.md
+python tests/parity_gen.py json        # only tests/parity.json
+python tests/parity_gen.py md          # only this file, rendered from tests/parity.json
+python tests/parity_gen.py all --out /tmp/parity   # write to another directory instead
+```
+
+The generator:
+
+1. reads the baseline files from git at the pinned commit (`git show 8c7bd07939171efc2d39079bd018904175ea8db2:<path>`), never from the working tree;
 2. asserts the nine sha256 values and the 17/95/71 counts;
 3. validates every example;
 4. extracts the guarantee lines; and
-5. compares the MAOP contracts with the baseline, when those contracts exist.
+5. compares the MAOP contracts in the working tree with the baseline, ignoring descriptions: an identical structure is `kept`; new optional properties, new enum values, new `oneOf`/`anyOf` branches, new response codes, new optional parameters and annotation-only keywords are `refined`; anything else (a removed property or enum value, a newly required property, a new constraint keyword, a changed value) is `CHECK`.
 
-Hand-written content consists of the status judgements for the 10 normative guarantees, the justifications for the additions, and the prose sections of this file. A reviewer can recompute the counts with:
+The output is deterministic: it has no timestamps, and sets are sorted. `tests/validate.py` check 10 (`parity-reproducible`) runs the generator into a temporary directory and fails unless both files are byte-identical to the committed ones, so any change to the MAOP schema or OpenAPI must be followed by a regeneration.
+
+Hand-written content lives in `tests/parity_gen.py` and this template (`tests/parity_tail.md`): the status judgements for the 10 normative guarantees, the section-to-topic map, the justifications for the additions, and the prose sections of this file. A reviewer can recompute the counts independently with:
 
 ```sh
 git show 8c7bd07939171efc2d39079bd018904175ea8db2:SPEC.md | grep -cE '\b(MUST|SHALL|SHOULD|REQUIRED)\b'   # 16

@@ -1,0 +1,13 @@
+{
+  "error": {
+    "code": "MAOP_409_LEASE_FENCED",
+    "message": "The fencing token is not current for this lease scope.",
+    "retryable": false,
+    "details": {
+      "lease_id": "lse_01",
+      "presented_fencing_token": 6,
+      "current_fencing_token": 7
+    }
+  },
+  "trace_id": "trace_456"
+}

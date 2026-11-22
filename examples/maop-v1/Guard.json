@@ -7,5 +7,6 @@
     "review"
   ],
   "on_failure": "coordinate",
+  "enforcement": "ENFORCED",
   "description": "The reviewer must be a different agent than the implementer."
 }

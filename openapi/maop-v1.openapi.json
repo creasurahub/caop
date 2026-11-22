@@ -4132,7 +4132,19 @@
                   "CAOP_422_PRECOMMIT_MISSING_LINEAGE",
                   "CAOP_422_PRECOMMIT_STALE_DEPENDENCY",
                   "CAOP_422_PRECOMMIT_UNKNOWN_FACT_ID",
-                  "STAGE_UPGRADE_RECOMMENDED"
+                  "STAGE_UPGRADE_RECOMMENDED",
+                  "MAOP_403_AUTHORITY_INVALID",
+                  "MAOP_403_AUTHORITY_WIDENING",
+                  "MAOP_403_TRUST_FLOOR",
+                  "MAOP_403_SEPARATION_OF_DUTIES",
+                  "MAOP_409_LEASE_CONFLICT",
+                  "MAOP_409_LEASE_FENCED",
+                  "MAOP_410_LEASE_EXPIRED",
+                  "MAOP_409_IDEMPOTENCY_KEY_REUSED",
+                  "MAOP_409_OUTCOME_UNRECONCILED",
+                  "MAOP_422_GUARD_FAILED",
+                  "MAOP_422_EVIDENCE_MISMATCH",
+                  "MAOP_422_BUDGET_EXCEEDED"
                 ]
               },
               "message": {
@@ -4161,7 +4173,7 @@
           "error",
           "trace_id"
         ],
-        "description": "Standard error envelope (§7.1). v0.1.2 adds CAOP_409_UNSETTLED_EXECUTION_LEASE (HTTP 409), CAOP_413_INVALIDATION_SUBGRAPH_TOO_LARGE (HTTP 413), CAOP_422_VERIFY_ARTIFACT_MISMATCH and the CAOP_422_PRECOMMIT_* codes (HTTP 422; CAOP_422_PRECOMMIT_HOOK_FAILED carries details.failed_hooks), and STAGE_UPGRADE_RECOMMENDED (advisory code, used in resume_brief.system_advisories)."
+        "description": "Standard error envelope (§7.1). v0.1.2 adds CAOP_409_UNSETTLED_EXECUTION_LEASE (HTTP 409), CAOP_413_INVALIDATION_SUBGRAPH_TOO_LARGE (HTTP 413), CAOP_422_VERIFY_ARTIFACT_MISMATCH and the CAOP_422_PRECOMMIT_* codes (HTTP 422; CAOP_422_PRECOMMIT_HOOK_FAILED carries details.failed_hooks), and STAGE_UPGRADE_RECOMMENDED (advisory code, used in resume_brief.system_advisories). MAOP v1 adds the MAOP_* codes of MAOP section 23.2 (HTTP 403, 409, 410 and 422 as the code's number states); MAOP_422_GUARD_FAILED carries details.guards_failed."
       },
       "MetricNode": {
         "type": "object",
@@ -6153,6 +6165,24 @@
           "expires_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "principal_statement": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The principal's words as relayed, recorded verbatim. MUST be present when trust_level is T0_relayed (MAOP section 5.1)."
+          },
+          "digest": {
+            "type": "string",
+            "pattern": "^(sha256|sha384|sha512|blake3):[0-9a-f]{32,128}$",
+            "description": "Digest of the canonical grant \"<algorithm>:<lowercase hex>\", so approvals and receipts can bind to it."
+          },
+          "revoked_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "When the grant was withdrawn; null or absent while it is not revoked. A revoked grant authorizes nothing, nor does any grant derived from it."
           }
         },
         "additionalProperties": false,
@@ -6162,6 +6192,25 @@
           "trust_level",
           "scope",
           "expires_at"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "trust_level": {
+                  "const": "T0_relayed"
+                }
+              },
+              "required": [
+                "trust_level"
+              ]
+            },
+            "then": {
+              "required": [
+                "principal_statement"
+              ]
+            }
+          }
         ],
         "description": "A time-bounded, scoped grant of authority to one agent. Authority only narrows down the delegation tree."
       },
@@ -6402,6 +6451,15 @@
           "on_failure": {
             "$ref": "#/components/schemas/SupervisionStage",
             "description": "Stage to transition to when the guard fails."
+          },
+          "enforcement": {
+            "type": "string",
+            "enum": [
+              "ENFORCED",
+              "ADVISORY"
+            ],
+            "default": "ENFORCED",
+            "description": "ENFORCED: a failed guard blocks the transition. ADVISORY: a failed guard is reported in guards_failed and does not block it. Absent means ENFORCED."
           },
           "description": {
             "type": "string"

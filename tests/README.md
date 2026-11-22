@@ -35,6 +35,7 @@ The checker needs only the standard library, `jsonschema`, `pyyaml` and `git`. I
 | 7 | `parity` | `tests/parity.json` records the CAOP baseline counts as exactly 17 operations, 95 definitions and 71 examples. It mentions every CAOP operationId, definition name and example filename. Every entry with status `removed` has a non-empty `justification`, `rationale` or `reason`. |
 | 8 | `neutrality` | `docs/maop-v1.md`, the MAOP schema, both MAOP OpenAPI files and every file in `examples/maop-v1/` contain neither "Creasura" nor "operating system" (case-insensitive). See "Neutrality exceptions" below. Allowed occurrences are listed in the output. |
 | 9 | `topics` | `docs/maop-v1.md` covers each required topic, found by keyword or heading: Act→Decide, Act→Coordinate, Northstar with table rows A to K, two-phase verification, approval steering, isolation, compaction, lazy discovery, receipts, leases, authority and recovery. The back-edges may be written `→`, `->` or `to`. A Northstar row is a Markdown table row whose first cell is the letter. |
+| 10 | `parity-reproducible` | Runs `tests/parity_gen.py all --out <tmp>` and requires `tests/parity.json` and `docs/maop-v1-parity.md` to be byte-identical to the committed files. To regenerate after a schema or OpenAPI change: `python tests/parity_gen.py all`. |
 
 ### How MAOP examples are matched (check 6)
 

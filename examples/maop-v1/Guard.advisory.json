@@ -1,0 +1,11 @@
+{
+  "guard_id": "grd_budget_soft_limit",
+  "kind": "budget",
+  "expression": "work.budget.tokens_used <= 0.8 * work.budget.max_token_budget",
+  "durable": true,
+  "applies_to": [
+    "act"
+  ],
+  "enforcement": "ADVISORY",
+  "description": "Reports when a work has used more than 80% of its token budget; does not block the transition."
+}

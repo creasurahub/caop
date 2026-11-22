@@ -200,11 +200,11 @@ An `AuthorityGrant` is a typed, durable permission. It replaces free-text standi
 | `expires_at` | MUST | When it stops being valid. A grant MAY omit it only if the owner explicitly chose no expiry at `T1_attested`; the runtime MUST record that choice. |
 | `constraints` | MAY | Additional restrictions. |
 | `parent_grant_id` | MUST for derived grants | The grant it was narrowed from. |
-| `principal_statement` | MUST at `T0_relayed` (proposed field) | The principal's words as relayed, recorded verbatim. |
-| `digest` | SHOULD (proposed field) | Digest of the canonical grant, so approvals and receipts can bind to it. |
-| `revoked_at` | MAY (proposed field) | Withdrawal time. |
+| `principal_statement` | MUST at `T0_relayed`, MAY otherwise | The principal's words as relayed, recorded verbatim. |
+| `digest` | SHOULD | Digest of the canonical grant, `<algorithm>:<lowercase hex>` as for `CausalEvidence.digest`, so approvals and receipts can bind to it. |
+| `revoked_at` | MUST once revoked | Withdrawal time; absent or `null` while the grant is not revoked. |
 
-The JSON Schema definition `AuthorityGrant` governs the exact shape. In 1.0.0-draft.1 it has `grant_id`, `grantor`, `grantee_agent_id`, `parent_grant_id`, `trust_level`, `scope` (capability ids or action scopes), `constraints` and `expires_at`. The fields marked *proposed* are not yet in the schema; until they are, a runtime MUST record the relayed statement and any revocation in the receipt of the operation that created or revoked the grant (see section 31).
+The JSON Schema definition `AuthorityGrant` governs the exact shape: `grant_id`, `grantor`, `grantee_agent_id`, `parent_grant_id`, `trust_level`, `scope` (capability ids or action scopes), `constraints`, `expires_at`, `principal_statement`, `digest` and `revoked_at`. The schema makes `principal_statement` optional so that one shape serves both trust levels; a runtime MUST refuse to create a `T0_relayed` grant without it (`INVALID_REQUEST`). A runtime MUST set `revoked_at` when it revokes a grant and MUST NOT clear it afterwards; the receipt of the revoking operation records the revocation as well. Examples: [`AuthorityGrant.json`](../examples/maop-v1/AuthorityGrant.json), [`AuthorityGrant.relayed.json`](../examples/maop-v1/AuthorityGrant.relayed.json).
 
 ### 5.2 Trust levels
 
@@ -248,7 +248,7 @@ A `Guard` is a condition a transition needs. Guards are **durable**: they are st
 | `expression` | MUST | A deterministic predicate over the request, the work, the delegation and state at evaluation time. |
 | `durable` | MUST be `true` | A guard cannot be transient. |
 | `on_failure` | MAY | The `SupervisionStage` to move to when the guard fails (for example `decide` for a freshness guard in `act`). It MUST be one of the targets the matrix of section 10.2 allows from the current stage. |
-| `enforcement` | SHOULD (proposed field) | `ENFORCED` (default) or `ADVISORY`. Not yet in the schema; until it is, a guard is enforced. |
+| `enforcement` | SHOULD | `ENFORCED` or `ADVISORY`. Default `ENFORCED`: a guard without the field is enforced. A failed `ADVISORY` guard is reported but does not block (section 12.3 rule 5). |
 
 Rules:
 
@@ -551,7 +551,7 @@ At L3 (section 26), the runtime MUST evaluate on these triggers by itself. At L2
 2. **Deterministic.** Given the same state, an evaluation MUST select the same transition (with the priority of 10.3 rule 3).
 3. **Idempotent.** Evaluating twice for the same trigger MUST NOT apply a transition twice. A request MAY carry an idempotency key; an event trigger is deduplicated by its `event_id`.
 4. **Limited effect.** An evaluation MAY commit the selected stage transition and its receipt and events. It MUST NOT invoke a capability, dispatch an external effect, or change a guard.
-5. **Advisory guards.** A failed advisory guard MUST be reported in `guards_failed` with `enforcement: ADVISORY` and MUST NOT block the transition.
+5. **Advisory guards.** A failed guard whose `enforcement` is `ADVISORY` MUST be reported in `guards_failed` and MUST NOT block the transition.
 6. **Failure.** If evaluation cannot complete (for example a guard input is missing), the work MUST stay in its stage, the guard counts as failed, and `next_action` MUST say what is missing.
 
 ---
@@ -790,7 +790,7 @@ A refusal MUST NOT write state other than an optional refusal record and receipt
 
 All CAOP v0.2 codes are kept with their meaning: `INVALID_REQUEST`, `UNAUTHENTICATED`, `FORBIDDEN`, `NOT_FOUND`, `POLICY_APPROVAL_REQUIRED`, `POLICY_DENIED`, `INVALID_TRANSITION`, `STATE_VERSION_CONFLICT`, `VERIFICATION_FAILED`, `RATE_LIMITED`, `INTERNAL`, `CAOP_409_UNSETTLED_EXECUTION_LEASE`, `CAOP_413_INVALIDATION_SUBGRAPH_TOO_LARGE`, `CAOP_422_VERIFY_ARTIFACT_MISMATCH`, `CAOP_422_PRECOMMIT_HOOK_FAILED`, `CAOP_422_PRECOMMIT_MISSING_OWNER`, `CAOP_422_PRECOMMIT_MISSING_LINEAGE`, `CAOP_422_PRECOMMIT_STALE_DEPENDENCY`, `CAOP_422_PRECOMMIT_UNKNOWN_FACT_ID`, and the advisory `STAGE_UPGRADE_RECOMMENDED`. The `CAOP_` prefix is kept on the wire for parity.
 
-MAOP adds the codes below. They are **proposed**: in 1.0.0-draft.1 the schema's `Error.code` enumeration still lists only the CAOP v0.2 codes, so the MAOP codes have to be added to it additively before a runtime can return them in a schema-valid envelope (section 31). Until then a runtime MUST return the closest kept code (`FORBIDDEN`, `INVALID_TRANSITION`, `STATE_VERSION_CONFLICT`, `POLICY_DENIED`, `INVALID_REQUEST`) and SHOULD put the MAOP code in `details.maop_code`.
+MAOP adds the codes below. They are part of the schema's `Error.code` enumeration, added after the kept CAOP v0.2 codes, so every CAOP v0.2 error remains valid. A runtime MUST return the MAOP code, not a kept code, for each condition in the table. A client that does not recognise a code MUST treat it according to its HTTP status and `retryable`. Example: [`Error.maop.json`](../examples/maop-v1/Error.maop.json).
 
 | Code | HTTP | Retryable | When |
 |---|---|---|---|
@@ -971,6 +971,7 @@ One end-to-end scenario that exercises every stage, both back-edge families and 
 
 - Every CAOP v0.2 operation exists in MAOP with the same operation id and sub-path under `/maop/v1` (CAOP uses `/v1`). Every CAOP v0.2 definition exists in the MAOP schema with the same name; changes are additive only.
 - A valid CAOP v0.2 document is a valid MAOP document for the same definition.
+- The one widened enumeration is `Error.code`, which adds the MAOP codes of section 23.2. A CAOP v0.2 client that validates responses against the CAOP schema will reject an envelope that carries a MAOP code; such a client SHOULD fall back to the HTTP status and `retryable`.
 - CAOP lifecycle stages map onto supervision stages as in section 10.1; CAOP execution states and sub-states are unchanged (section 13).
 - Every CAOP requirement is kept at the same or a stronger level (Appendix A).
 - The operation-by-operation and definition-by-definition parity is in [`docs/maop-v1-parity.md`](maop-v1-parity.md); how to move a CAOP v0.2 implementation to MAOP is in [`docs/maop-v1-migration.md`](maop-v1-migration.md).
@@ -980,15 +981,14 @@ One end-to-end scenario that exercises every stage, both back-edge families and 
 ## 31. Open questions
 
 1. **Wire names inherited from CAOP.** Should MAOP 1.0.0 add vendor-neutral aliases for `CAOP-STAGE-*`, the vault value of `AuthCustodian`, `KERNEL_PROXIED`, `KERNEL_ATTESTED`, the `CAOP_` error-code prefix and the `caop_*` compact tool names, and for how long should the originals be kept?
-2. **Schema follow-ups.** The kept `Error.code` is an enumeration; the MAOP codes of section 23.2 need to be added to it additively. `AuthorityGrant` needs `principal_statement`, `digest` and `revoked_at`, and `Guard` needs `enforcement` (sections 5.1, 6.1). Confirm the lists.
-3. **Trust floors by default.** Which operations should default to a `T1_attested` floor (acceptance of high-impact work, release approval, outcome overrides, guard removal)?
-4. **Agent identity vs. principal.** Is `AgentIdentity` the right unit for separation of duties when one principal runs many agents, or does 1.0 need credential-level or instance-level identity?
-5. **Default expiry** for standing grants and approvals.
-6. **Lease scope** for resources shared across works (for example a deployment target): one lease per resource, or a lock hierarchy?
-7. **Delegation across workspaces and runtimes.** Should 1.0 define federation (a child on another runtime), or leave it to a later version?
-8. **Phase-2 at L2.** Is a pulse-driven deferred check acceptable for high-impact outcomes, or should those require L3?
-9. **Evidence digests.** Which canonicalization and digest algorithms are required for `CausalEvidence.digest` and approval binding?
-10. **Website publication** of MAOP and generator integration (MAOP-W1).
+2. **Trust floors by default.** Which operations should default to a `T1_attested` floor (acceptance of high-impact work, release approval, outcome overrides, guard removal)?
+3. **Agent identity vs. principal.** Is `AgentIdentity` the right unit for separation of duties when one principal runs many agents, or does 1.0 need credential-level or instance-level identity?
+4. **Default expiry** for standing grants and approvals.
+5. **Lease scope** for resources shared across works (for example a deployment target): one lease per resource, or a lock hierarchy?
+6. **Delegation across workspaces and runtimes.** Should 1.0 define federation (a child on another runtime), or leave it to a later version?
+7. **Phase-2 at L2.** Is a pulse-driven deferred check acceptable for high-impact outcomes, or should those require L3?
+8. **Evidence digests.** Which canonicalization and digest algorithms are required for `CausalEvidence.digest`, `AuthorityGrant.digest` and approval binding?
+9. **Website publication** of MAOP and generator integration (MAOP-W1).
 
 ---
 

@@ -1,0 +1,16 @@
+{
+  "grant_id": "grt_supervisor_1_release",
+  "grantor": {
+    "type": "user",
+    "id": "usr_owner_1"
+  },
+  "grantee_agent_id": "agt_supervisor_1",
+  "trust_level": "T0_relayed",
+  "scope": [
+    "releases.prepare"
+  ],
+  "expires_at": "2026-11-22T18:00:00Z",
+  "principal_statement": "Prepare the ledger release, but do not ship it until I approve it myself.",
+  "digest": "sha256:9e0b3c7a1f5d2e8b4a6c0d9f3e7b1a5c8d2f6e0a4b9c3d7e1f5a8b2c6d0e4f93",
+  "revoked_at": "2026-11-22T15:42:10Z"
+}

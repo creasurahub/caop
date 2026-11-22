@@ -1,7 +1,7 @@
 {
   "title": "MAOP v1 parity with CAOP v0.2",
   "maop_version": "1.0.0-draft.1",
-  "generated_by": "inline generator run against the pinned baseline (not stored in the repository)",
+  "generated_by": "tests/parity_gen.py (regenerate with: python tests/parity_gen.py all); baseline read from git at 8c7bd07939171efc2d39079bd018904175ea8db2; output is deterministic and checked by tests/validate.py check 10 (parity-reproducible)",
   "baseline": {
     "repository_commit": "8c7bd07939171efc2d39079bd018904175ea8db2",
     "spec": "SPEC.md (CAOP v0.2)",
@@ -78,8 +78,8 @@
       "removed": 0
     },
     "definitions": {
-      "kept": 95,
-      "refined": 0,
+      "kept": 94,
+      "refined": 1,
       "replaced": 0,
       "removed": 0
     },
@@ -915,9 +915,9 @@
     },
     "Error": {
       "maop_name": "Error",
-      "status": "kept",
+      "status": "refined",
       "introduced_in": "v0.1",
-      "note": "Introduced in CAOP v0.1. Used directly by approvals.decide, commitments.create, commitments.list, compact.dispatch_work, compact.pulse, compact.settle_receipt, compact.stage_work, context.resolve, executions.get, executions.start, executions.submit_result, executions.transition, observations.ingest, plans.create, records.commit, reviews.evaluate, verifications.evaluate. Example: examples/Error.json. Structure identical in schema/maop-v1.schema.json."
+      "note": "Introduced in CAOP v0.1. Used directly by approvals.decide, commitments.create, commitments.list, compact.dispatch_work, compact.pulse, compact.settle_receipt, compact.stage_work, context.resolve, executions.get, executions.start, executions.submit_result, executions.transition, observations.ingest, plans.create, records.commit, reviews.evaluate, verifications.evaluate. Example: examples/Error.json. Additive refinement: /properties/error/properties/code/enum +['MAOP_403_AUTHORITY_INVALID', 'MAOP_403_AUTHORITY_WIDENING', 'MAOP_403_SEPARATION_OF_DUTIES', 'MAOP_403_TRUST_FLOOR', 'MAOP_409_IDEMPOTENCY_KEY_REUSED', 'MAOP_409_LEASE_CONFLICT', 'MAOP_409_LEASE_FENCED', 'MAOP_409_OUTCOME_UNRECONCILED', 'MAOP_410_LEASE_EXPIRED', 'MAOP_422_BUDGET_EXCEEDED', 'MAOP_422_EVIDENCE_MISMATCH', 'MAOP_422_GUARD_FAILED']. Description reworded (vendor-neutral)."
     },
     "MetricNode": {
       "maop_name": "MetricNode",
